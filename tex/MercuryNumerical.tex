@@ -42,7 +42,30 @@
 \documentclass[12pt]{iopart}
 \newcommand{\gguide}{{\it Preparing graphics for IOP Publishing journals}}
 %Uncomment next line if AMS fonts required
-%\usepackage{iopams}  
+%\usepackage{iopams} 
+
+
+
+\usepackage{graphicx}           % Import Pictures + PDFs
+\usepackage[svgnames]{xcolor}   % Enabling colors by their 'svgnames'
+\definecolor{fzjblue}{HTML}{005B81}
+\definecolor{light-gray}{gray}{0.97}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\usepackage{listings} %  See: https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+\lstset{
+  language=Python,
+  backgroundcolor=\color{light-gray},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\linespread{1}\footnotesize,        % the size of the fonts that are used for the code
+  commentstyle=\color{mygreen},
+  frame=single,
+  keywordstyle=\color{blue},       % keyword style
+  tabsize=4,	                   % sets default tabsize to 2 spaces
+  rulecolor=\color{light-gray},
+}
+
+\newcommand{\python}[0]{\texttt{Python} }
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+
 \begin{document}
 
 \title[A primer to numerical simulations]{A primer to numerical simulations: The perihelion
@@ -116,11 +139,11 @@ observed, where here trajectory means that we can calculate the location in spac
 in time, once the initial conditions are fixed properly. If we can neglect the finite size of this object the location is parametrized
 by a single three vector $\vec x(t)$. As will become clear below in order to describe and control the dynamics of a physical
 object in addition we need to be able to calculate its velocity, $\vec v(t)$, related to the location via
-\begin{equation}
+\begin{equation}\label{eq:x_update}
 \vec x(t+\Delta t) = \vec x(t) + \vec v(t) \Delta t + ... \ , \label{eq:vdef}
 \end{equation}
 for some infinitesimally small $\Delta t$ and the acceleration, $\vec a(t)$ that describes the change of the velocity
-\begin{eqnarray}
+\begin{eqnarray}\label{eq:v_update}
 \vec v(t+\Delta t) = \vec v(t) + \vec a(t) \Delta t + ...\ . \label{eq:adef}
 \end{eqnarray}
 The dots in the above expressions indicate that there are in general additional terms that may be expressed with
@@ -179,11 +202,6 @@ also shows that small (large) time steps are necessary (sufficient), if the forc
 the time steps need to be small enough that all changes induced by the force get resolved.
 
 
-\section{How to treat differential equations on a computer}
-
-
-\section{Visualization using V-Phython}
-
 
 \section{Example: The perihelion motion of Mercury}
 
@@ -225,12 +243,96 @@ Now the students should add a new term to the right hand side of Eq.~(\ref{eq:ne
 read 
 \begin{equation}
 \ddot{\vec x} = \frac{c^2}{2}\left(\frac{r_S}{r^2}\right)\left(1+\alpha\left(\frac{r_S}{r}\right)\right) \ ,
-\label{eq:newton}
+\label{eq:newton_art}
 \end{equation}
 where $\alpha$ is some parameter. What happens to the trajectories as $\alpha$ is varied?
 \end{itemize}
 Finally the start values need to be chosen appropriately such that the simulation indeed mimicks the trajectories
 of Mercury ...
+
+
+\section{Numerical Implementation}
+In this section we present the numerical implementation of the perihelion motion of Mercury.  We select \python as the programming language of choice \cite{}, because \python is easy to learn, intuitive to understand and an open source language\footnote{See also appendix \ref{appendix:python} for an instruction how to set up python on different operating systems.}.  No prior knowledge of \python or any other programming language is required because we explain all the essential steps in order to create the simulation.  We also provide a working example \cite{} which can be used as template.
+
+The first step of a numerical simulation is the extraction of the relevant physical parameters and quantities in order to translate the problem to mathematical equations.  The relevant objects for this example are the sun and mercury.  Thus, to describe their motion, one needs their "initial" distances, velocities and accelerations which are the input to their equation of motions (Eq.~(\ref{eq:x_update}) and Eq.~(\ref{eq:v_update})).  In the case of this problem, one can simplify the implementation by placing one planet (the "infinitely" heavy sun) in the center of the coordinate system and describe the motion of the other planet (mercury) in a two-dimensional plane.  \textit{Why is this simplified picture sufficient to describe the motion}?
+
+Because the problem does not depend on the initial position of mercury on its orbit around the sun, we extract the parameters at the perihelion with $ \abs{\vec r_{MS}(0)} = 46 \cdot 10^6 km$ and $ \abs{\vec v_M(0)} = 39 km/s $\footnote{https://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html}.  Since the computer does not understand physical units, one has to express each variable in their respective unit.  Both, for the numerical treatment and the intuitive understanding, it is useful to select parameters in a "natural range".  A particular useful choice for this problem is given by expressing time intervals in days $T_0 = 1d$ and distances in $R_0 = 10^{10}m$.  With this choice, the initial distance of mercury to the sun, the initial velocity of mercury and the acceleration prefactor become
+\begin{equation}
+	r_{MS}(0) = 4.6 R_0 \, , \quad
+	v_{M}(0)  = 0.34 \frac{R_0}{T_0} \, ,  \quad
+	a_M       = 0.99 \frac{R_0}{T_0^2} \frac{1}{\left(r_{MS}/R_0\right)^2}
+	\, .
+\end{equation}
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.4\textwidth]{figs/sun_merc.pdf}
+	\caption{\label{fig:sun_merc}Sun mercury system with relevant vectors.  Because the mercury is at its perihelion, its velocity is perpendicular to its direct connection vector with the sun.}
+\end{figure}
+
+
+In python, this reads
+\begin{lstlisting}
+	# Definition of parameters
+	rM0 = 4.6    # in units of R0
+	vM0 = 0.34   # in units of R0/T0
+	aM  = 0.99   # in units of R0/T0**2
+\end{lstlisting}
+Next, we set up the initial vectors which will describe the motion in the two-dimensional plane.  We will build on the existing \python module: \texttt{Vpython}, which provides implementation for the vectorial implementation and animation.  The first object of interest is a \texttt{vector}, which takes three-dimensional coordinates as its input.  Because of our choice of initial conditions, the velocity of mercury is perpendicular to the vector which connects mercury and the sun (see figure \ref{fig:sun_merc}):
+\begin{lstlisting}
+	# Import the class vector from python
+	from vpython import vector
+	# Initialize distance and velocity vectors
+	vec_rS0 = vector(0, 0, 0)
+	vec_rM0 = vector(0, rM0, 0)
+	vec_vM0 = vector(vm0, 0, 0)
+\end{lstlisting}
+According to Eq.~(\ref{eq:newton}), the force which acts on mercury changes the velocity of mercury which eventually changes the position.  In first approximation we can numerically express the updates of the position and the velocity by
+\begin{lstlisting}
+	# Compute the strength of the acceleration
+	aMS = aM * ( 1 + alpha * rS / vec_rM_old.mag  ) / vec_rM_old.mag**2
+	# Multiply by the direction
+	vec_aMS = - aMS * ( vec_rM_old / vec_rM_old.mag )
+	# Update velocity vector
+	vec_vM_new = vec_vM_old + vec_aMS * dt
+	# Update position vector
+	vec_rM_new = vec_rM_old + vec_vM_new * dt
+\end{lstlisting}
+Note the beauty of working with the predefined \texttt{vector} class: the basic vector operations are already implemented.  The difference and sum of two vectors, or the scalar vector multiplication return vectors themselves.  Also the magnitude of a vector -- \texttt{vector.mag} -- is a property of the vector and can be easily extracted.
+
+It is handy to use \texttt{Python}s \texttt{function}s to embed repeating structures ("DRY" -- Don't Repeat Yourself)
+\begin{lstlisting}
+	# Define the function
+	def evolve_mercury(vec_rM_old, vec_vM_old):
+		<...Code...>
+		return vec_rM_new, vec_vM_new
+	
+	# Call the function
+	vec_rM_new, vec_vM_new = do_time_step(vec_rM_old, vec_vM_old)
+\end{lstlisting}
+Because of \python{}s syntax, it is necessary that the body of the function is indented relative to the definition statement.
+
+Finally, we can express the evolution by a \texttt{while}-loop
+\begin{lstlisting}
+	t = 0
+	# Execute the loop as long as t < T
+	while t < T:
+		vec_rM, vec_vM = evolve_mercury(vec_rM, vec_vM)
+		t = t + dt
+\end{lstlisting}
+Note the required indent of the loop structure similar to the indent of a function.  In each iteration of the \texttt{while}-loop, the previous distance and velocity are used to compute the new values -- which directly overwrite the previous values and thus enter the next iteration. The time step \texttt{dt} needs to be sufficiently small in order to avoid numerical errors.  We recommend $dt = ...$.  The total runtime \texttt{T} is the amount of "virtual" days the simulations should run.  To describe at least one full orbit, $T$ needs to be larger than $T>..$.
+
+
+Ideas for questions:
+\begin{itemize}
+	\item Mass and motion of sun
+	\item Estimate \texttt{dt} and also \texttt{T} in order to cover roughly two "mercury years".
+	\item What does happen when you change those units?
+	\item Compare values to the values in \cite{}.  Where does the difference come from?
+	\item Start with $\alpha=0$. What do you observe?
+\end{itemize}
+
+\section{Visualization using V-Phython}
 
 \section{Dimensional analysis}
 
@@ -291,6 +393,7 @@ Here they come
 
 \appendix
 \section{Instructions to install V-phython}
+\label{appendix:python}
 
 \section{The code}
 Here we should put the code
