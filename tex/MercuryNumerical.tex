@@ -1,0 +1,303 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    INSTITUTE OF PHYSICS PUBLISHING                                   %
+%                                                                      %
+%   `Preparing an article for publication in an Institute of Physics   %
+%    Publishing journal using LaTeX'                                   %
+%                                                                      %
+%    LaTeX source code `ioplau2e.tex' used to generate `author         %
+%    guidelines', the documentation explaining and demonstrating use   %
+%    of the Institute of Physics Publishing LaTeX preprint files       %
+%    `iopart.cls, iopart12.clo and iopart10.clo'.                      %
+%                                                                      %
+%    `ioplau2e.tex' itself uses LaTeX with `iopart.cls'                %
+%                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% First we have a character check
+%
+% ! exclamation mark    " double quote  
+% # hash                ` opening quote (grave)
+% & ampersand           ' closing quote (acute)
+% $ dollar              % percent       
+% ( open parenthesis    ) close paren.  
+% - hyphen              = equals sign
+% | vertical bar        ~ tilde         
+% @ at sign             _ underscore
+% { open curly brace    } close curly   
+% [ open square         ] close square bracket
+% + plus sign           ; semi-colon    
+% * asterisk            : colon
+% < open angle bracket  > close angle   
+% , comma               . full stop
+% ? question mark       / forward slash 
+% \ backslash           ^ circumflex
+%
+% ABCDEFGHIJKLMNOPQRSTUVWXYZ 
+% abcdefghijklmnopqrstuvwxyz 
+% 1234567890
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\documentclass[12pt]{iopart}
+\newcommand{\gguide}{{\it Preparing graphics for IOP Publishing journals}}
+%Uncomment next line if AMS fonts required
+%\usepackage{iopams}  
+\begin{document}
+
+\title[A primer to numerical simulations]{A primer to numerical simulations: The perihelion
+motion of Mercury}
+
+\author{I. Hammer, C. Hanhart, C. K\"orber and C. M\"uller}
+
+\address{Forschungszentrum J\"ulich}
+\ead{c.hanhart@fz-juelich.de}
+\vspace{10pt}
+%\begin{indented}
+%\item[]February 2014
+%\end{indented}
+
+\begin{abstract}
+Numerical simulations are playing an increasingly important role in modern science. In this work it is
+suggested to use a numerical study of the famous perihelion motion of the planet Mercury (one of the prime observables
+supporting Einsteins General Relativity) as a test case to teach numerical simulations to high school students.
+The paper includes details about the development of the code as well as a discussion of the visualization 
+of the results. In addition a method is discussed how to estimate the size of the effect a priori. 
+\end{abstract}
+
+% Uncomment for PACS numbers
+%\pacs{00.00, 20.00, 42.10}
+%
+% Uncomment for keywords
+%\vspace{2pc}
+%\noindent{\it Keywords}: XXXXXX, YYYYYYYY, ZZZZZZZZZ
+%
+% Uncomment for Submitted to journal title message
+%\submitto{\JPA}
+%
+% Uncomment if a separate title page is required
+%\maketitle
+% 
+% For two-column output uncomment the next line and choose [10pt] rather than [12pt] in the \documentclass declaration
+%\ioptwocol
+%
+
+
+
+\section{Introduction}
+
+Numerical simulations play a key role in modern physics for they allow one to tackle theoretical problems
+not accessible otherwise, e.g., since there are too many particle participating in the system (as in
+simulations for weather predictions) or the interactions are too complicated to allow for a systematic,
+perturbative approach (as in theoretical descriptions of nuclear particles at the fundamental level). 
+ The goal of this paper is it to
+introduce a project that could be used to make numerical simulations themselves the topic of the class.
+On the example of the perihelion motion of the planet Mercury the students are supposed to get in touch with
+\begin{itemize}
+\item the importance of differential equations in theoretical physics;
+\item the numerical implementation of Newtonian dynamics;
+\item systematic test and optimization of computer codes;
+\item effective tools to estimate the result a priori as an important cross check;
+\item the visualization of numerical results using V-Phython.
+\end{itemize}
+The course as well as this paper is structured as follows: after an introduction to Newtonian dynamics and the 
+concepts of differential equations their discretization is discussed based on Newtons law of gravitation and possible
+extensions thereof. Afterwards the visualization of the resulting trajectories using V-Phython is introduced and
+applied to the problem at hand. In particular tools are developed to extract the relevant quantity from the result
+of the simulation.
+Finally the principle of dimensional analysis is presented as a tool to cross check, if the results of the simulation
+are sensible.
+
+\section{Trajectories, velocities, accelerations and Newtons second law}
+\label{sec:tva}
+
+We can say that we understand a physical system if we can demonstrate that an assumed force leads to the trajectories
+observed, where here trajectory means that we can calculate the location in space of the object of interest at any point
+in time, once the initial conditions are fixed properly. If we can neglect the finite size of this object the location is parametrized
+by a single three vector $\vec x(t)$. As will become clear below in order to describe and control the dynamics of a physical
+object in addition we need to be able to calculate its velocity, $\vec v(t)$, related to the location via
+\begin{equation}
+\vec x(t+\Delta t) = \vec x(t) + \vec v(t) \Delta t + ... \ , \label{eq:vdef}
+\end{equation}
+for some infinitesimally small $\Delta t$ and the acceleration, $\vec a(t)$ that describes the change of the velocity
+\begin{eqnarray}
+\vec v(t+\Delta t) = \vec v(t) + \vec a(t) \Delta t + ...\ . \label{eq:adef}
+\end{eqnarray}
+The dots in the above expressions indicate that there are in general additional terms that may be expressed with
+higher powers in $\Delta t$, however, for sufficiently small $\Delta t$ those can be safely neglected.
+Thus we may define the time derivative via
+\begin{equation}
+\vec v(t) = \lim_{\Delta t\to 0} \frac{\Delta \vec x(t)}{\Delta t} =: \frac{d\vec x(t)}{dt}  = \dot{\vec  x}(t) \ ,
+\end{equation}
+where $\Delta \vec x(t)=\vec x(t+\Delta t)-\vec x(t)$ and we introduced with the last expression a common short hand notation
+for time derivatives. Analogously we get
+\begin{eqnarray}
+\vec a(t) &=& \lim_{\Delta t\to 0} \frac{\Delta \vec v(t)}{\Delta t} =: \frac{d\vec v(t)}{dt}  = \dot{\vec v}(t) \ , \\
+ &=& \frac{d^2\vec x(t)}{dt^2}  = \ddot{\vec x}(t) \ ,
+\end{eqnarray}
+where we introduced in the second line the second derivative.
+
+It was Newton who observed that if a body is at rest it will remain at rest, and if it is in motion it will remain in motion in a 
+constant velocity in a straight line, unless it is acted upon by some force --- this is known as Newtons first law. 
+Said differently: a force $\vec F$shows up by changing the motion of some object. This is quantified in Newton's second law
+\begin{equation}
+\vec F(\vec x, t) = \frac{d}{dt}(m \vec v) \ .
+\end{equation} 
+If the mass does not change~\footnote{A well known example where $m$ does change with time is a 
+rocket, whose mass decreases as the rocket rises.} with time this reduces to the well known
+\begin{equation}
+\vec F(\vec x) = m \vec a(t) = m\dot{\vec v}(t) = m\ddot{\vec{x}}(t) \ . \label{eq:newton2}
+\end{equation} 
+Note that in general the force could depend also on the time or the velocity, we here restrict ourselves to the
+case relevant for our example where the force depends on the location only. 
+Therefore, 
+as soon as the force $\vec F(\vec x)$ is known for all $\vec x$ one can in principle can, e.g., Eq.~(\ref{eq:newton2})
+for $\vec x(t)$.
+Sometimes requires some advanced knowledge in math, sometimes no closed form solution exists. However, alternatively 
+one can calculate the whole trajectory
+of some test body that experiences this force by a successive application of the rules 
+given in Eqs.~(\ref{eq:vdef}) and (\ref{eq:adef}):
+\begin{enumerate}
+\item For a given time $t$, where $\vec x(t)$ and $\vec v(t)$ are known, use Eq.~(\ref{eq:newton2}) to calculate $\vec a(t)$.
+\item Use Eq.~(\ref{eq:vdef}) to calculate $\vec x(t+\Delta t)$ and
+\item then use Eq.~(\ref{eq:adef}) to calculate $\vec v(t+\Delta t)$.
+\item Go back to (i).
+\end{enumerate}
+Clearly to initiate the procedure at some time $t_0$ both $\vec x(t_0)$ as well as $\vec v(t_0)$ must be known --- the 
+trajectories depend on these initial conditions.~\footnote{In general a differential equation of $n^{\rm th}$ degree (where
+the highest derivative is $n$) needs $n$ initial conditions specified. For $n=2$ those are often chosen as location and velocity
+at some defined time, but also to pick two location at different times is possible. }
+
+Clearly for this procedure to work $\Delta t$ must be sufficiently small. What this means depends on the process
+studied. One way to check, if $\Delta t$ is small enough is to verify, if the realation
+\begin{equation}
+\vec v(t) \gg \frac12\vec a(t)\Delta t
+\label{eq:check}
+\end{equation}
+holds, for the next term neglected in Eq.~(\ref{eq:vdef}) reads $(1/2)a(t)(\Delta t)^2$.  Eq.~({\ref{eq:check}})
+also shows that small (large) time steps are necessary (sufficient), if the force is strong (weak), since
+the time steps need to be small enough that all changes induced by the force get resolved.
+
+
+\section{How to treat differential equations on a computer}
+
+
+\section{Visualization using V-Phython}
+
+
+\section{Example: The perihelion motion of Mercury}
+
+
+For this concrete example the starting point for the force is Newtons law
+of gravitation
+\begin{equation}
+F_N(\vec x) = \frac{G_N m M_\odot}{r^2} \ ,
+\end{equation}
+where $G_N=6.67\times 10^{-11}$ m$^3$kg$^{-1}$s${-2}$ is the Newtonian constant of gravitation,
+$m$ is the mass of Mercury and $M_\odot=2\times 10^{30}$ kg is the mass of the sun.
+In addition $r=|\vec x(t)|$ denotes the distance between sun and Mercury, when we assume that the sun
+is infinitely more heavy than the planet and located at the center of the coordinate system. Although this is not exact, since $m/M_\odot\sim 10^{-8}$ this is
+a pretty good approximation. For later convenience we introduce the Schwarzschildradius of the sun
+\begin{equation}
+r_S=\frac{2G_N  M_\odot}{c^2} = 3 \ \mbox{km} \ ,
+\end{equation}
+where $c=3\times 10^8$ m/s denotes the speed of light.
+With this Newtons second law reads 
+\begin{equation}
+\ddot{\vec x} = \frac{c^2}{2}\left(\frac{r_S}{r^2}\right) \ .
+\label{eq:newton}
+\end{equation}
+\begin{itemize}
+\item{\bf First task:}
+Now the students should implement the program outlined in Sec.~\ref{sec:tva} and visualize the resulting
+trajectories of Mercury for different start parameters.
+Why is it sufficient to work in two dimensions using simply 
+$\vec x(t)=(x(t),y(t))^T$?
+ When the parameters are chosen appropriately close
+orbits should emerge that are fixed in time --- in particular the perihelion (the point of closest approach
+of planet and sun) stays fixed in space.
+\end{itemize}
+It is a well known feature of a $1/r^2$ force that elliptic orbits with fixed perihelion emerge. However, as soon
+as the potential is different, the perihelion moves. This will be studied next:
+\begin{itemize}
+\item{\bf Second task:}
+Now the students should add a new term to the right hand side of Eq.~(\ref{eq:newton}). In particular the equation should now
+read 
+\begin{equation}
+\ddot{\vec x} = \frac{c^2}{2}\left(\frac{r_S}{r^2}\right)\left(1+\alpha\left(\frac{r_S}{r}\right)\right) \ ,
+\label{eq:newton}
+\end{equation}
+where $\alpha$ is some parameter. What happens to the trajectories as $\alpha$ is varied?
+\end{itemize}
+Finally the start values need to be chosen appropriately such that the simulation indeed mimicks the trajectories
+of Mercury ...
+
+\section{Dimensional analysis}
+
+Dimensional analysis is not only a tool that allows one to cross check if the results of some simulation is
+of the right order of magnitude, it is also very helpful to identify unusual dynamics in some system.
+Especially the latter aspect should become clear from the discussion in this section.
+
+The idea of dimensional analysis is that in a system that can be controlled by expanding the relevant quantities
+(like the force) in some small parameter(s), the coefficients in the expansion should turn out to be of order unity (that
+means anything between about 0.1 and 10 is fine - but 0.01 or 100 is irritating) --- parameters in line with this
+are called 'natural'. Applied to the problem at hand
+given by Eq.~(\ref{eq:newton}) this statement implies that from naturalness one would expect that 
+the parameter $\alpha$ is of order 1 when one uses
+for $r$ the average distance Mercury-sun, namely $\bar r=6\times 10^7$ km.
+Form this one estimates for the expected angular shift per orbit
+\begin{equation}
+\delta \phi \simeq 2\pi\left(\frac{r_S}{\bar r}\right) = (\pi \times 10^{-7}) \ \mbox{rad} = (2\times 10^{-5})^o = (7\times 10^{-2}) ^{''} \ ,
+\end{equation}
+which leads to a shift of  about $30^{''}$ in 100 earth years to be compared to the empirical value of $43^{''}$.
+ Thus indeed the
+amount of perihelion motion of Mercury is in line with expectations, $if$ --- and this is an important 'if' ---
+the Newtonian dynamics is simply the leading term of some more general underlying theory. In particular,
+no new scales enter in the correction terms.
+
+Thanks to Einstein we indeed know that the conclusion formulated above is correct ---- the more general underlying
+theory is General Relativity and indeed Einstein was able to quantitatively explain the perihelion motion of Mercury
+from his equations. 
+On the other hand had we found a dramatic deviation of $\alpha$ from unity one would have concluded that 
+there is probably some other dynamics going on that drives this difference.
+
+Indeed, we now several of those hierarchy problems in modern physics: e.g. the so called QCD $\theta$ term,
+expected to be of natural size, is at present known to be at most $10^{-10}$. This smallness, called the
+strong CP problem, is so irritating that physicists like S. Weinberg even proposed that there must exist an
+additional particle, the axion, whose interactions are in charge of pushing $\theta$ even to zero and there
+are now intense searches for this axion going on various labs.
+
+\section{Summary and possible extensions}
+
+%\begin{table}
+%\caption{\label{jlab1}Journals to which this document applies, and macros for the abbreviated journal names in {\tt iopart.cls}. Macros for other journal titles are listed in appendix\,A.}
+%\footnotesize
+%\begin{tabular}{@{}llll}
+%\br
+%Short form of journal title&Macro name&Short form of journal title&Macro name\\
+%\mr
+%2D Mater.&\verb"\TDM"&Mater. Res. Express&\verb"\MRE"\\
+%\br
+%\end{tabular}\\
+%$^{a}$UK spelling is required; $^{b}$MSC classification may be used as well as PACS; $^{c}$titles of articles are required in journal references; $^{d}$Harvard-style references must be used (see section \ref{except}); $^{e}$final page numbers of articles are required in journal references.
+%
+%\end{table}
+%\normalsize
+
+
+
+\subsection{Acknowledgments}
+Here they come
+
+\appendix
+\section{Instructions to install V-phython}
+
+\section{The code}
+Here we should put the code
+ 
+
+\bibliographystyle{plain}
+\bibliography{MercuryNumerical}
+
+\end{document}
+
