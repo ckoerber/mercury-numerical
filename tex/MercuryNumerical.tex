@@ -205,7 +205,7 @@ at some defined time, but also to pick two location at different times is possib
 Clearly for this procedure to work $\Delta t$ must be sufficiently small. What this means depends on the process
 studied. One way to estimate, if $\Delta t$ is small enough, is to verify, if the relation
 \begin{equation}
-|\vec v(t)| \gg \frac12|\vec a(t)|\Delta t = \frac{1}{2m}\vec F(\vec x)\Delta t\ . 
+|\vec v(t)| \gg \frac12|\vec a(t)|\Delta t = \frac{1}{2m} F(\vec x(t))\Delta t\ . 
 \label{eq:check}
 \end{equation}
 holds, since the next term neglected in Eq.~(\ref{eq:vdef}) reads $(1/2)a(t)(\Delta t)^2$.  Eq.~({\ref{eq:check}})
@@ -311,7 +311,7 @@ particular
 
 To start the simulation one needs the "initial" distances and velocities, which are needed as input to their equation of motions (Eq.~(\ref{eq:x_update}) and Eq.~(\ref{eq:v_update})).  As described above, here  one can simplify the problem by placing one planet (the "infinitely" heavy sun) in the center of the coordinate system and describe the motion of the other planet (mercury) in a two-dimensional plane.  \textit{Why is this simplified picture sufficient to describe the motion}?
 
-Because the problem does not depend on the initial position of mercury on its orbit around the sun, we extract the parameters at the perihelion with $ \abs{\vec r_{MS}(0)} = 46 \cdot 10^6 km$ and $ \abs{\vec v_M(0)} = 39$ km/s \footnote{https://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html}.  Since the computer does not understand physical units, one has to express each variable in an appropriate unit.  Both, for the numerical treatment and the intuitive understanding, it is useful to select parameters in a "natural range".  A particular useful choice for this problem is given by expressing time intervals in days $T_0 = 1d$ {\bf These are earth days, I assume, right?} and distances in $R_0 = 10^{10}$ m.  With this choice, the initial distance of mercury to the sun, the size of the initial velocity of mercury and the acceleration prefactor become
+Because the problem does not depend on the initial position of mercury on its orbit around the sun, we extract the parameters at the perihelion with $ \abs{\vec r_{MS}(0)} = 46 \cdot 10^6 km$ and $ \abs{\vec v_M(0)} = 39$ km/s \footnote{https://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html}.  Since the computer does not understand physical units, one has to express each variable in an appropriate unit.  Both, for the numerical treatment and the intuitive understanding, it is useful to select parameters in a "natural range".  A particular useful choice for this problem is given by expressing time intervals in days $T_0 = 1d$, where the time refers to earth days, and distances in $R_0 = 10^{10}$ m.  With this choice, the initial distance of mercury to the sun, the size of the initial velocity of mercury and the acceleration prefactor become
 \begin{equation}
 	r_{MS}(0) = 4.6 R_0 \, , \quad
 	v_{M}(0)  = 0.51 \frac{R_0}{T_0} \, ,  \quad
