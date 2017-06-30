@@ -45,9 +45,10 @@
 %\usepackage{iopams} 
 
 
-
+\usepackage{ amssymb }
 \usepackage{graphicx}           % Import Pictures + PDFs
 \usepackage[svgnames]{xcolor}   % Enabling colors by their 'svgnames'
+\usepackage{ulem}
 \definecolor{fzjblue}{HTML}{005B81}
 \definecolor{light-gray}{gray}{0.97}
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -184,7 +185,7 @@ rocket, whose mass decreases as the rocket rises.} with time this reduces to the
 Note that in general the force could depend also on the time or the velocity. We here restrict ourselves to the
 case relevant for our example where the force depends on the location only. 
 Therefore, 
-as soon as the force $\vec F(\vec x)$ is known for all $\vec x$ one can in principle solve, e.g., Eq.~(\ref{eq:newton2})
+as soon as the force $\vec F(\vec x)$ is known for all $\vec x$ one can in principle calculate the trajectory, e.g. solving eq.~(\ref{eq:newton2})
 for $\vec x(t)$.
 Sometimes this requires some advanced knowledge in math, sometimes no closed form solution exists. However, alternatively 
 one can calculate the whole trajectory
@@ -207,7 +208,7 @@ studied. One way to estimate, if $\Delta t$ is small enough, is to verify, if th
 |\vec v(t)| \gg \frac12|\vec a(t)|\Delta t = \frac{1}{2m}\vec F(\vec x)\Delta t\ . 
 \label{eq:check}
 \end{equation}
-holds, for the next term neglected in Eq.~(\ref{eq:vdef}) reads $(1/2)a(t)(\Delta t)^2$.  Eq.~({\ref{eq:check}})
+holds, since the next term neglected in Eq.~(\ref{eq:vdef}) reads $(1/2)a(t)(\Delta t)^2$.  Eq.~({\ref{eq:check}})
 also shows that small (large) time steps are necessary (sufficient), if the force is strong (weak), since
 the time steps need to be small enough that all changes induced by the force get resolved. Clearly,
 a relation as Eq.~({\ref{eq:check}}) can only provide guidance and can not replace a careful numerical check of
@@ -221,7 +222,7 @@ $\Delta t$ by $\Delta t/2$ should not change the result significantly.
 For this concrete example the starting point for the force is Newtons law
 of gravitation
 \begin{equation}
-F_N(\vec x) = \frac{G_N m M_\odot}{r^2} \ ,
+\vec F_N(\vec x) = \frac{G_N m M_\odot}{r^2} \frac{\vec r}{r}\ ,
 \end{equation}
 where $G_N=6.67\times 10^{-11}$ m$^3$kg$^{-1}$s${-2}$ is the Newtonian constant of gravitation,
 $m$ is the mass of Mercury and $M_\odot=2\times 10^{30}$ kg is the mass of the sun.
@@ -299,6 +300,7 @@ of  Mercury, reads ...., which naturally explains why the effect is observable f
 
 
 \section{Numerical Implementation}
+\label{sec:Numerical Implementation}
 In this section we present the numerical implementation as well as the visualization of planetary trajectories and in
 particular
   the perihelion motion of Mercury.  We select \python~\cite{} as  programming language, because \python is easy to learn, 
@@ -312,7 +314,7 @@ To start the simulation one needs the "initial" distances and velocities, which 
 Because the problem does not depend on the initial position of mercury on its orbit around the sun, we extract the parameters at the perihelion with $ \abs{\vec r_{MS}(0)} = 46 \cdot 10^6 km$ and $ \abs{\vec v_M(0)} = 39$ km/s \footnote{https://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html}.  Since the computer does not understand physical units, one has to express each variable in an appropriate unit.  Both, for the numerical treatment and the intuitive understanding, it is useful to select parameters in a "natural range".  A particular useful choice for this problem is given by expressing time intervals in days $T_0 = 1d$ {\bf These are earth days, I assume, right?} and distances in $R_0 = 10^{10}$ m.  With this choice, the initial distance of mercury to the sun, the size of the initial velocity of mercury and the acceleration prefactor become
 \begin{equation}
 	r_{MS}(0) = 4.6 R_0 \, , \quad
-	v_{M}(0)  = 0.34 \frac{R_0}{T_0} \, ,  \quad
+	v_{M}(0)  = 0.51 \frac{R_0}{T_0} \, ,  \quad
 	a_M       = 0.99 \frac{R_0}{T_0^2} \frac{1}{\left(r_{MS}/R_0\right)^2}
 	\, .
 \end{equation}
@@ -367,7 +369,7 @@ Note the beauty of working with the predefined \texttt{vector} class: the basic 
 It is handy to use \texttt{Python}s \texttt{function}s to embed repeating structures ("DRY" -- Don't Repeat Yourself)
 \begin{lstlisting}
 	# Define the function
-	def evolve_mercury(vec_rM_old, vec_vM_old,alpha):
+	def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
 		<...Code...>
 		return vec_rM_new, vec_vM_new
 	
@@ -382,12 +384,14 @@ Finally, we can express the evolution by a \texttt{while}-loop
 	alpha=0
 	# Execute the loop as long as t < T
 	while t < T:
-		vec_rM, vec_vM = evolve_mercury(vec_rM, vec_vM,alpha)
+		vec_rM, vec_vM = evolve_mercury(vec_rM, vec_vM, alpha)
 		t = t + dt
 \end{lstlisting}
 where for the start we set the parameter $\alpha$ to zero in order first study the properties of the pure 
 $1/r^2$ force.
-Note the required indent of the loop structure similar to the indent of a function.  In each iteration of the \texttt{while}-loop, the previous distance and velocity are used to compute the new values -- which directly overwrite the previous values and thus enter the next iteration.  The total runtime \texttt{T} is the amount of "virtual" days the simulations should run.  To describe at least one full orbit, $T$ needs to be larger than $T>..$.
+Note the required indent of the loop structure similar to the indent of a function.
+In each iteration of the \texttt{while}-loop, the previous distance and velocity are used to compute the new values -- which directly overwrite the previous values and thus enter the next iteration.  The total runtime \texttt{T} is the amount of "virtual" days the simulations should run.
+To describe at least one full orbit, $T$ needs to be larger than $T>..$.
 
 {\bf Here we need to write something about visualizing the trajectories and how to run the code }
 
@@ -441,7 +445,125 @@ strong CP problem, is so irritating that physicists like S. Weinberg even propos
 additional particle, the axion, whose interactions are in charge of pushing $\theta$ even to zero and there
 are now intense searches for this axion going on various labs.
 
-\section{Summary and possible extensions}
+\section{Discussion of Starting Values}
+
+\textit{I am not quite sure what to add here to Christopher's discussion.}\\
+
+If the starting values are chosen as advised in the previous section, then the students should end up with a trajectory as depicted in figure \ref{fig:MercuryOrbit}. To get the perihelion motion, the term from equation \ref{eq:newton_art} has to be be added. This is a good opportunity to let the students play with the size of $\alpha$ and get a feeling for the impact on the trajectories. However it might be advisable to not start out with the correct mercury values but e.g. a slightly higher initial distance between mercury and sun, since the perihelion motion is better visible then. This is illustrated in figure \ref{fig:MercuryOrbit}, where we used a value of $\alpha=10^5$ and $dt=0.1T_0$.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.25\textwidth]{figs/MercuryOrbit.png} \quad
+	\includegraphics[width=.273\textwidth]{figs/PerihelionMotionLargeV.png} \quad
+	\includegraphics[width=.26\textwidth]{figs/PerihelionMotion.png}
+	\caption{\label{fig:MercuryOrbit} Output for $\alpha=0$ (left), $\alpha=10^5$ and bigger starting distance $r_{MS}(0)=6R_0$ (middle) and $\alpha=10^5$ with original starting values.}
+\end{figure}
+
+\section{Extracting the Perihelion Motion}
+
+\textit{What exactly do we want the students / advise the teachers to do? I think a nice approach would be to let the students implement the code to extract the perihelion motion and make a list of some values of alpha and the corresponding angles. Then discuss, that $\alpha=1$ is the natural size for $\alpha$ and that to extract the value of angle they need to exploit the linear dependence. Finally they can think on whether the value they get is reasonable and the teacher can explain the rest of section? What do you think?}\\
+
+To calculate the expected size of the perihelion motion for a modified gravitational force, the students need to be abel to extract the angle. There are several ways to do this, but the easiest is to extract the point where the distance to the sun gets maximal, the aphelion, after $n$ turns and compare it to the original one. This can be done by using an $if$-statement in the $while$-loop.
+
+Suppose we want to save the number of turns in the variable $counter$, the maximal number of turns in $maxcounter$ (here e.g. 10), the initial aphelion in the vector $a0$ and the final aphelion in the vector $a$. In addition to find out when the aphelion is reached, the last two positions $rlast$ and $rbeforelast$ have to be known. To set this up, before the while loop the following code needs to be included
+\begin{lstlisting}
+	r=r0
+	rlast=r0
+	counter=-1
+	maxcounter=10
+\end{lstlisting}
+Then the following code needs to be included in the $while$-loop
+\begin{lstlisting}
+    rbeforelast=rlast
+    rlast=r
+    r=r+v*dt
+    if (counter==-1): a0=rlast
+    if (rbeforelast.mag<rlast.mag and rlast.mag>r.mag): counter=counter+1
+    if counter==maxcounter:
+    	a=rlast
+    	break
+\end{lstlisting}
+and the condition for the $while$-loop should be set to $True$.
+The angle between two vectors is given by the formula
+ \begin{equation}
+ 	\sphericalangle(\vec{a}_0,\vec{a}) = \cos^{-1} \left( \frac{\vec{a}_0 \cdot \vec{a}}{|\vec{a}_0|\:|\vec{a}|} \right)
+ \end{equation}
+This is readily implemented in Vpython via
+\begin{lstlisting}
+	angle=acos(dot(a0,a)/(a0.mag*a.mag))/maxcounter*180/pi
+	print("angle: ", (angle))
+\end{lstlisting}
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.5\textwidth]{figs/AlphaAngle.png}
+	\caption{\label{fig:AlphaAngle} Linear relation between $\alpha$ and the perihelion motion.}
+\end{figure}
+
+As explained above the natural value for $\alpha$ would be $1$. However if the student try out this value, they will find, that there is no visual change in the trajectories and the distance between the first an the last aphelion is of the order of magnitude of one step in the calculation $v_{aphelion}\cdot dt$. Therefore to estimate the size of the perihelion motion it is more advisable to use the fact, that there is an approximately linear dependence between $\alpha$ and the perihelion motion, if the angle is not to large. The students can convince themselves of this fact, by plotting some angles over $\alpha$. This can be done either by hand or using another program like e.g. Excel. One such plot can be found in figure \ref{fig:AlphaAngle}. Then to get to the angle at $\alpha=1$ one would ideally employ a line of best fit, but to get the order of magnitude right it is enough to consider only two points. Choosing $\alpha_1=1000$ and $\alpha_2=2000$ here, this would yield
+\begin{equation}
+	\Theta(\alpha=1) \approx \frac{0.201-0.100}{2000-1000} = 0.0001 = 0.36''
+\end{equation}
+so $3.63''\cdot 415\approx 150''$ per 100 earth years.
+To find out, whether this is a reasonable result, the students could first follow the dimensional analysis and then compare to the actual value for the mercury  as outlined above.
+
+\section{Possible extensions}
+
+\begin{itemize}
+
+\item \textbf{Explore Problem autonomously}
+
+In chapter \ref{sec:Numerical Implementation} we suggested a certain way to present the material. By using a template as well as a step by step instruction, the students are guided rather strictly through the problem solution. We presented this approach with young students and limited time in mind. However if the students are more experienced and enough time is available, it is certainly advisable to give the students space for exploring the problem independently. This could be achieved by the following changes or additions to the concept presented in chapter \ref{sec:Numerical Implementation}
+
+\begin{itemize}
+\item \textbf{Build code from scratch}
+
+Instead of providing the template to the students, they could build the program from scratch. Of course, this requires some basic knowledge in VPython, as they could acquire for example by working through a ball in the box example or the like. They could even look up the needed parameters on their own.
+\item \textbf{Why can we work in one plane?}
+
+In the code the third coordinate is never used. On the first glance, this could seem like a simplification. Let the students work out on their own, why this does not imply any loss of generality.
+\item \textbf{What is the impact of the different parameters?}
+
+Especially if the needed parameters are not specified beforehand, the students might have to experiment a bit, before getting the correct trajectories. But even if they are given, it might be beneficial to encourage the students to play with a few parameters, like mass or starting velocity, and track their impact on the trajectories. This way the students get a much better feeling for the physics involved.
+\end{itemize}
+
+\item \textbf{Optimizing performance}
+
+Simulations always involve a balance between the time needed for the calculations and the accuracy of the results achieved. Even though this is a rather simple example, it contains some opportunities to make this concept accessible to the students.
+
+\begin{itemize}
+\item \textbf{Consider error due to finite time steps}
+
+To make the students realise, that the finite time steps lead to inaccuracies in the trajectories encourage them to increase the time steps. This is best done in a program with unmodified gravitational force, as in this case the trajectories are closed ellipses and a deviation is most prominent. If the students choose the time steps big enough, they should witness big deviations. This exercise stresses the point, that by choosing increasingly smaller time steps, deviations from the physical trajectories can be reduced.
+\item \textbf{Measure calculation time}
+
+However in practice there is a limit to decreasing the time steps, because the time needed for the calculation grows simultaneously. By including
+import time
+\begin{lstlisting}
+	start_time = time.time()
+	main()
+	print("--- %s seconds ---" % (time.time() - start_time))
+\end{lstlisting}
+the students can measure the time needed by their program. By varying dt they can validate, that there is indeed approximately an anti-proportional dependence. (Note: This only works if the time in the loop is increased by dt, so t=t+dt.)
+\item \textbf{Verlet integration}
+
+Of course by optimising the code, an improvement in accuracy can be achieved without increasing the calculation time. The simplest way to demonstrate this might be implementing Verlet integration instead of using the simple Euler method.
+\end{itemize}
+
+\item \textbf{Extended Problems}
+
+\begin{itemize}
+\item \textbf{Non-stationary sun}
+
+It might be interesting to abandon the simplification of a stationary sun, as it nicely illustrates Newton's third law. Here it might also be advisable to reduce the mass of the sun to have a visible result.
+
+\item \textbf{Three-body problem}
+
+Ambitious students could even include another planet and see how the two planets interact. This is especially interesting, when discussing the perihelion motion of mercury, as it is mainly due to the influence of the other planets. Only a smaller part is due to general relativity.
+
+\end{itemize}
+
+\end{itemize}
 
 %\begin{table}
 %\caption{\label{jlab1}Journals to which this document applies, and macros for the abbreviated journal names in {\tt iopart.cls}. Macros for other journal titles are listed in appendix\,A.}
@@ -457,8 +579,6 @@ are now intense searches for this axion going on various labs.
 %
 %\end{table}
 %\normalsize
-
-
 
 \subsection{Acknowledgments}
 Here they come
