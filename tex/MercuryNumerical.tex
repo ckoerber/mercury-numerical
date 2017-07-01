@@ -64,6 +64,9 @@
   rulecolor=\color{light-gray},
 }
 
+\usepackage[prependcaption, textsize=tiny]{todonotes}
+
+
 \newcommand{\python}[0]{\texttt{Python} }
 \newcommand{\abs}[1]{\left\vert #1 \right\vert}
 
@@ -122,11 +125,11 @@ On the example of the perihelion motion of the planet Mercury the students are s
 \item the numerical implementation of Newtonian dynamics;
 \item systematic tests and optimization of computer codes;
 \item effective tools to estimate the result a priori as an important cross check;
-\item the visualization of numerical results using V-Phython.
+\item the visualization of numerical results using \texttt{VPython}.
 \end{itemize}
 The course as well as this paper is structured as follows: after an introduction to Newtonian dynamics and the 
 concepts of differential equations their discretization is discussed based on Newtons law of gravitation and possible
-extensions thereof. Afterwards the visualization of the resulting trajectories using V-Phython is introduced and
+extensions thereof. Afterwards the visualization of the resulting trajectories using \texttt{VPython} is introduced and
 applied to the problem at hand. In particular tools are developed to extract the relevant quantity from the result
 of the simulation.
 Finally the principle of dimensional analysis is presented as a tool to cross check, if the results of the simulation
@@ -148,8 +151,11 @@ We can say that we understand a physical system, if we can demonstrate that the 
 observed. In other words, we need to show that we can calculate the location in space of the object of interest at any point
 in time, once the initial conditions are fixed properly. If we can neglect the finite size of this object (and
 in particular its orientation in space) the location is parametrized
-by a single three vector $\vec x(t)$. As will become clear below in order to describe and control the dynamics of a physical
+by a single three vector $\vec x(t)$. As will become clear below, in order to describe and control the dynamics of a physical
 object in addition we need to be able to calculate its velocity, $\vec v(t)$, related to the location via
+%
+\todo{I see here a potential conflict with the implementation because we use $x(t-\Delta t)$ in order to get $v$ and so on}
+%
 \begin{equation}\label{eq:x_update}
 \vec x(t+\Delta t) = \vec x(t) + \vec v(t) \Delta t + ... \ , \label{eq:vdef}
 \end{equation}
@@ -178,7 +184,7 @@ Said differently: a force $\vec F$ shows up by changing the motion of some objec
 \vec F(\vec x, t) = \frac{d}{dt}(m \vec v) \ .
 \end{equation} 
 If the mass does not change~\footnote{A well known example where $m$ does change with time is a 
-rocket, whose mass decreases as the rocket rises.} with time this reduces to the well known
+rocket, whose mass decreases as the rocket rises.} with time this, reduces to the well known
 \begin{equation}
 \vec F(\vec x) = m \vec a(t) = m\dot{\vec v}(t) = m\ddot{\vec{x}}(t) \ . \label{eq:newton2}
 \end{equation} 
@@ -191,6 +197,9 @@ Sometimes this requires some advanced knowledge in math, sometimes no closed for
 one can calculate the whole trajectory
 of some test body that experiences this force by a successive application of the rules 
 given in Eqs.~(\ref{eq:vdef}) and (\ref{eq:adef}):
+%
+\todo{See previous comment.}
+%
 \begin{enumerate}
 \item For a given time $t$, where $\vec x(t)$ and $\vec v(t)$ are known, use Eq.~(\ref{eq:newton2}) to calculate $\vec a(t)$.
 \item Use Eq.~(\ref{eq:vdef}) to calculate $\vec x(t+\Delta t)$ and
@@ -205,7 +214,7 @@ at some defined time, but also to pick two location at different times is possib
 Clearly for this procedure to work $\Delta t$ must be sufficiently small. What this means depends on the process
 studied. One way to estimate, if $\Delta t$ is small enough, is to verify, if the relation
 \begin{equation}
-|\vec v(t)| \gg \frac12|\vec a(t)|\Delta t = \frac{1}{2m} F(\vec x(t))\Delta t\ . 
+|\vec v(t)| \gg \frac12|\vec a(t)|\Delta t = \frac{1}{2m} |\vec F(\vec x(t)) |\Delta t\ . 
 \label{eq:check}
 \end{equation}
 holds, since the next term neglected in Eq.~(\ref{eq:vdef}) reads $(1/2)a(t)(\Delta t)^2$.  Eq.~({\ref{eq:check}})
@@ -222,14 +231,17 @@ $\Delta t$ by $\Delta t/2$ should not change the result significantly.
 For this concrete example the starting point for the force is Newtons law
 of gravitation
 \begin{equation}
-\vec F_N(\vec x) = \frac{G_N m M_\odot}{r^2} \frac{\vec r}{r}\ ,
+\vec F_N(\vec x) = \frac{G_N m M_\odot}{r^2} \frac{\vec x}{r}\ ,
 \end{equation}
 where $G_N=6.67\times 10^{-11}$ m$^3$kg$^{-1}$s${-2}$ is the Newtonian constant of gravitation,
 $m$ is the mass of Mercury and $M_\odot=2\times 10^{30}$ kg is the mass of the sun.
 In addition $r=|\vec x(t)|$ denotes the distance between sun and Mercury, when we assume that the sun
 is infinitely more heavy than the planet and located at the center of the coordinate system. 
-Although this is not exact, since $m/M_\odot\sim 10^{-8}$ this is
-a pretty good approximation. For later convenience we introduce the Schwarzschildradius of the sun
+Although this is not exact, since $m/M_\odot\sim 10^{-8}$ this is a pretty good approximation.
+%
+\todo{This possibly can become a problem for our accuracy because it is at the 10\% level of our expected result, right? Same for $c$.}
+%
+For later convenience we introduce the Schwarzschildradius of the sun
 \begin{equation}
 r_S=\frac{2G_N  M_\odot}{c^2} = 3 \ \mbox{km} \ ,
 \end{equation}
@@ -255,47 +267,50 @@ With this Newtons second law reads
 %of planet and sun) stays fixed in space.
 %\end{itemize}
 In general an attractive force that vanishes at large distances leads,
- depending on the initial conditions,
-  either to closed orbits or open orbits --- 
-  in the latter case the planet simply disappears from the sun. Depending on time available
-for the course  it might be helpful to explain to the students the origin of this, however, since the most
-transparent reasoning needs an integration as well as the concept of angular momentum
-not necessarily familiar to the whole class (details are given in the appendix {\bf to be done}), 
-it appears in general more appropriate to work out together with the students 
-that a moving body can not be kept by a force if its momentum is too large.
- Then they may try to find closed orbits in the simulation, e.g., by varying
-the start velocity while keeping the start location fixed.
+%
+\todo{I am confused. I thought only $1/r$ and the harmonic oscillator potential lead to closed orbits (Bertrand's theorem).}
+%
+ depending on the initial conditions, either to closed orbits or open orbits --- in the latter case the planet simply disappears from the sun.
+Depending on time available for the course  it might be helpful to explain to the students the origin of this, however, since the most transparent reasoning needs an integration as well as the concept of angular momentum not necessarily familiar to the whole class (details are given in the appendix 
+%
+\todo{\bf Include this appendix part...}
+%
+), 
+it appears in general more appropriate to work out together with the students that a moving body can not be kept by a force if its momentum is too large.
+Then they may try to find closed orbits in the simulation, e.g., by varying the start velocity while keeping the start location fixed.
 
-The closed orbits that emerge from a force that scales as $1/r^2$
-are elliptic and in particular fixed in space. In particular the point of closest approach of the planet
-to the sun, the perihelion, does not move.
-  However, as soon
-as the potential is different, the perihelion moves. Because of this the behavior of the perihelion
+The closed orbits that emerge from a potential that scales as $1/r$ are elliptic and fixed in space.
+In particular the point of closest approach of the planet to the sun, the perihelion, does not move.
+However, as soon as the potential deviates from $1/r$, the perihelion moves. Because of this, the behavior of the perihelion
 is a very sensitive probe of the gravitational potential. 
 
 The observed perihelion motion of Mercury is nowadays determined as $(574.10\pm 0.65)''$ per
 100 earth years~\footnote{The symbol $''$ denotes 'arc seconds': 1$''=(1/3600)^o$. }, but it should be noted that the bulk of this number
 can be understood by the presence of other planets within the Newtonian theory, since
 their gravitational force also acts on Mercury. However, a
-residual motion of $(43)''$ in 100 earth years remained unexplained, until Einstein quantified the
+residual motion of $\delta \phi_M = (43)''$ in 100 earth years remained unexplained, until Einstein quantified the
 predictions of General Relativity to this particular observable. 
 
+%
+\todo{\bf Here should be a brief description of the relation between Newtons dynamics and General Relativity}
+%
 
-{\bf Here should be a brief description of the relation between Newtons dynamics and General Relativity}
-
-To allow for a movement of the perihelion also in the study presented here the
-potential of Eq.~(\ref{eq:newton}). We do this using the following ansatz
+We allow for a movement of the perihelion by modifying the potential of Eq.~(\ref{eq:newton}) with the following ansatz
 \begin{equation}
-\ddot{\vec x} = \frac{c^2}{2}\left(\frac{r_S}{r^2}\right)\left(1+\alpha\left(\frac{r_S}{r}\right)\right) \ ,
+\ddot{\vec x} = \frac{c^2}{2}\left(\frac{r_S}{r^2}\right)\left(1+\alpha\frac{r_S}{r}\right) \ ,
 \label{eq:newton_art}
 \end{equation}
-where $\alpha$ is some parameter. The idea is that the correction must be dimension less and
-should scale with some inverse power of $r$, for we still need to demand that the potential 
-vanishes at large distances. Since the only parameter of the system with dimension
-of a length is $r_S$, the correction should scale as $(r_S/r)$. When replacing $r$ by a typical
-distance of Mercury to the sun, $(r_S/r)\sim 10^{-7}$, it should be sufficient to include this kind
-of term to first order only. For comparison: the corresponding number for the venus, the neighbor
-of  Mercury, reads ...., which naturally explains why the effect is observable for Mercury only (IS IT - CHECK!)
+where $\alpha$ is some parameter related to the effects by general relativity.
+The idea is that the correction must be dimension-less and should scale with some inverse power of $r$, for we still need to demand that the potential vanishes at large distances.
+Since the only parameter of the system with dimension of a length is $r_S$, the correction should scale as $(r_S/r)$.
+When replacing $r$ by a typical distance of Mercury to the sun, $(r_S/r)\sim 10^{-7}$, it should be sufficient to include this kind of term to first order only.
+For comparison: the corresponding number for the Venus, the neighbor of Mercury, reads $r \sim 5 \cdot 10^{-8}$.
+Therefore the expected ratio of residual motion, favoring in the orbit period $T$, would result in
+\begin{equation}
+	\delta \phi_V \approx \frac{1}{T_V} \delta \phi_M T_M \frac{r_M}{r_V} \approx 9'' \, ,
+\end{equation}
+which precisely describes the experimental value of $9''$.
+
 %\end{itemize}
 
 
@@ -305,7 +320,7 @@ In this section we present the numerical implementation as well as the visualiza
 particular
   the perihelion motion of Mercury.  We select \python~\cite{} as  programming language, because \python is easy to learn, 
   intuitive to understand and an open source language\footnote{See also appendix \ref{appendix:python} for an instruction 
-  how to set up python on different operating systems.}.  No prior knowledge of \python or any other programming language 
+  how to set up \python on different operating systems.}.  No prior knowledge of \python or any other programming language 
   is required because we explain all the steps necessary to create the simulation.  We also provide a working 
   example \cite{} that can be used as template.
 
@@ -326,7 +341,7 @@ Because the problem does not depend on the initial position of mercury on its or
 \end{figure}
 
 
-In python, this reads
+In \python, this reads
 \begin{lstlisting}
 	# Definition of parameters
 	rM0 = 4.6    # in units of R0
@@ -488,7 +503,7 @@ The angle between two vectors is given by the formula
  \begin{equation}
  	\sphericalangle(\vec{a}_0,\vec{a}) = \cos^{-1} \left( \frac{\vec{a}_0 \cdot \vec{a}}{|\vec{a}_0|\:|\vec{a}|} \right)
  \end{equation}
-This is readily implemented in Vpython via
+This is readily implemented in \texttt{Vpython} via
 \begin{lstlisting}
 	angle=acos(dot(a0,a)/(a0.mag*a.mag))/maxcounter*180/pi
 	print("angle: ", (angle))
@@ -518,7 +533,7 @@ In chapter \ref{sec:Numerical Implementation} we suggested a certain way to pres
 \begin{itemize}
 \item \textbf{Build code from scratch}
 
-Instead of providing the template to the students, they could build the program from scratch. Of course, this requires some basic knowledge in VPython, as they could acquire for example by working through a ball in the box example or the like. They could even look up the needed parameters on their own.
+Instead of providing the template to the students, they could build the program from scratch. Of course, this requires some basic knowledge in \texttt{VPython}, as they could acquire for example by working through a ball in the box example or the like. They could even look up the needed parameters on their own.
 \item \textbf{Why can we work in one plane?}
 
 In the code the third coordinate is never used. On the first glance, this could seem like a simplification. Let the students work out on their own, why this does not imply any loss of generality.
@@ -584,7 +599,7 @@ Ambitious students could even include another planet and see how the two planets
 Here they come
 
 \appendix
-\section{Instructions to install V-phython}
+\section{Instructions to install VPython}
 \label{appendix:python}
 
 \section{The code}
