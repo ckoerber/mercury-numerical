@@ -70,6 +70,8 @@ v_sonne_0  = vector(v_s,0,0)
 v_merkur_0 = vector(v_m ,0,0)
 print "v_Merkur v = {0:1.4e} AE / Tage ".format(v_m)
 
+print T, dt, r_merkur_0, v_merkur_0, G * m_sonne / r_merkur_0.mag**2
+
 # ----------------------------------
 ## (a) Berechnung des Orbits
 # ----------------------------------
