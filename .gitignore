@@ -1,0 +1,8 @@
+ioplatexguidelines/
+tex/MercuryNumerical.pdf
+tex/ioplatexguidelines.tar.gz
+scripts/
+*.bbl
+*.log
+*.out
+*.gz
