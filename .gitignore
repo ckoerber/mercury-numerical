@@ -1,8 +1,14 @@
 ioplatexguidelines/
 tex/MercuryNumerical.pdf
+MercuryNumerical.pdf
 tex/ioplatexguidelines.tar.gz
 scripts/
 *.bbl
 *.log
 *.out
 *.gz
+*.blg
+*.synctex.gz(busy)
+tex/diff/
+contributors/
+.DS_Store
