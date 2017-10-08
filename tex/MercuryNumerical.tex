@@ -560,7 +560,7 @@ This is readily implemented in \texttt{VPython} via
 from visual import acos, pi, dot
 angle = acos(
 	dot(vec_rM0, vec_r_last.mag) / (vec_rM0.mag * vec_r_last.mag)
-) / maxcounter * 380 / 2 / pi
+) / maxcounter * 360 / 2 / pi
 \end{lstlisting}
 
 \begin{figure}[htb]
@@ -583,6 +583,59 @@ Choosing $\alpha_1=1000$ and $\alpha_2=2000$ here, this would yield
 \end{equation}
 so $3.63''\cdot 415\approx 150''$ per 100 earth years.
 To find out, whether this is a reasonable result, the students could first follow the dimensional analysis and then compare to the actual value for the mercury  as outlined above.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage\subsection{Cross-Check Results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\todo[inline]{Here I (CK) just make a few comments regarding the results.}
+First of all, I can confirm Inkas result up to a factor of 10.
+I believe this factor arises because we have analysed 10 years of motions (\verb|max_turns = 10|).
+See figure \ref{fcc1}.
+This result is quite nice, because we basically say the genreal relativity motion by mercury is caused by $\alpha \approx 3$.
+However there is a small issue: we do not have the numerical precision to claim this.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.4\textwidth]{figs/alpha_interpolation.pdf}
+	\caption{\label{fcc1}Interpolation for $\phi$ depending on $\alpha$ and $dt = 2 v_0 / a_0 / 5000$. }
+\end{figure}
+
+I have encountered, that we do not start perfectly at the perihelion or aphelion (depending on the boundary conditions): my simulations arrives at this point after roughly a tenth of a day and therefore I have an offset which needs to be subtracted off after each mercury year.
+More interestingly, this offset seems to depend on the tilmestep of the simulation (see figure \ref{fcc2}).
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.4\textwidth]{figs/initial_time_shift.pdf}
+	\caption{\label{fcc2}Initial shift of perihelion for $\delta\theta = \delta\phi$ in degrees over $\alpha$ for different time steps (color).}
+\end{figure}
+
+One can also see that the size of the time spacing affects a potential uncertainty in the periodicity of the orbit when looking at the precession growth over different turns (see figure \ref{fcc3}).
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.7\textwidth]{figs/precession_growth.pdf}
+	\caption{\label{fcc3}Precession growth of perihelion for $\delta\theta = \delta\phi$ in degrees over number of turns for different time steps (color).  One should pay special attention to the oscillations within the growth for relatively large time steps.}
+\end{figure}
+
+Last but not least, for the precession interpolation to small $\alpha$, one should worry about the precision of the precession for small alpha.
+Even after subtracting of the results for zero turns, basically non of my results agree with zero for alpha equal to zero [to go from degrees per mercury year to arcsecs per 100 earth years, one has to multiply by $1.46 \times 10^{6}$.](see figure \ref{fcc4}).
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.4\textwidth]{figs/alpha_dependence_0}
+	%
+	\includegraphics[width=.4\textwidth]{figs/alpha_dependence_1}
+	\caption{\label{fcc4}Perihelion precession $\delta\theta = \delta\phi$ in degrees over $\alpha$ without (left figure) or with (right figure) subtracting off the zero turn result. The uncertainty corresponds to the variation over different turns and the results are displayed for different time steps (color).}
+\end{figure}
+
+Because, after subtracting the initial angle as a reference, the slope of all the plots basically agree, I suggest the following prescription (as Inka actually did)
+\begin{enumerate}
+	\item Compute the precession for $\alpha = 0$ for several turns,
+	\item compute the precession for preferably large $\alpha > 1000$ for several turns,
+	\item verify that they are indeed on a line (linear relation),
+	\item subtract the zero value from the other values (since we know that it has to be zero and the uncertainty is coming from the time steps),
+	\item do the interpolation to $\delta \phi (\alpha_{GR}) = 43''$ for two values: $\delta \phi (0) = 0$ and $\delta \phi (\alpha_l) = \delta \phi_l$
+	\item repeat this for several $(\alpha_l, \delta \phi_l)$ and get the average result for $\alpha_{GR}$.	
+\end{enumerate}
+
+
+\clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Tests of stability}\label{sec:stability}
