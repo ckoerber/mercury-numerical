@@ -22,7 +22,6 @@ clean:
 	-rm -f ${BASE}.bbl
 	-rm -f ${BASE}.blg
 	-rm -f ${BASE}.log
-	-rm -f *~ \#*
 
 pristine: clean
 	-rm -f ${BASE}.pdf

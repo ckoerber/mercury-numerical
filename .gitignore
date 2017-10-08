@@ -1,0 +1,17 @@
+ioplatexguidelines/
+tex/MercuryNumerical.pdf
+MercuryNumerical.pdf
+tex/ioplatexguidelines.tar.gz
+*.bbl
+*.log
+*.out
+*.gz
+*.blg
+*.synctex.gz(busy)
+*.html
+*.pdf
+*.ipynb_checkpoints
+*.zip
+tex/diff/
+contributors/
+.DS_Store
