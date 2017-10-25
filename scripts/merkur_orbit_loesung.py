@@ -6,104 +6,24 @@
 ## Laden der Hilfsmodule
 # ----------------------------------
 
-# Da es unglaublich viel Zeit kostet ein Programm fuer 3-dimensionale graphische Darstellung selber 
-# zu schreiben, lassen wir uns die Arbeit von "Vpython" abnehmen. Doch dazu muessen wir zunächst 
+# Da es unglaublich viel Zeit kostet ein Programm für 3-dimensionale graphische Darstellung selber
+# zu schreiben, lassen wir uns die Arbeit von "Vpython" abnehmen. Doch dazu müssen wir zunächst
 # dieses Modul bereitstellen. Das erreicht man mit Hilfe des Befehls "import" oder "from .. import".
 
 from visual import *
 
-# Schreibt man 
-#   "from visual import *" 
-# bedeutet dies: "Lade alle Funktionen von Vpython so, dass man sie direkt verwenden kann: 
-#   "func = function(..)". 
-# Wuerde man 
-#   "import visual" 
-# schreiben, so muesste man die Funktion wie folgt aufrufen: 
+# Schreibt man
+#   "from visual import *"
+# bedeutet dies: "Lade alle Funktionen von Vpython so, dass man sie direkt verwenden kann:
+#   "func = function(..)".
+# Würde man
+#   "import visual"
+# schreiben, so müsste man die Funktion wie folgt aufrufen:
 #   "func = visual.function(..)".
 
 # Eine Dokumentation von Modulen lässt sich durch den Befehl "help( modul_name )" aufrufen.
 #
-# Tipp: Will man eine Eingabe unterdruecken, so laesst sich dies auch mit "#" tun. Der darauf 
-# folgende Text wird dabei von Python ueberlesen.
-
-# help(visual)
-
-# ----------------------------------
-## Aufgabe 1: Merkurorbit)
-# ----------------------------------
-
-# Funktionen werden in Python wie folgt deklariert:
-# def func(x):
-#     .... Rechnung und Anderes ....
-# 
-# Diese wollen wir nun nutzen. Um die Umlaufbahn des Merkurs darzustellen, ist es sinvoll die 
-# Aufgabe in zwei Abschnitte zu Teilen:
-# (a) Berchnung des Orbits
-# (b) Zeichnung des Orbits
-# Fuer beide Abschnitte werden wir Funktionen nutzen.
-
-
-# ----------------------------------
-## Parameter
-# ----------------------------------
-
-# Fuer Merkur Parameter siehe http://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html
-# Fuer Sonnen Parameter siehe http://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html
-
-# Physikalische Groessen/Einheiten
-ms = 1.9885 * 1.e30 # Sonnenmassen
-AE = 1.49598 * 1.e11 # Astronomische Einheit
-T  = 60 * 60 * 24    # 1 Tag
-dt = 1./24*6         # 6 Stunden
-# Die Gravitationskonstante
-G  = 6.6738 * 1.e-11 * ms / AE**3 * T**2
-print "Gravitationskonstante G = {0:1.4e} AE^3 * Tage^2 /M_Sonne".format(G)
-# Die Massen der Planten (in Sonnenmassen)
-m_sonne  = 1.
-m_merkur = 1.66e-7
-# Die Anfangspositionen der Planeten zum Zeitpunkt t = 0
-r_sonne_0  = vector(0,0,0)
-r_merkur_0 = vector(0,0.307,0) # Perihel
-# Die Anfangsgeschwindigkeiten zum Zeitpunkt t = 0
-v_m = 58.98 * 1.e3 / AE * T
-v_s = - v_m * m_merkur / m_sonne # Impulserhaltung
-v_sonne_0  = vector(v_s,0,0)
-v_merkur_0 = vector(v_m ,0,0)
-print "v_Merkur v = {0:1.4e} AE / Tage ".format(v_m)
-
-# ----------------------------------
-## (a) Berechnung des Orbits
-# ----------------------------------
-
-# Die Berechnung des Orbits laeuft wie folgt ab. Man uebermittelt der Funktion "merkur_zeit_schritt" 
-# die aktuelle Position und Geschwindigkeit des Merkurs und der Sonne. Das Ergebnis der Rechnung 
-# sollist die jeweils neuen Positionen und Geschwindigkeiten nach einem Zeitintervall "dt" sein.
-
-
-### Darstellung des Merkurorbits mit VPython
-
-# ----------------------------------
-## Laden der Hilfsmodule
-# ----------------------------------
-
-# Da es unglaublich viel Zeit kostet ein Programm für 3-dimensionale graphische Darstellung selber 
-# zu schreiben, lassen wir uns die Arbeit von "Vpython" abnehmen. Doch dazu müssen wir zunächst 
-# dieses Modul bereitstellen. Das erreicht man mit Hilfe des Befehls "import" oder "from .. import".
-
-from visual import *
-
-# Schreibt man 
-#   "from visual import *" 
-# bedeutet dies: "Lade alle Funktionen von Vpython so, dass man sie direkt verwenden kann: 
-#   "func = function(..)". 
-# Würde man 
-#   "import visual" 
-# schreiben, so müsste man die Funktion wie folgt aufrufen: 
-#   "func = visual.function(..)".
-
-# Eine Dokumentation von Modulen lässt sich durch den Befehl "help( modul_name )" aufrufen.
-#
-# Tipp: Will man eine Eingabe unterdrücken, so lässt sich dies auch mit "#" tun. Der darauf 
+# Tipp: Will man eine Eingabe unterdrücken, so lässt sich dies auch mit "#" tun. Der darauf
 # folgende Text wird dabei von Python überlesen.
 
 # help(visual)
@@ -116,7 +36,7 @@ from visual import *
 # def func(x):
 #     .... Rechnung und Anderes ....
 # 
-# Diese wollen wir nun nutzen. Um die Umlaufbahn des Merkurs darzustellen, ist es sinvoll die 
+# Diese wollen wir nun nutzen. Um die Umlaufbahn des Merkurs darzustellen, ist es sinvoll die
 # Aufgabe in zwei Abschnitte zu Teilen:
 # (a) Berchnung des Orbits
 # (b) Zeichnung des Orbits
@@ -130,33 +50,40 @@ from visual import *
 # Für Merkur Parameter siehe http://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html
 # Für Sonnen Parameter siehe http://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html
 
-# Physikalische Größen/Einheiten
-ms = 1.9885 * 1.e30 # Sonnenmassen
-AE = 1.49598 * 1.e11 # Astronomische Einheit
-T  = 60 * 60 * 24    # 1 Tag
-dt = 1./24*6         # 6 Stunden
-# Die Gravitationskonstante
-G  = 6.6738 * 1.e-11 * ms / AE**3 * T**2
-print "Gravitationskonstante G = {0:1.4e} AE^3 * Tage^2 /M_Sonne".format(G)
-# Die Massen der Planten (in Sonnenmassen)
-m_sonne  = 1.
+# Alle Größen sind in einem angepassten Einheitensystem gegeben:
+#  - Längen in Einheiten von R0 = 1e10 m
+#  - Zeiten in Einheiten von T0 = 1 d = 60*60*24 s
+#  - Massen in Einheiten von M0 = m_sonne = 1.989e30 kg
+
+# Massen von Sonne und Merkur
+m_sonne = 1.
 m_merkur = 1.66e-7
-# Die Anfangspositionen der Planeten zum Zeitpunkt t = 0
-r_sonne_0  = vector(0,0,0)
-r_merkur_0 = vector(0,0.307,0) # Perihel
-# Die Anfangsgeschwindigkeiten zum Zeitpunkt t = 0
-v_m = 58.98 * 1.e3 / AE * T
-v_s = - v_m * m_merkur / m_sonne # Impulserhaltung
-v_sonne_0  = vector(v_s,0,0)
-v_merkur_0 = vector(v_m ,0,0)
-print "v_Merkur v = {0:1.4e} AE / Tage ".format(v_m)
+
+# Anfangsposition und -geschwindigkeit des Merkur (im Perihel)
+r_merkur_0 = vector(0, 4.6, 0)  # im Perihel
+v_merkur_0 = vector(0.51, 0, 0) # im Perihel
+# Anfangsposition und -geschwindigkeit der Sonne (festgelegt als Koordinatenursprung)
+r_sonne_0 = vector(0, 0, 0)
+v_sonne_0 = - v_merkur_0 * m_merkur / m_sonne # Impulserhaltung
+
+# Gravitationskonstante berechnet als G' * M0 * T0**2 / R0**3
+# mit G' = 6.6738e11 m**3 / kg / s**2
+G = 0.99
+
+# Scharzschild parameter
+rS = 3.e-7
+
+# Dauer der Simulation in Erdentagen
+T = 88
+# Zeitschritt der Simulation in Erdentagen
+dt = 2*0.51*0.99/1000
 
 # ----------------------------------
 ## (a) Berechnung des Orbits
 # ----------------------------------
 
-# Die Berechnung des Orbits läuft wie folgt ab. Man übermittelt der Funktion "merkur_zeit_schritt" 
-# die aktuelle Position und Geschwindigkeit des Merkurs und der Sonne. Das Ergebnis der Rechnung 
+# Die Berechnung des Orbits läuft wie folgt ab. Man übermittelt der Funktion "merkur_zeit_schritt"
+# die aktuelle Position und Geschwindigkeit des Merkurs und der Sonne. Das Ergebnis der Rechnung
 # soll die jeweils neuen Positionen und Geschwindigkeiten nach einem Zeitintervall "dt" sein.
 
 def merkur_zeit_schritt(r_merkur, v_merkur, r_sonne, v_sonne):
