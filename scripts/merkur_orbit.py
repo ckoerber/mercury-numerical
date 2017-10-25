@@ -76,7 +76,7 @@ rS = 3.e-7
 # Dauer der Simulation in Erdentagen
 T = 88
 # Zeitschritt der Simulation in Erdentagen
-dt = 2*0.51*0.99/1000
+dt = 2*v_merkur_0.mag/G/100
 
 # ----------------------------------
 ## (a) Berechnung des Orbits

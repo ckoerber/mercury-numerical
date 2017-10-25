@@ -76,7 +76,7 @@ rS = 3.e-7
 # Dauer der Simulation in Erdentagen
 T = 88
 # Zeitschritt der Simulation in Erdentagen
-dt = 2*0.51*0.99/1000
+dt = 2*v_merkur_0.mag/G/100
 
 # ----------------------------------
 ## (a) Berechnung des Orbits
@@ -86,11 +86,12 @@ dt = 2*0.51*0.99/1000
 # die aktuelle Position und Geschwindigkeit des Merkurs und der Sonne. Das Ergebnis der Rechnung
 # soll die jeweils neuen Positionen und Geschwindigkeiten nach einem Zeitintervall "dt" sein.
 
-def merkur_zeit_schritt(r_merkur, v_merkur, r_sonne, v_sonne):
+def merkur_zeit_schritt(r_merkur, v_merkur, r_sonne, v_sonne, alpha=0):
   # Berechne den Vektor der von Merkur nach Sonne zeigt
   r_ms = r_sonne - r_merkur
   # Berechne die Kraefte
   F_ms = - G * m_sonne * m_merkur / r_ms.mag**2 * norm(r_ms)
+  F_ms = F_ms - G * m_sonne * m_merkur * alpha / r_ms.mag**3 * norm(r_ms) * rS
   F_sm = - F_ms
   # Berechne die daraus resultierenden Geschwindigkeiten
   v_sonne_neu  = v_sonne  + F_ms / m_sonne  * dt
@@ -109,10 +110,10 @@ merkur_zeit_schritt(r_merkur_0, v_merkur_0, r_sonne_0, v_sonne_0)
 ## (b) Zeichnung des Orbits
 # ----------------------------------
 
-def zeichne_orbit():
+def zeichne_orbit(alpha=0):
   # "Erstelle Merkur und Sonne"
-  merkur = sphere( pos=r_merkur_0, radius=0.01, color=color.red   )
-  sonne  = sphere( pos=r_sonne_0 , radius=0.1, color=color.yellow)
+  merkur = sphere( pos=r_merkur_0, radius=0.2, color=color.red   )
+  sonne  = sphere( pos=r_sonne_0 , radius=0.8, color=color.yellow)
   # Erstelle die Bahnkurve fuer Merkur
   merkur.bahn = curve(color=color.white)
   # Weise den Planeten ihre Anfangsgeschwindigkeiten zu
@@ -122,12 +123,12 @@ def zeichne_orbit():
   t = 0
   while t < 88*6:
     # Bildaktualisierungsrate
-    rate(18)
+    rate(1000)
     # Zeichne die Bahnkurve
     merkur.bahn.append( pos=merkur.pos )
     # Berechne die neuen Positionen
     merkur.pos, merkur.velocity, sonne.pos , sonne.velocity = merkur_zeit_schritt( 
-        merkur.pos, merkur.velocity, sonne.pos , sonne.velocity
+        merkur.pos, merkur.velocity, sonne.pos , sonne.velocity, alpha=alpha
     )
     # Nicht vergessen: Ändere die Zeit.
     t += dt
@@ -137,5 +138,5 @@ def zeichne_orbit():
 ## Ausführen der Funktionen
 # ----------------------------------
 
-zeichne_orbit()
+zeichne_orbit(5.e6)
 
