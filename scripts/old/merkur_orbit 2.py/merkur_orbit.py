@@ -57,7 +57,7 @@ T  = 60 * 60 * 24    # 1 Tag
 dt = 1./24*6         # 6 Stunden
 # Die Gravitationskonstante
 G  = 6.6738 * 1.e-11 * ms / AE**3 * T**2
-print "Gravitationskonstante G = {0:1.4e} AE^3 * Tage^2 /M_Sonne".format(G)
+print("Gravitationskonstante G = {0:1.4e} AE^3 * Tage^2 /M_Sonne".format(G))
 # Die Massen der Planten (in Sonnenmassen)
 m_sonne  = 1.
 m_merkur = 1.66e-7
@@ -69,7 +69,7 @@ v_m = 58.98 * 1.e3 / AE * T
 v_s = - v_m * m_merkur / m_sonne # Impulserhaltung
 v_sonne_0  = vector(v_s,0,0)
 v_merkur_0 = vector(v_m ,0,0)
-print "v_Merkur v = {0:1.4e} AE / Tage ".format(v_m)
+print("v_Merkur v = {0:1.4e} AE / Tage ".format(v_m))
 
 # ----------------------------------
 ## (a) Berechnung des Orbits
