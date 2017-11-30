@@ -2,6 +2,7 @@ ioplatexguidelines/
 tex/MercuryNumerical.pdf
 MercuryNumerical.pdf
 tex/ioplatexguidelines.tar.gz
+*.tdo
 *.bbl
 *.log
 *.out
