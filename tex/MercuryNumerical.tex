@@ -67,7 +67,6 @@
 \usepackage[svgnames]{xcolor}         % Enabling colors by their 'svgnames'
 \usepackage{listings}                 % Code listings  See: https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,8 +95,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\python}[0]{\texttt{Python} }
+\newcommand{\python}[0]{\texttt{Python}}
+\newcommand{\vpython}[0]{\texttt{VPython}}
 \newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\code}[1]{{\scriptsize\colorbox{light-gray}{\texttt{#1}}}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -304,10 +305,10 @@ where $T_V$ ($T_M$) denotes the length of a venus (mercury) year. This precisely
 
 In this section we present the numerical implementation as well as the visualisation of planetary trajectories and in
 particular
-the perihelion motion of Mercury.  We select \python{}\footnote{\url{https://www.python.org}} as  programming language, because \python is easy to learn, intuitive to understand and an open source language.
-No prior knowledge of \python or any other programming language is required, as we explain all the necessary steps to create the simulation.
-In appendix \ref{appendix:python} we give instructions for setting up \python on different operating systems.
-We also provide a working example program that can be used as a template \url{this-upload-url}\todo{url once uploaded (arXiv)}.
+the perihelion motion of Mercury.  We select \python{}\footnote{\url{https://www.python.org}} as  programming language, because \python{} is easy to learn, intuitive to understand and an open source language.
+No prior knowledge of \python{} or any other programming language is required, as we explain all the necessary steps to create the simulation.
+In appendix \ref{appendix:python} we give instructions for setting up \python{} on different operating systems.
+We also provide a working example program that can be used as a template \url{this-upload-url}\todo{@arXiv: online link}.
 
 To start the simulation one needs the "initial" distances and velocities, which are needed as input to the equation of motion [Eq.~(\ref{eq:x_update}) and Eq.~(\ref{eq:v_update})].
 As described above, here  one can simplify the problem by placing one planet (the "infinitely" heavy sun) in the center of the coordinate system and describe the motion of the other planet (mercury) in a two-dimensional plane.  
@@ -336,7 +337,7 @@ a_M(r_{MS}) &=& 1.01 \frac{R_0}{T_0^2} \frac{1}{\left(r_{MS}/R_0\right)^2}
 \end{figure}
 %
 
-In \python, this reads
+In \python{}, this reads
 \begin{lstlisting}
 # Definition of parameters
 rM0 = 4.6    # in units of R0
@@ -346,7 +347,7 @@ TM  = 88.    # in units of T0
 rS  = 3.e-7  # in units of R0
 \end{lstlisting}
 So far we only fixed the length of the vectors.
-Next, we set up the initial directions, which will describe the motion in the two-dimensional plane.  We will build on the existing \python module \texttt{VPython}, which provides an implementation for treating vectors as well as their visualization.
+Next, we set up the initial directions, which will describe the motion in the two-dimensional plane.  We will build on the existing \python{} module \texttt{VPython}, which provides an implementation for treating vectors as well as their visualization.
 The first object of interest is a \texttt{vector}, which takes three-dimensional coordinates as its input.
 Because of our choice of initial conditions (we picked the initial vectors in the perihelion), the velocity of mercury is perpendicular to the vector which connects mercury and sun (see figure \ref{fig:sun_merc}):
 \begin{lstlisting}
@@ -384,7 +385,7 @@ Also the magnitude of a vector --- \texttt{vector.mag} --- is a property of the 
 
 It is handy to use \texttt{Python}s \texttt{function}s to embed repeating structures ("DRY" --- Don't Repeat Yourself)
 \begin{lstlisting}
-# Define the function
+# Define the coordinate and velocity update function
 def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
 	#<...Code...>
 	return vec_rM_new, vec_vM_new
@@ -393,7 +394,7 @@ def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
 vec_rM_new, vec_vM_new = evolve_mercury(vec_rM_old, vec_vM_old)
 \end{lstlisting}
 \python{$\!'$}s syntax enforces a clean programming style: it is necessary that the body of the function is indented relative to the definition statement of the function.
-Furthermore, \python is an Interpreter language.
+Furthermore, \python{} is an Interpreter language.
 Each line of the code is executed when the Interpreter passes it.
 For this reason, all the variables defined before the function are global and thus known to the function.
 The variables within the function (e.g. \texttt{vec\_rM\_old}, ...) are local and do not live beyond the finalization of the function.
@@ -427,8 +428,8 @@ from vpython import vector, sphere, color, curve, rate
 The class sphere will represent mercury and the sun in the simulation
 \begin{lstlisting}
 # define the initial coordinates; M = mercury, S = sun
-M = sphere( pos=vec_rM0,       radius=0.5,  color=color.red   )
-S = sphere( pos=vector(0,0,0), radius=1.5,  color=color.yellow)
+M = sphere(pos=vec_rM0,       radius=0.5,  color=color.red   )
+S = sphere(pos=vector(0,0,0), radius=1.5,  color=color.yellow)
 # and the initial velocities
 M.velocity = vec_vM0
 S.velocity = vector(0,0,0)
@@ -442,7 +443,7 @@ Last but not least, instead of updating the object-unrelated vectors in the whil
 t     = 0
 alpha = 0
 # update the objects
-while t < T:
+while t < 2*TM:
 	# set the frame rate (you can choose a higher rate to accelerate the program)
 	rate(100)
 	# update the drawn trajectory with the current position
@@ -495,8 +496,6 @@ vec_r_last = vec_rM0
 turns      = 0
 max_turns  = 10
 list_perih = list()
-\end{lstlisting}
-\begin{lstlisting}
 # find perihelion for each turn and print it out
 while turns < max_turns:
 	vec_r_before_last = vec_r_last
@@ -540,7 +539,7 @@ Therefore, to estimate the size of the perihelion motion, it is more advisable t
 	We therefore advise to choose $\alpha<7\cdot 10^6$ at which point the perihelion motion exceeds $\delta \Theta=90^{\degree}$.
 }.
 The students can convince themselves of this fact by plotting the angles $\delta \Theta$ they have extracted from their simulation over $\alpha$.
-This can be done either by hand, \python (e.g., with \texttt{matplotlib}: \url{https://matplotlib.org}), or using another program like, e.g., Excel.
+This can be done either by hand, \python{} (e.g., with \texttt{matplotlib}: \url{https://matplotlib.org}), or using another program like, e.g., Excel.
 For instance figure \ref{fig:AlphaAngle} demonstrates such a plot.
 
 \begin{figure}[htb]
@@ -730,34 +729,160 @@ Here they come
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Instructions to install VPython}\label{appendix:python}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo[inline]{@CK: installation python+vpython win+linux}
-\subsection{Mac}
+In short, to run the above commands and scripts, one needs to install \python{} and \vpython{}.
+We recommend the newest \vpython{} version 7 or higher which best runs with the \python{} versions of 3.5 or higher.
+It is also possible to use \python{} 2.7 or higher, but the 3.x versions have better \vpython{} support.
 
-\href{http://vpython.org/contents/download_mac.html}{Download VPython for Mac}
+For the advanced users, one simply has to update \python{} to these versions and install \vpython{} via the package manager of choice, e.g, \texttt{pip} [see also \url{http://vpython.org}].
 
-
-%------------------------------------------
-\subsection{Running the Program}
-%------------------------------------------
-\todo[inline]{@CK: running python win+linux}
-The complete program needs to be saved as a python file, e.g. \texttt{mercury\_orbit.py}.
-Depending on the editor of choice, there might already be an execute functionality.
-In case one uses a linux like operating system and can execute the code from a console/terminal by running the command
-\begin{center}
-	\texttt{python 'address/to/python/file.py'}
-\end{center}
-If one already works in the file directory and has used the suggested naming scheme, this reads 
-\begin{center}
-	\texttt{python mercury\_orbit.py}
-\end{center}
-Here, the specified \texttt{python} interpreter needs to agree with the installed \texttt{VPython} version.
-For more information see \ref{appendix:python}.
+Below, we provide detailed descriptions how to install these versions of \python{} and \vpython{} for different operating systems.
+Independent of the operating systems, one has to execute the following steps:
+\begin{enumerate}
+	\item install and update \python{} (at best 3.x, x$\geq5$),
+	\item install and update a \python{} package manager,
+	\item install \vpython{} and dependencies.
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Linux based systems (including macOS)}\label{appendix:python-max}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+All Linux based system come with an installation of \python{}.
+Thus, if not already at the newest version, one just have to update existing installations.
+This is best done by using a distribution manager.
+Native to Linux based systems is for example \texttt{dpkg} and \texttt{apt-get}, or \texttt{homebrew} and \texttt{MacPorts} for macOS.
+While \texttt{dpkg} and \texttt{apt-get} usually come with the linux installations, macOS user must install such distribution managers at first.
+For this we refer to \url{https://www.macports.org/install.php} or \url{https://docs.brew.sh/Installation.html}.
+At first one should open a terminal/console (bash).
+Depending on the installation, one usually needs superuser rights in order to update \python{}.
+Therefore one has to prepend \code{sudo} to the following commands and confirm them by entering the superuser password.
+The installations using a distribution manager are save and tested by the vast community.
+In the following, the successive order of commands to update python is presented for \texttt{apt-get} (Linux) and \texttt{MacPorts} (macOS).
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabular}{l || l | l}
+	& \texttt{apt-get} & \texttt{MacPorts} \\\hline
+	1. Update the distribution manager & \code{sudo apt-get update} & \code{sudo port selfupdate} \\
+	2. Install \& update \python{} & \code{sudo apt-get install python3} & \code{sudo port install python36} \\
+	3. Installing \python{} package manager & \code{sudo apt-get install python3-pip} & \code{sudo port install py36-pip}
+\end{tabular}
+\normalsize
+\end{table}
+
+Depending on the previously installed packages, this command might install further dependencies automatically (after confirmation).
+One should test if the installation was successful by typing \code{python3 --version} or \code{python3.6 --version} (depending on the installation name) which prints out the version of the python installation (and should be larger than 3.5).
+Next one must update the package manager to get the newest versions of python packages.
+This is done by running
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabular}{l || l | l}
+	& \texttt{apt-get} & \texttt{MacPorts} \\\hline
+	4. Update \code{pip} & \code{pip3 install --upgrade --user pip wheel} & \code{pip-3.6 install --upgrade --user pip wheel} \\
+\end{tabular}
+\normalsize
+\end{table}
+
+Note that this just upgrades the packages for the current user.
+If one wants the systemwide installation, one again has to prepend \code{sudo} and can ignore the \code{--user} flag (\code{sudo pip3 install --upgrade pip wheel}).
+Furthermore, depending on the installed version of \code{pip}, it could have a different name.
+This is best figured out by typing \code{pip} and pressing \texttt{tab}.
+Finally, one can install \vpython{} by running
+\begin{table}[h!]
+\centering
+\footnotesize
+\begin{tabular}{l || l | l}
+	& \texttt{apt-get} & \texttt{MacPorts} \\\hline
+	5. Install \vpython{} & \code{pip3 install --user vpython} & \code{pip-3.6 install --user vpython} \\
+\end{tabular}
+\normalsize
+\end{table}
+
+At this point, everything needed is installed and one can start the simulation.
+To test the \vpython{} installation and should run \code{python3} or \code{python3.6}, which starts a \python{} console.
+Next, one shall run \code{from vpython import *}, which loads the \vpython{} package and opens the default browser.
+Running \code{box()} should generate a white box in the browser window, which can be rotated using the mouse.
+The program is quit by running \code{quit()} or pressing \texttt{Ctrl-c}.
+
+In general, there are multiple ways to run python scripts.
+For the sake of this paper, we suggest two scenarios.
+
+The first scenario to run python scripts is that one writes and saves a \python{} file, e.g., \texttt{test.py}, which can be edited using any text editor of choice.
+To run the python script one must navigate the terminal to the containing folder using the \code{cd} (and \code{ls}) command.
+While \code{ls} prints out the folders and files in the current directory, \code{cd} changes the directory.
+The command \code{cd} either takes relative paths (directories which are in the current directory), e.g., \code{cd folder}, or absolute paths beginning with a \code{/}, e.g., \code{cd /Users/name/Desktop/}.
+Once one has navigated to folder which contains the python file --- e.g., the file name is listed when typing \code{ls} --- than one can type \code{python3 test.py} or \code{python3.6 test.py} to execute the script.
+Again, this script can be ended (if it does not end automatically) by pressing \texttt{Ctrl-c}.
+
+The second scenario to run \python{} scripts is given by the interactive \texttt{ipython} or \texttt{jupyter} notebooks.
+This feature is automatically installed when installing the newest version of \vpython{}.
+To start an interactive session, one has to run \code{jupyter notebook} (or equivalent, depending on the installation name. Again, this can be figured out by typing \code{jupyter} and pressing \texttt{tab}).
+This will print a link (containing the name \texttt{localhost}) and open the browser at the link-address.
+Within this browser window, one can freely navigate to the directory of choice and create interactive \python{} and \vpython{} sessions by clicking on existing files or creating new ones (upper right button \texttt{new}$\rightarrow$\vpython{}).
+
+We provide example files for both scenarios.\todo{@arXiv: online link}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Windows}\label{appendix:python-windows}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+As the first step, one must install \python{}, again there are several possibilities but we suggest \texttt{Anaconda} for an intuitive installation.
+Following the link \url{https://conda.io/docs/user-guide/install/download.html}, one has two possible (free) options, \texttt{Anaconda} and \texttt{Miniconda}.
+Both are equally sufficient, because one can install further updates after the initial installation.
+In the case of \texttt{Miniconda} (\url{https://conda.io/miniconda.html}) one shall download the newest \python{} 3.x (x $\geq5$) installer for windows and the right system type (32-bit or 64-bit).
+The system type can be found by pressing \texttt{Windows+I}, navigating to \texttt{System}$\rightarrow$\texttt{About} and looking at the \texttt{System type} entry.
+
+Installing one of the two executables creates a new windows application called \texttt{Anaconda Prompt}.
+Starting this application opens a terminal which we will user to install the required \python{} packages.
+At first, one should test if the \texttt{Anaconda} installation was successful by running the command \code{conda list}.
+This command should print a list of already installed packages.
+Also one should run \code{conda update conda} to make sure one has the most recent installation.
+
+To install \vpython{} one simply has to run \code{conda install -c vpython vpython}.
+The additional flag \code{-c vpython} tells \texttt{Anaconda} the "channel" where to look for the \vpython{} package.
+Running this command prints out a list of dependencies which must be installed in order for \vpython{} to work --- this must be confirmed.
+
+In principle this is already sufficient to run \vpython{} scripts.
+One could furthermore install \texttt{Anaconda}s native navigator \texttt{anaconda-navigator} by running \code{conda install anaconda-navigator}.
+This will install another application, \texttt{Anaconda Navigator}, which can be run from the Desktop and makes it easier to program in \python{}.
+
+Again there are several possibilities to run \python{} files on \texttt{Windows}.
+\begin{itemize}
+	\item One could create a file \texttt{test.py}, edit it with the editor of choice and specify that this file should be opened with \texttt{Python3}.
+		To do so, \texttt{right click} on  the file, select \texttt{open with} and locate the \texttt{Anaconda Python3} installation.
+		Programs can be closed by closing the running window.
+	\item Start the \texttt{Anaconda Navigator} application, open an interactive \texttt{qtconsole} and program within the newly opened terminal.
+		Programs can be closed by closing the running window.
+	\item Start the \texttt{Anaconda Navigator} application and click on the \texttt{jupyter notebook} button.
+		This opens an interactive \python{} session in the default web-browser.
+		Here one open existing notebooks or create new files (upper right button \texttt{new}$\rightarrow$\vpython{}).
+\end{itemize}
+
+To start and test the \vpython{} installation one should pick any out of the three options and execute the code
+\begin{lstlisting}
+from vpython import *
+box()
+\end{lstlisting}
+Running this code should open the default browser and render a white box on black background.
+Using the mouse (right click and drag), one should be able to rotate the box.
+It was found that the \texttt{Internet Explorer} is not able to properly render the animation.
+Here we suggest to use the \texttt{Firefox} web-browser as the default choice.
+
+Once this test case works, one can start to test the mercury orbit simulation.
+We provide example files for both \texttt{juypter notebooks} and regular \python{} files.
+
+\todo{@arXiv: online link}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
 \section{The code}\label{sec:code}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo[inline]{@CK: inline code + script + test code + confirm data}
-Here we should put the code
+Below we provide an example script on how to program the visualization of the mercury orbit in \vpython{}.
+\lstinputlisting[language=Python]{mercury_orbit_base.py}
+Further examples and template files can be found online\cite{}.\todo[inline]{@arXiv: online link}
+
 
 
 
