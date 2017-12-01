@@ -67,6 +67,8 @@
 \usepackage[svgnames]{xcolor}         % Enabling colors by their 'svgnames'
 \usepackage{listings}                 % Code listings  See: https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
 
+\usepackage{subcaption} % subfigures
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -462,11 +464,25 @@ Then the perihelion motion is better visible. This is illustrated in figure \ref
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=.25\textwidth]{figs/MercuryOrbit.png} \quad
-	\includegraphics[width=.273\textwidth]{figs/PerihelionMotionLargeV.png} \quad
-	\includegraphics[width=.26\textwidth]{figs/PerihelionMotion.png}
-	\todo[inline]{@CK: reproduce figure}
-	\caption{\label{fig:MercuryOrbit} Output for $\alpha=0$ (left), $\alpha=10^5$ and bigger starting distance $r_{MS}(0)=6R_0$ (middle) and $\alpha=10^5$ with original starting values.}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{figs/a0T5dt20.png}
+		\caption{\label{fig:MercuryOrbit-a0-small}}
+	\end{subfigure}
+	~
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{figs/a6T5dt20.png}
+		\caption{\label{fig:MercuryOrbit-a6-small}}
+	\end{subfigure}
+	~
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{figs/a6T10dt20.png}
+		\caption{\label{fig:MercuryOrbit-a6-big}}
+	\end{subfigure}
+	\caption{\label{fig:MercuryOrbit}%
+		Different mercury orbits for $\alpha=0$ (a), $\alpha = 10^{6}$ (b) and $\alpha = 10^{6}$ but $r_{MS}(0) = 6 R_0$ (c).
+		All computations where executed with $dt = 2 * v_{M}(0) / c_a / 10$.
+		Note that for different starting values of $r_{MS}(0)$, also the numbers of days for a "mercury year" changes.
+	}
 \end{figure}
 
 %------------------------------------------
@@ -591,8 +607,11 @@ One could quantify the deviation of $\delta\Theta$ from zero and use this to est
 Only in the limit $dt \rightarrow 0$ would the simulation perfectly reproduce the actual trajectory.
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=.3\textwidth]{figs/TrajectoryLargeDT.png}
-	\caption{\label{fig: LargeDT} Deviation of the trajectory from the analytic result (indicated in blue) for large time steps (here $dt=2 * v_M(0) / a_M \cdot 5$)}
+	\includegraphics[width=.5\textwidth]{figs/num-err.png}
+	\caption{\label{fig: LargeDT}%
+		Deviation of the trajectory from precise numeric result (black line; $dt=2 v_M(0) / a_M / 20$) for large time steps (red line; $dt=2 v_M(0) / a_M \times 2$).
+		Both orbits are plotted for $T = 10 T_M$.
+	}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

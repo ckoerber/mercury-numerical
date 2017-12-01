@@ -34,7 +34,7 @@ M.trajectory = curve(color=color.white)
 # Start the simulation
 t=0
 alpha = 0
-while t < TM:
+while t < 2*TM:
     rate(100)
     M.trajectory.append(pos=M.pos)
     M.pos , M.velocity = evolve_mercury(M.pos , M.velocity , alpha)
