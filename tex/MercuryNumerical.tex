@@ -188,7 +188,7 @@ for some infinitesimally small $\Delta t$ and the acceleration, $\vec a(t)$ that
 The dots in the above expressions indicate that there are in general additional terms that may be expressed with higher powers in $\Delta t$, however, for sufficiently small $\Delta t$ those can be safely neglected.
 Thus we may define the time derivative via
 \begin{equation}
-\vec v(t) = \lim_{\Delta t\to 0} \frac{\Delta \vec r(t)}{\Delta t} =: \frac{d\vec r(t)}{dt}  = \dot{\vec  r}(t) \ ,
+\vec v(t) = \lim_{\Delta t\to 0} \frac{\Delta \vec r(t)}{\Delta t} =: \frac{d\vec r(t)}{d t}  = \dot{\vec  r}(t) \ ,
 \end{equation}
 where $\Delta \vec r(t)=\vec r(t+\Delta t)-\vec r(t)$ and we introduced with the last expression a common short hand notation for time derivatives.
 Analogously we get
@@ -367,7 +367,7 @@ dt = 2 * vM0 / c_a / 10
 Here the factor $1/10$ makes sure that $\Delta t$ is indeed consistent with Eq.~(\ref{eq:check}).
 Now we are in the position to calculate location and velocity of the planet at $t_0+\Delta t$ using the following commands \footnote{%
 	Note, that there are different notions for numerically integrating differential equations with different accuracys.
-	Thus, the order of updating $a_{MS}$, $v_M$ and $r_M$ is not unique, but all correct prescriptions lead to the same result for sufficiently small $dt$.
+	Thus, the order of updating $a_{MS}$, $v_M$ and $r_M$ is not unique, but all correct prescriptions lead to the same result for sufficiently small $\Delta t$.
 	For this particular problem, the following definition is in good balance between numerically stable and inexpensive to compute.
 }%
 \begin{lstlisting}
@@ -479,7 +479,7 @@ Then the perihelion motion is better visible. This is illustrated in figure \ref
 	\end{subfigure}
 	\caption{\label{fig:MercuryOrbit}%
 		Different mercury orbits for $\alpha=0$ (a), $\alpha = 10^{6}$ (b) and $\alpha = 10^{6}$ but $r_{MS}(0) = 6 R_0$ (c).
-		All computations where executed with $dt = 2 v_{M}(0) / c_a / 20$.
+		All computations where executed with $\Delta t = 2 v_{M}(0) / c_a / 20$.
 		Note that for different starting values of $r_{MS}(0)$, also the numbers of days for a "mercury year" changes.
 	}
 \end{figure}
@@ -559,15 +559,14 @@ For instance figure \ref{fig:AlphaAngle} demonstrates such a plot.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=.8\textwidth]{figs/AlphaAngle.png}
-	\todo[inline]{@CK: pdf figure + confirm @IH: distribute data}
-	\caption{\label{fig:AlphaAngle} Linear relation between $\alpha$ and the perihelion motion.}
+	\includegraphics{figs/alpha-angle.pdf}
+	\caption{\label{fig:AlphaAngle} Linear relation between $\alpha$ and the perihelion motion $\delta \Theta$ for $\Delta t=2v_M(0)/c_a/100$.}
 \end{figure}
 
 To extract the perihelion motion at $\alpha = 1$, we use the fact that $\delta \Theta$ is zero for $\alpha =0$ --- if one could completely eliminate numerical errors.
-Considering one result from the numeric simulation, e.g. $\delta\Theta(\alpha = 10^6) \approx 10.1^{\degree}$, the sought-after angle can be calculated by a linear interpolation as
+Considering one result from the numeric simulation, e.g. $\delta\Theta(\alpha = 10^6) \approx 10.0^{\degree}$, the sought-after angle can be calculated by a linear interpolation as
 \begin{equation}
-	\delta\Theta (\alpha=1) = \frac{10.1^{\degree}}{10^6} = 0.036''
+	\delta\Theta (\alpha=1) = \frac{10.0^{\degree}}{10^6} = 0.036''
 	\, .
 \end{equation}
 Depending on the knowledge of the students, multiple points and also estimated numerical uncertainties could be used to extract this value by a linear regression.
@@ -583,32 +582,35 @@ Physical experiments in general, as do numerical simulations of physics, must al
 It is important for the students to recognize this fact and to understand, that the cause of the uncertainties lies, e.g., in the finite time steps.
 The students should therefore explore the source and size of the errors arising in this simulation at least qualitatively.
 
-Consider figure \ref{fcc3}, where the angle of the perihelion relative to the $y$-axis is shown for the first $10$ turns for different choices of $dt$ and $\alpha$.
+Consider figure \ref{fcc3}, where the angle of the perihelion relative to the $y$-axis is shown for the first $10$ turns for different choices of $\Delta t$ and $\alpha$.
 As expected, the correlation between the number of turns and $\delta\Theta$ is linear and the slope depends solely on $\alpha$.
-However, there is an offset between the lines for different $dt$.
+However, there is an offset between the lines for different $\Delta t$.
 The reason is, due to the uncertainties in the simulation, the starting position does not coincide with the first perihelion as one might expect.
 This does not generate a problem for the procedure described in the previous section since the starting position is not considered. Still, it is helpful to be aware of this fact.
 One can see nicely in figure \ref{fcc3} that the oscillations of the perihelion motion increases for growing time steps. 
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=.7\textwidth]{figs/precession_growth.pdf}
-	\todo[inline]{@CK: Could you redo this figure with some bigger time steps? Could we call the precession growth $\Theta(\alpha)$ instead of $\delta\Theta$? I think this would fit better with our notation so far...}
-	\caption{\label{fcc3}Precession growth of perihelion for $\delta\Theta$ in degrees over number of turns for different time steps (color).  One should pay special attention to the oscillations within the growth for relatively large time steps.}
+	\includegraphics[width=.99\textwidth]{figs/angular-variaton.pdf}
+	\todo[inline]{@all: where is this periodic oscillation coming from?}
+	\caption{\label{fcc3}Precession growth of perihelion $\delta\Theta$ in degrees depending on the number of turns $N_t$ for different time steps $\Delta t$ (color) and different values for $\alpha$ (columns).
+	Here, $\Delta t_0 \equiv 2 v_M(0)/c_a$.
+	One should pay special attention to the oscillations within the growth for relatively large time steps.
+}
 \end{figure}
 
 To point the students to this problem, they can be asked to increase their time steps significantly and observe the effect on the trajectories.
 For this study, it is advantageous to set $\alpha =0$, since in this case the trajectories should be closed and therefore deviations from the ideal case can be spotted easily.
-In figure \ref{fig: LargeDT} the mercury trajectory for $dt=2 * v_M(0) / c_a \cdot 5$ is shown.
+In figure \ref{fig: LargeDT} the mercury trajectory for $\Delta t=2 * v_M(0) / c_a \cdot 5$ is shown.
 One can clearly see the failure of the simulation to reproduce the physical trajectory.
 From examples like this it should be apparent that the time steps influence the accuracy of the simulation.
-One could quantify the deviation of $\delta\Theta$ from zero and use this to estimate the numerical systematic uncertainty for a given time step $dt$.
-Only in the limit $dt \rightarrow 0$ would the simulation perfectly reproduce the actual trajectory.
+One could quantify the deviation of $\delta\Theta$ from zero and use this to estimate the numerical systematic uncertainty for a given time step $\Delta t$.
+Only in the limit $\Delta t \rightarrow 0$ would the simulation perfectly reproduce the actual trajectory.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=.5\textwidth]{figs/num-err.png}
 	\caption{\label{fig: LargeDT}%
-		Deviation of the trajectory from precise numeric result (black line; $dt=2 v_M(0) / a_M / 20$) for large time steps (red line; $dt=2 v_M(0) / a_M \times 2$).
+		Deviation of the trajectory from precise numeric result (black line; $\Delta t=2 v_M(0) / a_M / 20$) for large time steps (red line; $\Delta t=2 v_M(0) / a_M \times 2$).
 		Both orbits are plotted for $T = 10 T_M$.
 	}
 \end{figure}
@@ -705,11 +707,11 @@ main()
 print("--- %s seconds ---" % (time.time() - start_time))
 \end{lstlisting}
 the students can measure the time needed by their program.
-By varying $dt$ they can validate, that there is indeed approximately an anti-proportional dependence.
-(Note: This only works if the time in the loop is increased by $dt$, so $t=t+dt$.)
+By varying $\Delta t$ they can validate, that there is indeed approximately an anti-proportional dependence.
+(Note: This only works if the time in the loop is increased by $\Delta t$, so $t=t+\Delta t$.)
 \item \textbf{Verlet integration}
 
-Of course by optimizing the code, an improvement in accuracy can be achieved without changing $dt$.
+Of course by optimizing the code, an improvement in accuracy can be achieved without changing $\Delta t$.
 The simplest way to demonstrate this might be given by the implementation of the Verlet\cite{}\todo{@IH: cite Verlet} integration instead of using the simple Euler method.
 \end{itemize}
 

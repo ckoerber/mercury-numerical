@@ -10,7 +10,7 @@ scene.center     = vector(0,-2,0)
 # Definition of parameters
 rM0 = 4.6    # in units of R0
 vM0 = 0.51   # in units of R0/T0
-aM  = 0.99   # in units of R0/T0**2
+aM  = 1.01   # in units of R0/T0**2
 TM  = 88.    # in units of T0
 rS  = 3.e-7  # in units of R0
 
