@@ -13,7 +13,7 @@ vec_rM0 = vector(0, rM0, 0)
 vec_vM0 = vector(vM0, 0, 0)
 
 # Definition of the time step
-dt = 2 * vM0 / c_a / 10
+dt = 2 * vM0 / c_a / 20
 
 # Define the coordinate and velocity update
 def evolve_mercury(vec_rM_old, vec_vM_old, alpha):

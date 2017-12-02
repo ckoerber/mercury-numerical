@@ -68,6 +68,7 @@
 \usepackage{listings}                 % Code listings  See: https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
 
 \usepackage{subcaption} % subfigures
+\usepackage{caption}    % itemize in caption
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
@@ -166,7 +167,7 @@ Finally the principle of dimensional analysis is presented as a tool to cross ch
 We are convinced that in order to excite the students for numerical simulations it is compulsory to demonstrate their power on an example that catches their interest.
 This purpose is served perfectly by the case chosen here, since Einsteins equations of General Relativity are fascinating to a very broad public.
 While their detailed study needs deeper knowledge in Differential Geometry, for the study outlined here very little math is necessary, such that high school students from about 10$^{\rm th}$ grade up should benefit from it.
-This was already demonstrated in the "Schülderakademie Teilchenphysik", where an early version of this course was tested successfully on a group of 10 German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade.
+This was already demonstrated in the "Schülderakademie Teilchenphysik", where an early version of this course was tested successfully on a group of 17 German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade.
 
 
 
@@ -212,7 +213,7 @@ If the mass does not change~\footnote{%
 \end{equation} 
 Note that in general the force could depend also on the time or the velocity.
 We here restrict ourselves to the case relevant for our example, where the force depends on the location only. 
-Therefore, as soon as the force $\vec F(\vec r)$ is known for all $\vec r$ one can in principle calculate the trajectory, e.g. solving Eq.~(\ref{eq:newton2}) for $\vec r(t)$.
+Therefore, as soon as the force $\vec F(\vec r)$ is known for all $\vec r$ one can in principle calculate the trajectory, e.g., solving Eq.~(\ref{eq:newton2}) for $\vec r(t)$.
 Sometimes this requires some advanced knowledge in math, sometimes no closed form solution exists.
 However, alternatively one can calculate the whole trajectory of some test body that experiences this force by a successive application of the rules given in eqs.~(\ref{eq:vdef}) and (\ref{eq:adef}):
 \begin{enumerate}
@@ -224,7 +225,7 @@ However, alternatively one can calculate the whole trajectory of some test body 
 Clearly to initiate the procedure at some time $t_0$ both $\vec r(t_0)$ as well as $\vec v(t_0)$ must be known --- the  trajectories depend on these initial conditions~\footnote{%
 	In general a differential equation of $n^{\rm th}$ degree (where the highest derivative is $n$) needs $n$ initial conditions specified.
 	For $n=2$ those are often chosen as location and velocity at some defined time, but one may as well pick two location at different times.%
-}
+}.
 
 For this procedure to work $\Delta t$ must be sufficiently small.
 What this means depends on the process studied.
@@ -307,7 +308,7 @@ where $T_V$ ($T_M$) denotes the length of a venus (mercury) year. This precisely
 
 In this section we present the numerical implementation as well as the visualisation of planetary trajectories and in
 particular
-the perihelion motion of Mercury.  We select \python{}\footnote{\url{https://www.python.org}} as  programming language, because \python{} is easy to learn, intuitive to understand and an open source language.
+the perihelion motion of Mercury.  We select \python{} (\url{https://www.python.org}) as  programming language, because \python{} is easy to learn, intuitive to understand and an open source language.
 No prior knowledge of \python{} or any other programming language is required, as we explain all the necessary steps to create the simulation.
 In appendix \ref{appendix:python} we give instructions for setting up \python{} on different operating systems.
 We also provide a working example program that can be used as a template \url{this-upload-url}\todo{@arXiv: online link}.
@@ -333,7 +334,7 @@ a_M(r_{MS}) &=& 1.01 \frac{R_0}{T_0^2} \frac{1}{\left(r_{MS}/R_0\right)^2}
 	\includegraphics[width=.5\textwidth]{figs/sun_merc.pdf}
 	\caption{\label{fig:sun_merc}%
 		Sun mercury system with relevant vectors.
-		Because the mercury is at its perihelion, its velocity is perpendicular to its direct connection vector with the sun.%
+		Because mercury is at its perihelion, its velocity is perpendicular to its direct connection vector with the sun.%
 	}
 \end{figure}
 %
@@ -362,12 +363,12 @@ According to Eq.~(\ref{eq:newton}), the force which acts on mercury changes the 
 However, we first need to fix the time step $\Delta t$ and use the estimate of Eq.~(\ref{eq:check}) as a guidance
 \begin{lstlisting}
 # Definition of the time step
-dt = 2 * vM0 / c_a / 10
+dt = 2 * vM0 / c_a / 20
 \end{lstlisting}
-Here the factor $1/10$ makes sure that $\Delta t$ is indeed consistent with Eq.~(\ref{eq:check}).
-Now we are in the position to calculate location and velocity of the planet at $t_0+\Delta t$ using the following commands \footnote{%
+Here the factor $1/20$ makes sure that $\Delta t$ is indeed consistent with Eq.~(\ref{eq:check}).
+Now we are in the position to calculate location and velocity of the planet at $t_0+\Delta t$ using the following equations\footnote{%
 	Note, that there are different notions for numerically integrating differential equations with different accuracys.
-	Thus, the order of updating $a_{MS}$, $v_M$ and $r_M$ is not unique, but all correct prescriptions lead to the same result for sufficiently small $\Delta t$.
+	Thus, the ordering and exact equations for updating $a_{MS}$, $v_M$ and $r_M$ are not unique, but all correct prescriptions lead to the same result for sufficiently small $\Delta t$.
 	For this particular problem, the following definition is in good balance between numerically stable and inexpensive to compute.
 }%
 \begin{lstlisting}
@@ -388,19 +389,25 @@ It is handy to use \texttt{Python}s \texttt{function}s to embed repeating struct
 \begin{lstlisting}
 # Define the coordinate and velocity update function
 def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
-	#<...Code...>
+	# Compute the strength of the acceleration
+	aMS = c_a * ( 1 + alpha * rS / vec_rM_old.mag  ) / vec_rM_old.mag**2
+	# Multiply by the direction
+	vec_aMS = - aMS * ( vec_rM_old / vec_rM_old.mag )
+	# Update velocity vector
+	vec_vM_new = vec_vM_old + vec_aMS * dt
+	# Update position vector
 	return vec_rM_new, vec_vM_new
 
 # Call the function
 vec_rM_new, vec_vM_new = evolve_mercury(vec_rM_old, vec_vM_old)
 \end{lstlisting}
-\python{$\!'$}s syntax enforces a clean programming style: it is necessary that the body of the function is indented relative to the definition statement of the function.
+\python{}s syntax enforces a clean programming style: it is necessary that the body of the function is indented (by an arbitrary but consistent amount of \texttt{space}s or \texttt{tab}s) relative to the definition statement of the function.
 Furthermore, \python{} is an Interpreter language.
 Each line of the code is executed when the Interpreter passes it.
 For this reason, all the variables defined before the function are global and thus known to the function.
-The variables within the function (e.g. \texttt{vec\_rM\_old}, ...) are local and do not live beyond the finalization of the function.
+The variables within the function (e.g. \texttt{aMS}, \texttt{vec\_aMS}, $\dots$) are local and do not exist beyond the scope of the function.
 
-Finally, we can express the evolution by a \texttt{while}-loop
+Finally, we can describe the evolution by a \texttt{while}-loop
 \begin{lstlisting}%[float,floatplacement=H]
 t     = 0
 alpha = 0
@@ -409,19 +416,20 @@ while t < 2*TM:
 	vec_rM, vec_vM = evolve_mercury(vec_rM, vec_vM, alpha)
 	t = t + dt
 \end{lstlisting}
-where for the start we set the parameter $\alpha$ to zero in order first study the properties of the pure 
+where for the start we set the parameter $\alpha=0$ in order first study the properties of the pure 
 $1/r^2$ force.
 Note the required indent of the loop structure similar to the indent of a function.
-In each iteration of the \texttt{while}-loop, the previous distance and velocity are used to compute the new values --- which directly overwrite the previous values and thus enter the next iteration.
+In each iteration of the \texttt{while}-loop, the previous distance and velocity are used to compute the new values --- which directly overwrites the previous values and thus enter the next iteration.
 The total runtime \texttt{2*TM} is the amount of "virtual" days the simulations should run.
 To describe at least one full orbital period, this time needs to be larger than $T_M$.
 With the previous choice for \texttt{dt}, this corresponds to roughly $N_T \approx 2 \cdot 10^3$ evolution steps.
-
+Note that the exact time it takes for mercury complete a full revolution depends on the initial coordinates and velocities as well as the accuracy of the computation.
+One might encourage students to analyze this in the beginning.
 
 %------------------------------------------
 \subsection{Visualizing the Motion with VPython}
 %------------------------------------------
-To start the visualization one has to include further objects of the \texttt{VPython} module \texttt{visual}.
+To start the visualization one has to \texttt{import} further objects from the \texttt{VPython} module.
 Additional to the vector class, one has to include
 \begin{lstlisting}
 from vpython import vector, sphere, color, curve, rate
@@ -455,31 +463,43 @@ while t < 2*TM:
 	t = t + dt
 \end{lstlisting}
 
-If the starting values are chosen as advised in the previous section, then the students should end up with a trajectory as depicted in figure \ref{fig:MercuryOrbit}.
-To get the perihelion motion, the term from equation (\ref{eq:newton_art}) has to be be added by choosing $\alpha=0$.
-This is a good opportunity to let the students play with the size of $\alpha$ and get a feeling for its impact on the trajectories or analyze what happens when changing the time-steps $\Delta t$.
-However, it might be advisable to not start out with the correct mercury values but a more excentric trajectory by choosing e.g. $r_{MS}(0)=6R_0$.
-Then the perihelion motion is better visible. This is illustrated in figure \ref{fig:MercuryOrbit}, where we used a value of $\alpha=10^6$.
-
+If the starting values are chosen as advised in the previous section, then the students should end up with a trajectory as depicted in figure \ref{fig:MercuryOrbit-a0-small}.
+At this point one might ask students to vary $\Delta t$ and observe its effects on the orbit [see also figure \ref{fig:MercuryOrbit-a0-small-dt-large}].
+To get the perihelion motion, the additional force term described in equation (\ref{eq:newton_art}) has to be "turned on" for $\alpha\neq0$ [figure \ref{fig:MercuryOrbit-a6-small}].
+This is a good opportunity to let the students play with the size of $\alpha$ and get a feeling for its impact on the trajectories.
+However, it might be advisable to not start out with the correct mercury values but a more excentric trajectory by choosing e.g. $r_{MS}(0)=6R_0$ [figure \ref{fig:MercuryOrbit-a6-big}].
+Then the perihelion motion is better visible.
 \begin{figure}[htb]
 	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
+	\begin{subfigure}[c]{0.22\textwidth}
 		\includegraphics[width=\textwidth]{figs/a0T5dt20.png}
 		\caption{\label{fig:MercuryOrbit-a0-small}}
 	\end{subfigure}
 	~
-	\begin{subfigure}[b]{0.3\textwidth}
+	\begin{subfigure}[c]{0.22\textwidth}
+		\includegraphics[width=\textwidth]{figs/num-err.png}
+		\caption{\label{fig:MercuryOrbit-a0-small-dt-large}}
+	\end{subfigure}
+	~
+	\begin{subfigure}[c]{0.22\textwidth}
 		\includegraphics[width=\textwidth]{figs/a6T5dt20.png}
 		\caption{\label{fig:MercuryOrbit-a6-small}}
 	\end{subfigure}
 	~
-	\begin{subfigure}[b]{0.3\textwidth}
+	\begin{subfigure}[c]{0.22\textwidth}
 		\includegraphics[width=\textwidth]{figs/a6T10dt20.png}
 		\caption{\label{fig:MercuryOrbit-a6-big}}
 	\end{subfigure}
-	\caption{\label{fig:MercuryOrbit}%
-		Different mercury orbits for $\alpha=0$ (a), $\alpha = 10^{6}$ (b) and $\alpha = 10^{6}$ but $r_{MS}(0) = 6 R_0$ (c).
-		All computations where executed with $\Delta t = 2 v_{M}(0) / c_a / 20$.
+	\captionsetup{singlelinecheck=off}
+	\caption[]{\label{fig:MercuryOrbit}
+		Different mercury orbits for:
+		\begin{itemize}
+		\item[(a)] $\alpha=0$ and $\Delta t = \Delta t_0  / 20$;
+		\item[(b)] $\alpha=0$ and $\Delta t = \Delta t_0  \times 2$, where the black line represents the orbit of (a) and the red line is the orbit for the larger time steps;
+		\item[(c)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$;
+		\item[(d)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$ but $r_{MS}(0) = 6 R_0$.
+		\end{itemize}
+		Here, the time steps are defined by $\Delta t_0 \equiv 2 v_{M}(0) / c_a$ and the images are screenshots of the simulation (for modified colors).
 		Note that for different starting values of $r_{MS}(0)$, also the numbers of days for a "mercury year" changes.
 	}
 \end{figure}
@@ -492,10 +512,10 @@ Then the perihelion motion is better visible. This is illustrated in figure \ref
 
 To calculate the expected size of the perihelion motion for a modified gravitational force, the students need to
 \begin{itemize}
-\item extract multiple positions of the perihelion $\vec r_{MS} ( t_\mathrm{ph}^{(n)} )$ for a fixed value of $\alpha$ and simulations times which covers several orbits,
-\item calculate the angle between the perihelions for two successive turns and compute the average angle $\delta \Theta (\alpha)$ over all individually computed angles
-\item repeat the above points for different values of $\alpha$ to confirm the linear dependence of $\delta \Theta (\alpha)$
-\item extrapolate $\delta \Theta (\alpha)$ to $\alpha=1$
+\item extract multiple positions of the perihelion $\vec r_{MS} ( t_\mathrm{ph}^{(n)} )$ for a fixed value of $\alpha$ and simulations times which covers several orbits;
+\item calculate the angle between the perihelions for two successive turns and compute the average angle $\delta \Theta (\alpha)$ over all individually computed angles;
+\item repeat the above points for different values of $\alpha$ to confirm the linear dependence of $\delta \Theta (\alpha)$;
+\item interpolate $\delta \Theta (\alpha)$ to $\alpha=1$ using that $\delta \Theta (0) = 0$ (modulo numerical errors).
 \end{itemize}
 
 There are several ways to find the position of the perihelion.
@@ -504,7 +524,10 @@ This can be done within the $while$-loop.
 To find identify a minimal distance to the sun, one has to know the last two positions \texttt{vec\_r\_last} and \texttt{vec\_r\_before\_last} in addition to the current position.
 If the length of the \texttt{last} vector is smaller than that of the \texttt{before\_last} vector and smaller than the current vector, one has passed the perihelion and its position is given by \texttt{vec\_r\_last}.
 It is useful to save the position of the perihelion in a list \texttt{list\_perih} for a certain number of turns (here e.g. \texttt{max\_turns}=10).
-The implementation can be realized as follows
+The implementation can be realized as follows\footnote{%
+	Note that one stores \code{vec\_r\_last} by making a copy of \code{M.pos}: \code{vec\_r\_last = vector(M.pos)}.
+	This is essential because otherwise, if one changes \code{M.pos}, one would automatically change \code{vec\_r\_last} as well.
+}
 \begin{lstlisting}
 # set up vectors
 vec_r_last = vec_rM0
@@ -536,7 +559,7 @@ from vpython import acos, pi, dot
 def angle_between(v1, v2):
 	return acos( dot(v1, v2) / (v1.mag * v2.mag) ) * 180. / pi
 \end{lstlisting}
-To account for the statistical errors (e.g., numerical rounding errors) one can be average over a few turns.
+To account for the statistical errors (e.g., numerical rounding errors) one can average over a few turns.
 Depending on the programming proficiency of the students and time constraints, this can be either done by hand or, e.g., by implementing the following code
 \begin{lstlisting}
 sum_angle=0.
@@ -577,13 +600,13 @@ To test whether this is a reasonable result, the students could first follow the
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Tests of stability and error analysis}\label{sec:stability}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\todo[inline]{@all: where is this periodic oscillation coming from?}
 Physical experiments in general, as do numerical simulations of physics, must always account for possible uncertainties.
 It is important for the students to recognize this fact and to understand, that the cause of the uncertainties lies, e.g., in the finite time steps.
 The students should therefore explore the source and size of the errors arising in this simulation at least qualitatively.
 
-Consider figure \ref{fcc3}, where the angle of the perihelion relative to the $y$-axis is shown for the first $10$ turns for different choices of $\Delta t$ and $\alpha$.
-As expected, the correlation between the number of turns and $\delta\Theta$ is linear and the slope depends solely on $\alpha$.
+Consider figure \ref{fcc3}, where the angle of the perihelion growth $\delta \Theta$ is shown for the first $10$ turns for different choices of $\Delta t$ (colors) and $\alpha$ (columns).
+As expected, the correlation between the number of turns and $\delta\Theta$, for sufficiently small time-steps $\Delta t$, is constant on average and the values depend solely on $\alpha$.
 However, there is an offset between the lines for different $\Delta t$.
 The reason is, due to the uncertainties in the simulation, the starting position does not coincide with the first perihelion as one might expect.
 This does not generate a problem for the procedure described in the previous section since the starting position is not considered. Still, it is helpful to be aware of this fact.
@@ -592,7 +615,6 @@ One can see nicely in figure \ref{fcc3} that the oscillations of the perihelion 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=.99\textwidth]{figs/angular-variaton.pdf}
-	\todo[inline]{@all: where is this periodic oscillation coming from?}
 	\caption{\label{fcc3}Precession growth of perihelion $\delta\Theta$ in degrees depending on the number of turns $N_t$ for different time steps $\Delta t$ (color) and different values for $\alpha$ (columns).
 	Here, $\Delta t_0 \equiv 2 v_M(0)/c_a$.
 	One should pay special attention to the oscillations within the growth for relatively large time steps.
@@ -601,19 +623,12 @@ One can see nicely in figure \ref{fcc3} that the oscillations of the perihelion 
 
 To point the students to this problem, they can be asked to increase their time steps significantly and observe the effect on the trajectories.
 For this study, it is advantageous to set $\alpha =0$, since in this case the trajectories should be closed and therefore deviations from the ideal case can be spotted easily.
-In figure \ref{fig: LargeDT} the mercury trajectory for $\Delta t=2 * v_M(0) / c_a \cdot 5$ is shown.
+In figure \ref{fig:MercuryOrbit-a0-small-dt-large} the mercury trajectory for $\Delta t=2 v_M(0) / c_a \times 2$ is shown.
 One can clearly see the failure of the simulation to reproduce the physical trajectory.
 From examples like this it should be apparent that the time steps influence the accuracy of the simulation.
 One could quantify the deviation of $\delta\Theta$ from zero and use this to estimate the numerical systematic uncertainty for a given time step $\Delta t$.
 Only in the limit $\Delta t \rightarrow 0$ would the simulation perfectly reproduce the actual trajectory.
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=.5\textwidth]{figs/num-err.png}
-	\caption{\label{fig: LargeDT}%
-		Deviation of the trajectory from precise numeric result (black line; $\Delta t=2 v_M(0) / a_M / 20$) for large time steps (red line; $\Delta t=2 v_M(0) / a_M \times 2$).
-		Both orbits are plotted for $T = 10 T_M$.
-	}
-\end{figure}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Dimensional analysis}\label{sec:analysis}
@@ -632,7 +647,7 @@ which leads to a shift of about $30^{''}$ in 100 earth years to be compared to t
 Thus indeed the amount of perihelion motion of Mercury is in line with expectations, $if$ --- and this is an important "if" --- the Newtonian dynamics is simply the leading term of some more general underlying theory.
 In particular, no new scales enter in the correction terms.
 
-Thanks to Einstein we indeed know that the conclusion formulated above is correct ---- the more general underlying theory is General Relativity and indeed Einstein was able to quantitatively explain the perihelion motion of Mercury from his equations. 
+Thanks to Einstein we indeed know that the conclusion formulated above is correct --- the more general underlying theory is General Relativity and indeed Einstein was able to quantitatively explain the perihelion motion of Mercury from his equations. 
 On the other hand had we found a dramatic deviation of $\alpha$ from unity one would have concluded that there is probably some other dynamics going on that drives this difference.
 
 Indeed, we now several of those hierarchy problems in modern physics: e.g., the so called QCD $\Theta$ term, expected to be of natural size, is at present known to be at most $10^{-10}$.
@@ -742,6 +757,7 @@ Only a smaller part is due to general relativity.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgments}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\todo{@all: Acknowledgments}
 Here they come
 
 
@@ -749,7 +765,7 @@ Here they come
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Instructions to install VPython}\label{appendix:python}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In short, to run the above commands and scripts, one needs to install \python{} and \vpython{}.
+In short, to run the above scripts, one needs to install \python{} and \vpython{}.
 We recommend the newest \vpython{} version 7 or higher which best runs with the \python{} versions of 3.5 or higher.
 It is also possible to use \python{} 2.7 or higher, but the 3.x versions have better \vpython{} support.
 
@@ -758,8 +774,8 @@ For the advanced users, one simply has to update \python{} to these versions and
 Below, we provide detailed descriptions how to install these versions of \python{} and \vpython{} for different operating systems.
 Independent of the operating systems, one has to execute the following steps:
 \begin{enumerate}
-	\item install and update \python{} (at best 3.x, x$\geq5$),
-	\item install and update a \python{} package manager,
+	\item install and update \python{} (at best 3.x, x$\geq5$);
+	\item install and update a \python{} package manager;
 	\item install \vpython{} and dependencies.
 \end{enumerate}
 
@@ -767,16 +783,17 @@ Independent of the operating systems, one has to execute the following steps:
 \subsection{Linux based systems (including macOS)}\label{appendix:python-max}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 All Linux based system come with an installation of \python{}.
-Thus, if not already at the newest version, one just have to update existing installations.
+Thus, if not already at the newest version, one just has to update existing installations.
 This is best done by using a distribution manager.
 Native to Linux based systems is for example \texttt{dpkg} and \texttt{apt-get}, or \texttt{homebrew} and \texttt{MacPorts} for macOS.
 While \texttt{dpkg} and \texttt{apt-get} usually come with the linux installations, macOS user must install such distribution managers at first.
 For this we refer to \url{https://www.macports.org/install.php} or \url{https://docs.brew.sh/Installation.html}.
-At first one should open a terminal/console (bash).
+
+As the start one should open a terminal/console (bash).
 Depending on the installation, one usually needs superuser rights in order to update \python{}.
 Therefore one has to prepend \code{sudo} to the following commands and confirm them by entering the superuser password.
 The installations using a distribution manager are save and tested by the vast community.
-In the following, the successive order of commands to update python is presented for \texttt{apt-get} (Linux) and \texttt{MacPorts} (macOS).
+In the following, the successive order of commands to update \python{} is presented for \texttt{apt-get} (Linux) and \texttt{MacPorts} (macOS), but are most similar for other distribution managers.
 \begin{table}[h!]
 \centering
 \footnotesize
@@ -790,8 +807,8 @@ In the following, the successive order of commands to update python is presented
 \end{table}
 
 Depending on the previously installed packages, this command might install further dependencies automatically (after confirmation).
-One should test if the installation was successful by typing \code{python3 --version} or \code{python3.6 --version} (depending on the installation name) which prints out the version of the python installation (and should be larger than 3.5).
-Next one must update the package manager to get the newest versions of python packages.
+One should test if the installation was successful by typing \code{python3 --version} or \code{python3.6 --version} (depending on the installation name) which prints out the version of the \python{} installation (and should be larger than 3.5).
+Next one must update the package manager to get the newest versions of \python{} packages.
 This is done by running
 \begin{table}[h!]
 \centering
@@ -801,12 +818,12 @@ This is done by running
 	4. Update \code{pip} & \code{pip3 install --upgrade --user pip wheel} & \code{pip-3.6 install --upgrade --user pip wheel} \\
 \end{tabular}
 \normalsize
-\end{table}
-
+\end{table}\\
 Note that this just upgrades the packages for the current user.
 If one wants the systemwide installation, one again has to prepend \code{sudo} and can ignore the \code{--user} flag (\code{sudo pip3 install --upgrade pip wheel}).
 Furthermore, depending on the installed version of \code{pip}, it could have a different name.
 This is best figured out by typing \code{pip} and pressing \texttt{tab}.
+
 Finally, one can install \vpython{} by running
 \begin{table}[h!]
 \centering
@@ -818,28 +835,27 @@ Finally, one can install \vpython{} by running
 \normalsize
 \end{table}
 
-At this point, everything needed is installed and one can start the simulation.
-To test the \vpython{} installation and should run \code{python3} or \code{python3.6}, which starts a \python{} console.
+At this point, everything is installed and one can start the simulation.
+To test the \vpython{} installation one should run \code{python3} or \code{python3.6}, which starts a \python{} console.
 Next, one shall run \code{from vpython import *}, which loads the \vpython{} package and opens the default browser.
 Running \code{box()} should generate a white box in the browser window, which can be rotated using the mouse.
 The program is quit by running \code{quit()} or pressing \texttt{Ctrl-c}.
 
-In general, there are multiple ways to run python scripts.
+In general, there are multiple ways to run \python{} scripts.
 For the sake of this paper, we suggest two scenarios.
-
-The first scenario to run python scripts is that one writes and saves a \python{} file, e.g., \texttt{test.py}, which can be edited using any text editor of choice.
-To run the python script one must navigate the terminal to the containing folder using the \code{cd} (and \code{ls}) command.
-While \code{ls} prints out the folders and files in the current directory, \code{cd} changes the directory.
-The command \code{cd} either takes relative paths (directories which are in the current directory), e.g., \code{cd folder}, or absolute paths beginning with a \code{/}, e.g., \code{cd /Users/name/Desktop/}.
-Once one has navigated to folder which contains the python file --- e.g., the file name is listed when typing \code{ls} --- than one can type \code{python3 test.py} or \code{python3.6 test.py} to execute the script.
-Again, this script can be ended (if it does not end automatically) by pressing \texttt{Ctrl-c}.
-
-The second scenario to run \python{} scripts is given by the interactive \texttt{ipython} or \texttt{jupyter} notebooks.
-This feature is automatically installed when installing the newest version of \vpython{}.
-To start an interactive session, one has to run \code{jupyter notebook} (or equivalent, depending on the installation name. Again, this can be figured out by typing \code{jupyter} and pressing \texttt{tab}).
-This will print a link (containing the name \texttt{localhost}) and open the browser at the link-address.
-Within this browser window, one can freely navigate to the directory of choice and create interactive \python{} and \vpython{} sessions by clicking on existing files or creating new ones (upper right button \texttt{new}$\rightarrow$\vpython{}).
-
+\begin{enumerate}
+\item The first scenario to run \python{} scripts is that one writes and saves a \python{} file, e.g., \texttt{test.py}, which can be edited using any text editor of choice.
+	To run the \python{} script one must navigate the terminal to the containing folder using the \code{cd} (and \code{ls}) command.
+	While \code{ls} prints out the folders and files in the current directory, \code{cd} changes the directory.
+	The command \code{cd} either takes relative paths (directories which are in the current directory), e.g., \code{cd folder}, or absolute paths beginning with a \code{/}, e.g., \code{cd /Users/name/Desktop/}.
+	Once one has navigated to folder which contains the \python{} file --- e.g., the file name is listed when typing \code{ls} --- than one can type \code{python3 test.py} or \code{python3.6 test.py} to execute the script.
+	Again, this script can be ended (if it does not end automatically) by pressing \texttt{Ctrl-c}.
+\item The second scenario to run \python{} scripts is given by the interactive \texttt{ipython} or \texttt{jupyter} notebooks.
+	This feature is automatically installed when installing the newest version of \vpython{}.
+	To start an interactive session, one has to run \code{jupyter notebook} (or equivalent, depending on the installation name. Again, this can be figured out by typing \code{jupyter} and pressing \texttt{tab}).
+	This will print a link (containing the name \texttt{localhost}) and open the browser at the link-address.
+	Within this browser window, one can freely navigate to the directory of choice and create interactive \python{} and \vpython{} sessions by clicking on existing files or creating new ones (upper right button \texttt{new}$\rightarrow$\vpython{}).
+\end{enumerate}
 We provide example files for both scenarios.\todo{@arXiv: online link}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -848,19 +864,20 @@ We provide example files for both scenarios.\todo{@arXiv: online link}
 
 As the first step, one must install \python{}, again there are several possibilities but we suggest \texttt{Anaconda} for an intuitive installation.
 Following the link \url{https://conda.io/docs/user-guide/install/download.html}, one has two possible (free) options, \texttt{Anaconda} and \texttt{Miniconda}.
-Both are equally sufficient, because one can install further updates after the initial installation.
+Both are equally sufficient.
+One can install further updates after the initial installation.
 In the case of \texttt{Miniconda} (\url{https://conda.io/miniconda.html}) one shall download the newest \python{} 3.x (x $\geq5$) installer for windows and the right system type (32-bit or 64-bit).
 The system type can be found by pressing \texttt{Windows+I}, navigating to \texttt{System}$\rightarrow$\texttt{About} and looking at the \texttt{System type} entry.
 
-Installing one of the two executables creates a new windows application called \texttt{Anaconda Prompt}.
-Starting this application opens a terminal which we will user to install the required \python{} packages.
+Installing one of the two executables creates a new \texttt{Windows} application called \texttt{Anaconda Prompt}.
+Starting this application opens a terminal which will be used to install the required \python{} packages.
 At first, one should test if the \texttt{Anaconda} installation was successful by running the command \code{conda list}.
 This command should print a list of already installed packages.
 Also one should run \code{conda update conda} to make sure one has the most recent installation.
 
 To install \vpython{} one simply has to run \code{conda install -c vpython vpython}.
 The additional flag \code{-c vpython} tells \texttt{Anaconda} the "channel" where to look for the \vpython{} package.
-Running this command prints out a list of dependencies which must be installed in order for \vpython{} to work --- this must be confirmed.
+Running this command prints out a list of dependencies which will be automatically installed in order for \vpython{} to work --- this must be confirmed.
 
 In principle this is already sufficient to run \vpython{} scripts.
 One could furthermore install \texttt{Anaconda}s native navigator \texttt{anaconda-navigator} by running \code{conda install anaconda-navigator}.
@@ -871,14 +888,16 @@ Again there are several possibilities to run \python{} files on \texttt{Windows}
 	\item One could create a file \texttt{test.py}, edit it with the editor of choice and specify that this file should be opened with \texttt{Python3}.
 		To do so, \texttt{right click} on  the file, select \texttt{open with} and locate the \texttt{Anaconda Python3} installation.
 		Programs can be closed by closing the running window.
+	\item One can run \code{python3} in the \texttt{Anaconda Prompt} application to start an interactive session.
+		Programs can be closed by closing the running window.
 	\item Start the \texttt{Anaconda Navigator} application, open an interactive \texttt{qtconsole} and program within the newly opened terminal.
 		Programs can be closed by closing the running window.
 	\item Start the \texttt{Anaconda Navigator} application and click on the \texttt{jupyter notebook} button.
 		This opens an interactive \python{} session in the default web-browser.
-		Here one open existing notebooks or create new files (upper right button \texttt{new}$\rightarrow$\vpython{}).
+		Here, one can open existing notebooks or create new files (upper right button \texttt{new}$\rightarrow$\vpython{}).
 \end{itemize}
 
-To start and test the \vpython{} installation one should pick any out of the three options and execute the code
+To start and test the \vpython{} installation one should pick any out of these options and execute the code
 \begin{lstlisting}
 from vpython import *
 box()
