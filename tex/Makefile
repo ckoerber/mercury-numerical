@@ -1,6 +1,6 @@
 BASE     = MercuryNumerical
 STYPATH  = :sty
-LTX      = xelatex
+LTX      = pdflatex
 BTX      = bibtex
 
 .PHONY: clean pristine veryclean
@@ -13,12 +13,6 @@ BTX      = bibtex
 
 all:	${BASE}.pdf
 	cp ${BASE}.pdf ../
-
-# $(BASE).pdf: $(BASE).bbl
-
-# %.bbl:  %.bib
-# 	TEXINPUTS=${STYPATH} ${LTX} $*.tex
-# 	BSTINPUTS=${STYPATH} ${BTX} $*
 
 clean:
 	-rm -f ${BASE}.aux

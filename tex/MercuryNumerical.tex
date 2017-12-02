@@ -39,12 +39,29 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\documentclass[12pt, UK english]{iopart}
+\documentclass[12pt,ngerman,american]{iopart}
 \newcommand{\gguide}{{\it Preparing graphics for IOP Publishing journals}}
 %Uncomment next line if AMS fonts required
 %\usepackage{iopams} 
 
-\usepackage{hyperref}
+\usepackage[utf8]{inputenc}         % this is needed for Umlaute
+\usepackage[english,ngerman]{babel} % this is needed for Umlaute
+\usepackage[T1]{fontenc}            % this is needed for correct output of umlauts in pdf
+
+
+\usepackage[dvipsnames]{xcolor}         % Enabling colors by their 'svgnames'
+\usepackage[%
+  unicode=false,%
+  pdftitle={A primer to numerical simulations: The perihelion motion of Mercury},%
+  pdfauthor={I. Hammer, C. Hanhart, C. Körber and C. Müller},%
+  pdfkeywords={Numerical Simulations, Teaching, Perihelion Motion of Mercury, General Relativity},%
+  pdfsubject={A primer with the goal to teach general concepts of numerical simulations to high school students.  The specific example is the perihelion motion of mercury due to General Relativity.},   % subject of the document
+  colorlinks=true,        % true: colored links
+  linkcolor=OliveGreen,          % color of internal links (change box color with linkbordercolor)
+  citecolor=magenta,        % color of links to bibliography
+  filecolor=YellowGreen,      % color of file links
+  urlcolor=blue           % color of external links
+]{hyperref}
 \usepackage[space=true]{accsupp}
 % requires the latest version of package accsupp
 \newcommand{\copyablespace}{\BeginAccSupp{method=hex,unicode,ActualText=00A0}\ \EndAccSupp{}}
@@ -53,18 +70,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[T1]{fontenc}           % Embed fonts
-\usepackage{textcomp,gensymb}      % \degree
 
-\usepackage{polyglossia}                         % Define languages (Umlaute)
-\setdefaultlanguage[variant=american]{english}   % Accent of main language
-\setotherlanguage{german}                        % We also have german words
+\usepackage{textcomp,gensymb}       % \degree
+
 \usepackage[autostyle=true]{csquotes}            % Define quotation style
 \MakeOuterQuote{"}                               % Text wrapped in "..." is recognized as a quotation
 
 \usepackage{amssymb}                  % Math stuff
 \usepackage{graphicx}                 % Import Pictures + PDFs
-\usepackage[svgnames]{xcolor}         % Enabling colors by their 'svgnames'
 \usepackage{listings}                 % Code listings  See: https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
 
 \usepackage{subcaption} % subfigures
