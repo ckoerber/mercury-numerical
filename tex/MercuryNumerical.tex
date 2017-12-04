@@ -582,6 +582,8 @@ for n in range(1, max_turns):
 # display the average
 print(sum_angle/(max_turns-1.))
 \end{lstlisting}
+Note that the "next" perihelion location is compared to the "previous" perihelion location in order to compute the perihelion motion.
+This is the case since, depending on the initial conditions and numerical uncertainty, one does not necessarily start at the perihelion and would therefore have a systematic error when comparing to initial coordinates.
 
 As explained above [and further discussed in chapter \ref{sec:analysis}] the natural value for $\alpha$ would be of the order of $1$.
 However, if the students use this value for $\alpha$, they will find that the change in the trajectories is close to invisible and the numerical uncertainty is much larger than the result.
@@ -613,33 +615,38 @@ To test whether this is a reasonable result, the students could first follow the
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Tests of stability and error analysis}\label{sec:stability}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo[inline]{@all: where is this periodic oscillation coming from?}
 Physical experiments in general, as do numerical simulations of physics, must always account for possible uncertainties.
 It is important for the students to recognize this fact and to understand, that the cause of the uncertainties lies, e.g., in the finite time steps.
 The students should therefore explore the source and size of the errors arising in this simulation at least qualitatively.
 
-Consider figure \ref{fcc3}, where the angle of the perihelion growth $\delta \Theta$ is shown for the first $10$ turns for different choices of $\Delta t$ (colors) and $\alpha$ (columns).
+Consider figure \ref{fcc3}, where the angle of the perihelion motion $\delta \Theta$ is shown for the first $10$ turns ($x$-axis) for different choices of $\Delta t$ (colors) and $\alpha$ (columns).
 As expected, the correlation between the number of turns and $\delta\Theta$, for sufficiently small time-steps $\Delta t$, is constant on average and the values depend solely on $\alpha$.
-However, there is an offset between the lines for different $\Delta t$.
-The reason is, due to the uncertainties in the simulation, the starting position does not coincide with the first perihelion as one might expect.
-This does not generate a problem for the procedure described in the previous section since the starting position is not considered. Still, it is helpful to be aware of this fact.
-One can see nicely in figure \ref{fcc3} that the oscillations of the perihelion motion increases for growing time steps. 
+However, at $\alpha=0$, there is an offset between the data points for $\delta \Theta$ and zero for different values of $\Delta t$.
+Because one knows that for the regular gravitational potential, the orbit should be bounded, this is a numerical error.
+Indeed this can be viewed as a magnitude estimate for the numerical error for the perihelion motion $\delta \Theta$.
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=.99\textwidth]{figs/angular-variaton.pdf}
-	\caption{\label{fcc3}Precession growth of perihelion $\delta\Theta$ in degrees depending on the number of turns $N_t$ for different time steps $\Delta t$ (color) and different values for $\alpha$ (columns).
+	\caption{\label{fcc3}Motion of perihelion $\delta\Theta$ in degrees depending on the number of turns $N_t$ for different time steps $\Delta t$ (color) and different values for $\alpha$ (columns).
 	Here, $\Delta t_0 \equiv 2 v_M(0)/c_a$.
-	One should pay special attention to the oscillations within the growth for relatively large time steps.
+	Offsets of $\delta \Theta(\alpha=0)$ from zero can be viewed as an error magnitude estimated and oscillations in $\delta \Theta$ indicate to coarse time steps.
 }
 \end{figure}
 
-To point the students to this problem, they can be asked to increase their time steps significantly and observe the effect on the trajectories.
+Furthermore, for large time-steps, one can observe that the values of the perihelion motion oscillates between discrete values at different turns.
+This indicates that the time-step is chosen to large for accurate computations and accordingly the grid for the perihelion vectors to coarse.
+The exact perihelion vector of Mercury and the Sun could potenitally lay between the discrete values computed for finite time-steps.
+If this is the case, then for some turns, the code would recognize the vector before the exact location as the perihelion and sometimes the vector behind the exact location as the perihelion.
+This results in the observed oscillations of $\delta \Theta$.
+One can show that this is the case if one also prints the angles between the previous perihelion and the vector before the new perihelion (\code{vec\_r\_before\_last}) and after the new perihelion (\code{M}).
+
+To point the students to this problem, they can be asked to adjust the size of the time-steps and and observe the effect on the trajectories.
+This should also be done for large values which supposed to be problematic because the effect is more observable.
 For this study, it is advantageous to set $\alpha =0$, since in this case the trajectories should be closed and therefore deviations from the ideal case can be spotted easily.
 In figure \ref{fig:MercuryOrbit-a0-small-dt-large} the mercury trajectory for $\Delta t=2 v_M(0) / c_a \times 2$ is shown.
 One can clearly see the failure of the simulation to reproduce the physical trajectory.
 From examples like this it should be apparent that the time steps influence the accuracy of the simulation.
-One could quantify the deviation of $\delta\Theta$ from zero and use this to estimate the numerical systematic uncertainty for a given time step $\Delta t$.
 Only in the limit $\Delta t \rightarrow 0$ would the simulation perfectly reproduce the actual trajectory.
 
 
