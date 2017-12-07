@@ -55,7 +55,7 @@
 \usepackage[%
   unicode=false,%
   pdftitle={A primer to numerical simulations: The perihelion motion of Mercury},%
-  pdfauthor={I. Hammer, C. Hanhart, C. Körber and C. Müller},%
+  pdfauthor={C. Körber, I. Hammer, , J.-L. Wynen, C. Müller and C. Hanhart},%
   pdfkeywords={Numerical Simulations, Teaching, Perihelion Motion of Mercury, General Relativity},%
   pdfsubject={A primer with the goal to teach general concepts of numerical simulations to high school students.  The specific example is the perihelion motion of mercury due to General Relativity.},   % subject of the document
   colorlinks=true,        % true: colored links
@@ -333,7 +333,7 @@ where $T_V$ ($T_M$) denotes the length of a venus (mercury) year. This precisely
 
 In this section we present the numerical implementation as well as the visualisation of planetary trajectories and in
 particular
-the perihelion motion of Mercury.  We select \python{} (\url{https://www.python.org}) as  programming language, because \python{} is easy to learn, intuitive to understand and an open source language.
+the perihelion motion of Mercury.  We select \python{} \cite{Python} as  programming language, because \python{} is easy to learn, intuitive to understand and an open source language.
 No prior knowledge of \python{} or any other programming language is required, as we explain all the necessary steps to create the simulation.
 In appendix \ref{appendix:python} we give instructions for setting up \python{} on different operating systems.
 We also provide a working example program that can be used as a template \url{this-upload-url}\todo{@arXiv: online link}.
@@ -341,7 +341,7 @@ We also provide a working example program that can be used as a template \url{th
 To start the simulation one needs the "initial" distances and velocities, which are needed as input to the equation of motion [Eq.~(\ref{eq:x_update}) and Eq.~(\ref{eq:v_update})].
 As described above, here  one can simplify the problem by placing one planet (the "infinitely" heavy sun) in the center of the coordinate system and describe the motion of the other planet (mercury) in a two-dimensional plane.  
 
-Because the problem does not depend on the initial position of mercury on its orbit around the sun, we extract the parameters at the perihelion with $ \abs{\vec r_{MS}(0)} = 46 \cdot 10^6$km and $ \abs{\vec v_M(0)} = 59$km/s\footnote{\url{https://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html}}.
+Because the problem does not depend on the initial position of mercury on its orbit around the sun, we extract the parameters at the perihelion with $ \abs{\vec r_{MS}(0)} = 46 \cdot 10^6$km and $ \abs{\vec v_M(0)} = 59$km/s\cite{MercuryFactSheet}.
 Since the computer does not understand physical units, one has to express each variable in an appropriate unit.
 Both, for the numerical treatment and the intuitive understanding, it is useful to select parameters in a "natural range".
 A useful choice for this problem is given e.g. by expressing distances in $R_0 = 10^{10}$ m and time intervals in days, $T_0 = 1$d, where $d$ refers to earth days, such that one mercury year is given by $T_M=88\,T_0$.
@@ -604,7 +604,7 @@ Therefore, to estimate the size of the perihelion motion, it is more advisable t
 	We therefore advise to choose $\alpha<7\cdot 10^6$ at which point the perihelion motion exceeds $\delta \Theta=90^{\degree}$.
 }.
 The students can convince themselves of this fact by plotting the angles $\delta \Theta$ they have extracted from their simulation over $\alpha$.
-This can be done either by hand, \python{} (e.g., with \texttt{matplotlib}: \url{https://matplotlib.org}), or using another program like, e.g., Excel.
+This can be done either by hand, \python{} (e.g., with \texttt{matplotlib} \cite{Matplotlib}), or using another program like, e.g., Excel.
 For instance figure \ref{fig:AlphaAngle} demonstrates such a plot.
 
 \begin{figure}[htb]
@@ -702,7 +702,7 @@ This could be achieved by the following changes or additions to the concept pres
 \item \textbf{Build code from scratch}
 
 Instead of providing the template to the students, they could build the program from scratch.
-Of course, this requires some basic knowledge in \texttt{VPython}, as they could acquire for example by working through a ball in the box example (see~\url{http://www.vpython.org/contents/docs/VPython_Intro.pdf}) or the like.
+Of course, this requires some basic knowledge in \texttt{VPython}, as they could acquire for example by working through a ball in the box example (see \cite{VPythonIntro}) or the like.
 Also, they could independently research the problem relevant parameters.
 \item \textbf{Why can we work in one plane?}
 
@@ -777,7 +777,7 @@ Here they come
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{References}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{alphadin}
+\bibliographystyle{unsrt}%{alphadin}
 \bibliography{References}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -787,7 +787,7 @@ In short, to run the above scripts, one needs to install \python{} and \vpython{
 We recommend the newest \vpython{} version 7 or higher which best runs with the \python{} versions of 3.5 or higher.
 It is also possible to use \python{} 2.7 or higher, but the 3.x versions have better \vpython{} support.
 
-For the advanced users, one simply has to update \python{} to these versions and install \vpython{} via the package manager of choice, e.g, \texttt{pip} [see also \url{http://vpython.org}].
+For the advanced users, one simply has to update \python{} to these versions and install \vpython{} via the package manager of choice, e.g, \texttt{pip} (see also \cite{VPython}).
 
 Below, we provide detailed descriptions how to install these versions of \python{} and \vpython{} for different operating systems.
 Independent of the operating systems, one has to execute the following steps:
@@ -805,7 +805,7 @@ Thus, if not already at the newest version, one just has to update existing inst
 This is best done by using a distribution manager.
 Native to Linux based systems is for example \texttt{dpkg} and \texttt{apt-get}, or \texttt{homebrew} and \texttt{MacPorts} for macOS.
 While \texttt{dpkg} and \texttt{apt-get} usually come with the linux installations, macOS user must install such distribution managers at first.
-For this we refer to \url{https://www.macports.org/install.php} or \url{https://docs.brew.sh/Installation.html}.
+For this we refer to \cite{MacPorts} or \cite{Homebrew}.
 
 As the start one should open a terminal/console (bash).
 Depending on the installation, one usually needs superuser rights in order to update \python{}.
@@ -881,10 +881,10 @@ We provide example files for both scenarios.\todo{@arXiv: online link}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 As the first step, one must install \python{}, again there are several possibilities but we suggest \texttt{Anaconda} for an intuitive installation.
-Following the link \url{https://conda.io/docs/user-guide/install/download.html}, one has two possible (free) options, \texttt{Anaconda} and \texttt{Miniconda}.
+Following the link \cite{conda}, one has two possible (free) options, \texttt{Anaconda} and \texttt{Miniconda}.
 Both are equally sufficient.
 One can install further updates after the initial installation.
-In the case of \texttt{Miniconda} (\url{https://conda.io/miniconda.html}) one shall download the newest \python{} 3.x (x $\geq5$) installer for windows and the right system type (32-bit or 64-bit).
+In the case of \texttt{Miniconda} \cite{Miniconda} one shall download the newest \python{} 3.x (x $\geq5$) installer for windows and the right system type (32-bit or 64-bit).
 The system type can be found by pressing \texttt{Windows+I}, navigating to \texttt{System}$\rightarrow$\texttt{About} and looking at the \texttt{System type} entry.
 
 Installing one of the two executables creates a new \texttt{Windows} application called \texttt{Anaconda Prompt}.
