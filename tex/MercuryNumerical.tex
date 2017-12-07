@@ -47,6 +47,7 @@
 \usepackage[utf8]{inputenc}         % this is needed for Umlaute
 \usepackage[english,ngerman]{babel} % this is needed for Umlaute
 \usepackage[T1]{fontenc}            % this is needed for correct output of umlauts in pdf
+\usepackage{cite}
 
 
 \usepackage[dvipsnames]{xcolor}         % Enabling colors by their 'svgnames'
@@ -674,22 +675,6 @@ Indeed, we now several of those hierarchy problems in modern physics: e.g., the 
 This smallness, called the strong CP problem, is so irritating that physicists like S. Weinberg even proposed that there must exist an additional particle, the axion, whose interactions are in charge of pushing $\Theta$ even to zero and there are now intense searches for this axion going on various labs.
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Tasks}\label{sec:tasks}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo{@IH: this could be a little bit more verbose. Maybe include in section below.}
-Ideas for questions:
-\begin{itemize}
-	\item Mass and motion of sun
-	\item Estimate \texttt{dt} and also \texttt{T} in order to cover roughly two "mercury years".
-	\item What does happen when you change those units?
-	\item Compare values to the values in \cite{}.  Where does the difference come from?
-	\item Start with $\alpha=0$. What do you observe?
-\end{itemize}
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Possible extensions}\label{sec:extensions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -747,7 +732,7 @@ By varying $\Delta t$ they can validate, that there is indeed approximately an a
 \item \textbf{Verlet integration}
 
 Of course by optimizing the code, an improvement in accuracy can be achieved without changing $\Delta t$.
-The simplest way to demonstrate this might be given by the implementation of the Verlet\cite{}\todo{@IH: cite Verlet} integration instead of using the simple Euler method.
+The simplest way to demonstrate this might be given by the implementation of the Verlet (see e.g.~\cite{Hairer03geometricnumerical} and references therein) integration instead of using the simple Euler method.
 \end{itemize}
 
 \item \textbf{Extended Problems}
@@ -772,15 +757,17 @@ Only a smaller part is due to general relativity.
 \appendix
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgments}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \todo{@all: Acknowledgments}
 Here they come
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{References}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{alphadin}
+\bibliography{References}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Instructions to install VPython}\label{appendix:python}
@@ -941,15 +928,5 @@ We provide example files for both \texttt{juypter notebooks} and regular \python
 Below we provide an example script on how to program the visualization of the mercury orbit in \vpython{}.
 \lstinputlisting[language=Python]{mercury_orbit_base.py}
 Further examples and template files can be found online\cite{}.\todo[inline]{@arXiv: online link}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Bib
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\bibliographystyle{alphadin}
-%\bibliography{MercuryNumerical}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}
