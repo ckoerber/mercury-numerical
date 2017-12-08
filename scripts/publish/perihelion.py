@@ -1,5 +1,12 @@
 """
+Extension of the base solution to measure and display the preihelion.
 
+Extends base_solution.py by keeping track of the location of the perihelion
+of Mercury. Computes and outputs the angle by which it changes over
+the course of the simulation.
+
+The stopping criterion is different than in base_solution.py. Uses a fixed number
+of revolutions around the sun instead of a fixed run time.
 """
 
 # import everything from vpython (need graphics output, vectors, etc.)
@@ -32,11 +39,18 @@ S.velocity = vector(0, 0, 0)
 # add a visible trajectory to Mercury
 M.trajectory = curve(color=color.black, radius=0.005)
 
-# definition of the time step
-dt = 2. * vM0 / aM / 10
-
-# function to advance Mercury in time
 def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
+    """
+    Advance Mercury in time by one step of length dt.
+    Arguments:
+         - vec_rM_old: old position vector of Mercury
+         - vec_vM_old: old velocity vector of Mercury
+         - alpha: strength of 1/r**3 term in force
+    Returns:
+         - vec_rM_new: new position vector of Mercury
+         - vec_vM_new: new velocity vector of Mercury
+    """
+
     # compute the absolute value of the acceleration
     aMS = aM * ( 1. + alpha * rS / vec_rM_old.mag  ) / vec_rM_old.mag**2
     # multiply by the direction to get the acceleration vector
@@ -47,17 +61,18 @@ def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
     vec_rM_new = vec_rM_old + vec_vM_new * dt
     return vec_rM_new, vec_vM_new
 
-# define function for angle extraction (result is in degrees)
 def angle_between(v1, v2):
+    """Compute angle between two vectors. Result is in degrees."""
     return acos( dot(v1, v2) / (v1.mag * v2.mag) ) * 180. / pi
 
 # run parameters
-alpha      = 1.e6
-vec_r_last = vec_rM0
-turns      = 0
-max_turns  = 10
-list_perih = list()
-sum_angle  = 0.
+dt = 2. * vM0 / aM / 10   # time step
+alpha      = 1.e6         # strength of 1/r**3 term
+vec_r_last = vec_rM0      # previous position of Mercury
+turns      = 0            # number of completed turns
+max_turns  = 10           # maximum number of turns
+list_perih = list()       # list of perihelion locations
+sum_angle  = 0.           # angle between first and last perihelion
 
 # find perihelion for each turn and print it out
 while turns < max_turns:
