@@ -20,15 +20,15 @@ scene.center     = vector(0, -2, 0)
 # values computed using https://nssdc.gsfc.nasa.gov/planetary/factsheet
 rM0 = 4.6    # initial radius of Mercury orbit, in units of R0
 vM0 = 0.51   # initial orbital speed of Mercury, in units of R0/T0
-aM  = 1.01   # base acceleration of Mercur, in units of R0/T0**2
+c_a = 1.01   # base acceleration of Mercur, in units of R0/T0**2
 rS  = 3.e-7  # Schwarzschild radius of Sun, in units of R0
 
 # initialize distance and velocity vectors of Mercury (at perihelion)
 vec_rM0 = vector(0, rM0, 0)
 vec_vM0 = vector(vM0, 0, 0)
 
-# define graphical objects; M = mercury, S = sun
-M = sphere(pos=vec_rM0,       radius=0.5,  color=color.red   )
+# define graphical objects; M = Mercury, S = Sun
+M = sphere(pos=vec_rM0,         radius=0.5,  color=color.red   )
 S = sphere(pos=vector(0, 0, 0), radius=1.5,  color=color.yellow)
 # and the initial velocities
 M.velocity = vec_vM0
@@ -50,7 +50,7 @@ def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
     """
 
     # compute the absolute value of the acceleration
-    aMS = aM * ( 1. + alpha * rS / vec_rM_old.mag  ) / vec_rM_old.mag**2
+    aMS = c_a * ( 1. + alpha * rS / vec_rM_old.mag  ) / vec_rM_old.mag**2
     # multiply by the direction to get the acceleration vector
     vec_aMS = - aMS * ( vec_rM_old / vec_rM_old.mag )
     # update velocity vector
@@ -60,10 +60,10 @@ def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
     return vec_rM_new, vec_vM_new
 
 # run parameters
-dt = 2. * vM0 / aM / 10  # time step
-alpha   = 1.e6           # strength of 1/r**3 term
-time = 0                 # current simulation time
-max_time = 1000*dt       # maximum simulation time
+dt = 2. * vM0 / c_a / 20  # time step
+alpha = 1.e6              # strength of 1/r**3 term
+time = 0                  # current simulation time
+max_time = 1000*dt        # maximum simulation time
 
 # run the simulation for a given time and draw trajectory
 while time < max_time:

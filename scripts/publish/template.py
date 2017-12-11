@@ -25,7 +25,7 @@ scene.center     = vector(0, -2, 0)
 # values computed using https://nssdc.gsfc.nasa.gov/planetary/factsheet
 rM0 = 4.6    # initial radius of Mercury orbit, in units of R0
 vM0 = 0.51   # initial orbital speed of Mercury, in units of R0/T0
-aM  = 1.01   # base acceleration of Mercur, in units of R0/T0**2
+c_a = 1.01   # base acceleration of Mercur, in units of R0/T0**2
 rS  = 3.e-7  # Schwarzschild radius of Sun, in units of R0
 
 # initialize distance and velocity vectors of Mercury (at perihelion)
@@ -57,10 +57,10 @@ def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
     return vec_rM_new, vec_vM_new
 
 # run parameters
-dt = 2. * vM0 / aM / 10  # time step
-alpha   = 1.e6           # strength of 1/r**3 term
-time = 0                 # current simulation time
-max_time = 1000*dt       # maximum simulation time
+dt = 2. * vM0 / c_a / 20  # time step
+alpha   = 1.e6            # strength of 1/r**3 term
+time = 0                  # current simulation time
+max_time = 1000*dt        # maximum simulation time
 
 # run the simulation for a given time and draw trajectory
 while time < max_time:
