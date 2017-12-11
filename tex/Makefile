@@ -1,20 +1,28 @@
 BASE     = MercuryNumerical
 LTX      = pdflatex
 BTX      = bibtex
+THISBIB  = References.bib
 
 .DEFAULT_GOAL := ${BASE}.pdf
 
-%.pdf:	%.tex
-	TEXINPUTS=${STYPATH} ${LTX} $<
-	TEXINPUTS=${STYPATH} ${LTX} $<
+%.pdf:	%.tex %.bbl
+	${LTX} $<
+	${LTX} $<
+
+%.bbl:	%.aux ${THISBIB}
+	${BTX} $<
+
+%.aux:	%.tex
+	${LTX} $<
 
 .PHONY: clean
 clean:
-	-rm -f ${BASE}.aux
-	-rm -f ${BASE}.bbl
-	-rm -f ${BASE}.blg
-	-rm -f ${BASE}.log
-	-rm -f ${BASE}.tdo
-	-rm -f ${BASE}.out
-	-rm -f ${BASE}.pdf
+	$(RM) ${BASE}.aux
+	$(RM) ${BASE}.bbl
+	$(RM) ${BASE}.blg
+	$(RM) ${BASE}.log
+	$(RM) ${BASE}.tdo
+	$(RM) ${BASE}.out
+	$(RM) ${BASE}.pdf
+	$(RM) ${BASE}.synctex.gz
 
