@@ -311,23 +311,29 @@ $(1+\alpha(r_S/r))$, where $\alpha$ denotes some dimensionless parameter.
 However, besides $r_S$, which is the characteristic length scale for the gravitational potential
 of the sun, one can define one more parameter, which is characteristic for the dynamics of mercury, namely
 \begin{equation}
-h=\frac{\vec L\,^2}{m^2c^2}= \frac{(\vec r\times \dot{\vec r} \, )^2}{c^2} \ ,
+a^2=\frac{\vec L\,^2}{m^2c^2}= \frac{(\vec r\times \dot{\vec r} \, )^2}{c^2} \ ,
 \end{equation}
 where $\vec L$ denotes the angular momentum, which is a constant of motion for central potentials.
-It is easily verified that $h$ carries dimensions of a length squared.  Therefore we may use  the following ansatz
+It is easily verified that $a^2$ carries dimensions of a length squared.  Therefore we may use  the following ansatz
 for the modified potential
 \begin{equation}
-\ddot{\vec r} = - \frac{c^2}{2}\left(\frac{r_S}{r^2}\right)\left(1+\alpha\frac{r_S}{r}+\beta\frac{h}{r^2}\right) \, \frac{\vec{r}}{r} \ .
+\ddot{\vec r} = - \frac{c^2}{2}\left(\frac{r_S}{r^2}\right)\left(1+\alpha\frac{r_S}{r}+\beta\frac{a^2}{r^2}\right) \, \frac{\vec{r}}{r} \ .
 \label{eq:newton_art}
 \end{equation}
-For the system at hand $h$ may be estimated from the parameters of mercury at its perihelion ---  $\abs{\vec v_M(0)} = 59$km/s and 
+For the system at hand $a^2$ may be estimated from the parameters of mercury at its perihelion ---  $\abs{\vec v_M(0)} = 59$km/s and 
 $ r_{MS}=\abs{\vec r_{MS}(0)} = 46 \cdot 10^6$km~\cite{MercuryFactSheet}, where both $\vec r$ and $\dot{\vec r}$ are perpendicular to each other. 
-We thus find that $(h/ r_{MS}^2) = 4\times10^{-6}$. Furthermore $(r_S/r_{MS})=6\times 10^{-6}$. 
-Therefore one may expect from both correction terms an effect similar in size. Furthermore, any term higher order in either $h$ or $r_S$
+We thus find that $(a^2/ r_{MS}^2) = 4\cdot10^{-8}$. Furthermore $(r_S/r_{MS})=6\cdot 10^{-8}$. 
+Therefore one may expect from both correction terms an effect similar in size. Furthermore, any term higher order in either $a$ or $r_S$
 should be suppressed by additional six orders of magnitude and thus can be safely neglected.
 The parameters $\alpha$ and $\beta$ could now either be extracted from a fit to data or be calculated from the underlying
-theory --- here General relativity. However, since we have only a single number to study, the angular motion of the perihelion,
-we can only fix either $\alpha$ or $\beta$. 
+theory --- here General relativity with the result
+\begin{equation}\label{eq:art-prediction}
+	\alpha = 0 \, , \quad \beta = 3 \, .
+\end{equation}
+
+However, since we have only a single number to study, the angular motion of the perihelion,
+we can only fix either $\alpha$ or $\beta$.
+
 
 %For comparison: the typical distance of the Venus, the neighbor of Mercury, to the sun is $(r_S/r_{VS}) \sim 5 \cdot 10^{-8}$.
 %Therefore the expected ratio of residual motion, favoring in the orbit period $T$, would result in
@@ -386,7 +392,8 @@ rM0 = 4.6    # in units of R0
 vM0 = 0.51   # in units of R0/T0
 c_a = 1.01   # in units of R0/T0**2
 TM  = 88.    # in units of T0
-rS  = 3.e-7  # in units of R0
+rS  = 3.0e-7 # in units of R0
+a2  = 8.2e-7 # in units of R0**2
 \end{lstlisting}
 So far we only fixed the length of the vectors.
 Next, we set up the initial directions, which will describe the motion in the two-dimensional plane.  We will build on the existing \python{} module \texttt{VPython}, which provides an implementation for treating vectors as well as their visualization.
@@ -413,7 +420,8 @@ Now we are in the position to calculate location and velocity of the planet at $
 }%
 \begin{lstlisting}
 # Compute the strength of the acceleration
-aMS = c_a * ( 1 + alpha * rS / vec_rM_old.mag  ) / vec_rM_old.mag**2
+temp = 1 + alpha * rS / vec_rM_old.mag + beta * a2 / vec_rM_old.mag**2
+aMS  = c_a * temp / vec_rM_old.mag**2
 # Multiply by the direction
 vec_aMS = - aMS * ( vec_rM_old / vec_rM_old.mag )
 # Update velocity vector
@@ -428,9 +436,10 @@ Also the magnitude of a vector --- \texttt{vector.mag} --- is a property of the 
 It is handy to use \texttt{Python}s \texttt{function}s to embed repeating structures ("DRY" --- Don't Repeat Yourself)
 \begin{lstlisting}
 # Define the coordinate and velocity update function
-def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
+def evolve_mercury(vec_rM_old, vec_vM_old, alpha, beta):
 	# Compute the strength of the acceleration
-	aMS = c_a * ( 1 + alpha * rS / vec_rM_old.mag  ) / vec_rM_old.mag**2
+	temp = 1 + alpha * rS / vec_rM_old.mag + beta * a2 / vec_rM_old.mag**2
+	aMS  = c_a * temp / vec_rM_old.mag**2
 	# Multiply by the direction
 	vec_aMS = - aMS * ( vec_rM_old / vec_rM_old.mag )
 	# Update velocity vector
@@ -439,7 +448,7 @@ def evolve_mercury(vec_rM_old, vec_vM_old, alpha):
 	return vec_rM_new, vec_vM_new
 
 # Call the function
-vec_rM_new, vec_vM_new = evolve_mercury(vec_rM_old, vec_vM_old)
+vec_rM_new, vec_vM_new = evolve_mercury(vec_rM_old, vec_vM_old, 0.0, 0.0)
 \end{lstlisting}
 \python{}s syntax enforces a clean programming style: it is necessary that the body of the function is indented (by an arbitrary but consistent amount of \texttt{space}s or \texttt{tab}s) relative to the definition statement of the function.
 Furthermore, \python{} is an Interpreter language.
@@ -449,14 +458,15 @@ The variables within the function (e.g. \texttt{aMS}, \texttt{vec\_aMS}, $\dots$
 
 Finally, we can describe the evolution by a \texttt{while}-loop
 \begin{lstlisting}%[float,floatplacement=H]
-t     = 0
-alpha = 0
+t     = 0.0
+alpha = 0.0
+beta  = 0.0
 # Execute the loop as long as t < 2*TM
 while t < 2*TM:
-	vec_rM, vec_vM = evolve_mercury(vec_rM, vec_vM, alpha)
+	vec_rM, vec_vM = evolve_mercury(vec_rM, vec_vM, alpha, beta)
 	t = t + dt
 \end{lstlisting}
-where for the start we set the parameter $\alpha=0$ in order first study the properties of the pure 
+where for the start we set the parameter $\alpha=0 = \beta$ in order first study the properties of the pure 
 $1/r^2$ force.
 Note the required indent of the loop structure similar to the indent of a function.
 In each iteration of the \texttt{while}-loop, the previous distance and velocity are used to compute the new values --- which directly overwrites the previous values and thus enter the next iteration.
@@ -489,8 +499,9 @@ We have placed the sun in the origin of our coordinate system and choose non-rea
 
 Last but not least, instead of updating the object-unrelated vectors in the while loop, we update the object-related vectors which will eventually be drawn
 \begin{lstlisting}
-t     = 0
-alpha = 0
+t     = 0.0
+alpha = 0.0
+beta  = 0.0
 # update the objects
 while t < 2*TM:
 	# set the frame rate (you can choose a higher rate to accelerate the program)
@@ -498,7 +509,7 @@ while t < 2*TM:
 	# update the drawn trajectory with the current position
 	M.trajectory.append(pos=M.pos)
 	# update the velocity and position
-	M.pos , M.velocity = evolve_mercury(M.pos , M.velocity , alpha)
+	M.pos , M.velocity = evolve_mercury(M.pos , M.velocity , alpha, beta)
 	# update time
 	t = t + dt
 \end{lstlisting}
@@ -532,7 +543,7 @@ Then the perihelion motion is better visible.
 	\end{subfigure}
 	\captionsetup{singlelinecheck=off}
 	\caption[]{\label{fig:MercuryOrbit}
-		Different mercury orbits for:
+		Different mercury orbits for $\beta=0$ and
 		\begin{itemize}
 		\item[(a)] $\alpha=0$ and $\Delta t = \Delta t_0  / 20$;
 		\item[(b)] $\alpha=0$ and $\Delta t = \Delta t_0  \times 2$, where the black line represents the orbit of (a) and the red line is the orbit for the larger time steps;
@@ -549,13 +560,15 @@ Then the perihelion motion is better visible.
 %------------------------------------------
 
 %\textit{What exactly do we want the students / advise the teachers to do? I think a nice approach would be to let the students implement the code to extract the perihelion motion and make a list of some values of alpha and the corresponding angles. Then discuss, that $\alpha=1$ is the natural size for $\alpha$ and that to extract the value of angle they need to exploit the linear dependence. Finally they can think on whether the value they get is reasonable and the teacher can explain the rest of section? What do you think?}\\
-
+To extract the linear dependence of the perihelion motion depending on $\alpha$ and $\beta$, we recommend to set one parameter to zero and vary the other.
+Both parameter have similar effects on the perihelion motion.
+As pointed out in Eq. \ref{eq:art-prediction}, general relativity predicts $(\alpha=0, \beta=3)$.
 To calculate the expected size of the perihelion motion for a modified gravitational force, the students need to
 \begin{itemize}
-\item extract multiple positions of the perihelion $\vec r_{MS} ( t_\mathrm{ph}^{(n)} )$ for a fixed value of $\alpha$ and simulations times which covers several orbits;
+\item extract multiple positions of the perihelion $\vec r_{MS} ( t_\mathrm{ph}^{(n)} )$ for a fixed value of $\alpha$ and $\beta$ and simulations times which covers several orbits;
 \item calculate the angle between the perihelions for two successive turns and compute the average angle $\delta \Theta (\alpha)$ over all individually computed angles;
-\item repeat the above points for different values of $\alpha$ to confirm the linear dependence of $\delta \Theta (\alpha)$;
-\item interpolate $\delta \Theta (\alpha)$ to $\alpha=1$ using that $\delta \Theta (0) = 0$ (modulo numerical errors).
+\item repeat the above points for different values of $\alpha$ and $\beta$ to confirm the linear dependence of $\delta \Theta (\alpha, \beta)$;
+\item interpolate $\delta \Theta (\alpha, \beta)$ to $(\alpha=1,\beta=0)$ or $(\alpha=0,\beta=3)$ using that $\delta \Theta (0,0) = 0$ (modulo numerical errors).
 \end{itemize}
 
 There are several ways to find the position of the perihelion.
@@ -624,20 +637,27 @@ For instance figure \ref{fig:AlphaAngle} demonstrates such a plot.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics{figs/alpha-angle.pdf}
-	\caption{\label{fig:AlphaAngle} Linear relation between $\alpha$ and the perihelion motion $\delta \Theta$ for $\Delta t=2v_M(0)/c_a/100$.}
+	\begin{subfigure}[c]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{figs/alpha-angle.pdf}
+		\caption{\label{fig:angle-alpha}}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{figs/beta-angle.pdf}
+		\caption{\label{fig:beta-alpha}}
+	\end{subfigure}
+	\caption{\label{fig:AlphaAngle} Linear relation between $\alpha$ [$\beta$] and and the perihelion motion $\delta \Theta$ for $\Delta t=2v_M(0)/c_a/100$ and $\beta=0$ [$\alpha=0$].}
 \end{figure}
 
-To extract the perihelion motion at $\alpha = 1$, we use the fact that $\delta \Theta$ is zero for $\alpha =0$ --- if one could completely eliminate numerical errors.
-Considering one result from the numeric simulation, e.g. $\delta\Theta(\alpha = 10^6) \approx 10.0^{\degree}$, the sought-after angle can be calculated by a linear interpolation as
+To extract the perihelion motion at $\alpha = 0$ and $\beta = 3$, we use the fact that $\delta \Theta$ is zero for $\alpha =0 = \beta$ --- if one could completely eliminate numerical errors.
+Considering one result from the numeric simulation, e.g., $\delta\Theta(\alpha = 0, \beta=10^6) \approx 10.7^{\degree}$, the sought-after angle can be calculated by a linear interpolation as
 \begin{equation}
-	\delta\Theta (\alpha=1) = \frac{10.0^{\degree}}{10^6} = 0.036''
+	\delta\Theta (\alpha=0, \beta=3) = \frac{10.6^{\degree}}{10^6} \times 3 = 0.116''
 	\, .
 \end{equation}
 Depending on the knowledge of the students, multiple points and also estimated numerical uncertainties could be used to extract this value by a linear regression.
 Note that, when comparing the results of the simulation with the experimental result, one Earth year corresponds to $T_E/T_M \approx 365d/88d\approx 4.15$ mercury years.
-Therefore, the perihelion motion per 100 earth years is $0.036''\cdot 415\approx 15''$.
-To test whether this is a reasonable result, the students could first follow the dimensional analysis and then compare to the actual value for mercury as outlined above.
+Therefore, the perihelion motion per 100 earth years is $0.116''\cdot 415\approx 48.2''$.
+This is close to experimental value of $\delta\Theta_{\mathrm{exp}} = 43.0''$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Tests of stability and error analysis}\label{sec:stability}
@@ -657,7 +677,7 @@ Indeed this can be viewed as a magnitude estimate for the numerical error for th
 	\includegraphics[width=.99\textwidth]{figs/angular-variaton.pdf}
 	\caption{\label{fcc3}Motion of perihelion $\delta\Theta$ in degrees depending on the number of turns $N_t$ for different time steps $\Delta t$ (color) and different values for $\alpha$ (columns).
 	Here, $\Delta t_0 \equiv 2 v_M(0)/c_a$.
-	Offsets of $\delta \Theta(\alpha=0)$ from zero can be viewed as an error magnitude estimated and oscillations in $\delta \Theta$ indicate to coarse time steps.
+	Offsets of $\delta \Theta(\alpha=0, \beta=0)$ from zero can be viewed as an error magnitude estimated and oscillations in $\delta \Theta$ indicate to coarse time steps.
 }
 \end{figure}
 
@@ -688,9 +708,13 @@ The idea of dimensional analysis is that in a system that can be controlled by e
 Applied to the problem at hand given by Eq.~(\ref{eq:newton}) this statement implies that from naturalness one would expect that the parameter $\alpha$ is of order 1 when one uses for $r$ the average distance Mercury-sun, namely $\bar r=6\times 10^7$ km.
 From this one estimates for the expected angular shift per orbit
 \begin{equation}
-\delta \Theta \simeq 2\pi\left(\frac{r_S}{\bar r}\right) = (\pi \times 10^{-7}) \ \mbox{rad} = (2\times 10^{-5})^o = (7\times 10^{-2}) ^{''} \ ,
+\delta \Theta \simeq 2\pi\left(\frac{r_S}{\bar r}\right) = (\pi \times 10^{-7}) \ \mbox{rad} = (2\cdot 10^{-5})^o = (7\cdot 10^{-2}) ^{''} \ ,
 \end{equation}
-which leads to a shift of about $30^{''}$ in 100 earth years to be compared to the empirical value of $43^{''}$.
+or
+\begin{equation}
+\delta \Theta \simeq 2\pi\left(\frac{a^2}{\bar r^2}\right) = (\pi \times 5 \cdot 10^{-8}) \ \mbox{rad} = (\cdot 10^{-5})^o = (4\cdot 10^{-2}) ^{''} \ ,
+\end{equation}
+which leads to a shift of about $30^{''}$ [$15^{''}$] in 100 earth years to be compared to the empirical value of $43^{''}$.
 Thus indeed the amount of perihelion motion of Mercury is in line with expectations, $if$ --- and this is an important "if" --- the Newtonian dynamics is simply the leading term of some more general underlying theory.
 In particular, no new scales enter in the correction terms.
 
