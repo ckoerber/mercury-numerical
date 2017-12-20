@@ -45,7 +45,7 @@
 %\usepackage{iopams} 
 
 \usepackage[utf8]{inputenc}         % this is needed for Umlaute
-\usepackage[english,ngerman]{babel} % this is needed for Umlaute
+\usepackage[main=american]{babel} % this is needed for Umlaute
 \usepackage[T1]{fontenc}            % this is needed for correct output of umlauts in pdf
 \usepackage{cite}
 
@@ -55,7 +55,7 @@
 \usepackage[%
   unicode=false,%
   pdftitle={A primer to numerical simulations: The perihelion motion of Mercury},%
-  pdfauthor={C. Körber, I. Hammer, , J.-L. Wynen, C. Müller and C. Hanhart},%
+  pdfauthor={C. K\"orber, I. Hammer, J.-L. Wynen, J. Heuer, C. M\"uller and C. Hanhart},%
   pdfkeywords={Numerical Simulations, Teaching, Perihelion Motion of Mercury, General Relativity},%
   pdfsubject={A primer with the goal to teach general concepts of numerical simulations to high school students.  The specific example is the perihelion motion of mercury due to General Relativity.},   % subject of the document
   colorlinks=true,        % true: colored links
@@ -83,7 +83,7 @@
 \usepackage{listings}                 % Code listings  See: https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
 
 \usepackage{subcaption} % subfigures
-\usepackage{caption}    % itemize in caption
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definitions
@@ -127,17 +127,17 @@
 \title[A primer to numerical simulations]{A primer to numerical simulations: The perihelion motion of Mercury}
 
 \author{
-	C.~Körber$^{1}$,
+	C.~K\"orber$^{1}$,
 	I.~Hammer$^{1}$,
-	??$^{3}$,
 	J.-L.~Wynen$^{1}$,
-	C.~Müller$^{2}$ and 
+	J.~Heuer$^{2}$,
+	C.~M\"uller$^{3}$ and 
 	C.~Hanhart$^{1}$
 }
 \address{
-	$^1$ \textit{Institute für Kernphysik and Institute for Advanced Simulations, Forschungszentrum Jülich, D-52425 Jülich, Germany}\\
-	$^2$ \textit{??}\\
-	$^2$ \textit{??}
+	$^1$ \textit{Institute f\"ur Kernphysik (IKP-3) and Institute for Advanced Simulations (IAS-4), Forschungszentrum J\"ulich, D-52425 J\"ulich, Germany}\\
+	$^2$ \textit{Institut f\"ur Neurowissenschaften und Medizin (INM-4), Forschungszentrum J\"ulich, D-52425 J\"ulich, Germany}\\
+	$^3$ \textit{JuLab, Forschungszentrum J\"ulich, D-52425 J\"ulich, Germany}
 }
 \ead{c.koerber@fz-juelich.de, c.hanhart@fz-juelich.de}
 \vspace{10pt}
@@ -169,14 +169,12 @@ In addition a method is discussed how to estimate the size of the effect a prior
 %\ioptwocol
 %
 
-\listoftodos
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}\label{sec:intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Numerical simulations play a key role in modern physics for they allow one to tackle theoretical problems not accessible otherwise, e.g., since there are too many particle participating in the system (as in simulations for weather predictions) or the interactions are too complicated to allow for a systematic, perturbative approach (as in theoretical descriptions of nuclear particles at the fundamental level).
-This paper introduces a project that can be used to demonstrate the power of numerical simulations.
+This paper introduces a project that allows one to demonstrate the power of numerical simulations.
 On the example of the perihelion motion of the planet Mercury the students are supposed to get in touch with
 \begin{itemize}
 \item the importance of differential equations in theoretical physics;
@@ -185,14 +183,17 @@ On the example of the perihelion motion of the planet Mercury the students are s
 \item effective tools to estimate the result a priori as an important cross check;
 \item the visualization of numerical results using \texttt{VPython}.
 \end{itemize}
-The course as well as this paper is structured as follows: after an introduction to Newtonian dynamics and the concepts of differential equations, their discretization is discussed based on Newtons law of gravitation and possible extensions thereof.
-Afterwards the visualization of the resulting trajectories using \texttt{VPython} is introduced and applied to the problem at hand. In particular tools are developed to extract the relevant quantity from the result of the simulation.
+The course as well as this paper is structured as follows: after an introduction to Newtonian dynamics and the concept of differential equations, their 
+discretization is discussed based on Newtons law of gravitation and possible extensions thereof.
+Afterwards the visualization of the resulting trajectories using \texttt{VPython} is introduced and applied to the problem at hand. In addition,
+ tools are developed to extract the relevant quantity from the result of the simulation.
 Finally the principle of dimensional analysis is presented as a tool to cross check, if the results of the simulation are sensible.
 
 We are convinced that in order to excite the students for numerical simulations it is compulsory to demonstrate their power on an example that catches their interest.
 This purpose is served perfectly by the case chosen here, since Einsteins equations of General Relativity are fascinating to a very broad public.
 While their detailed study needs deeper knowledge in Differential Geometry, for the study outlined here very little math is necessary, such that high school students from about 10$^{\rm th}$ grade up should benefit from it.
-This was already demonstrated in the "Schülderakademie Teilchenphysik", where an early version of this course was tested successfully on a group of 17 German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade.
+This was already demonstrated in the "Schülderakademie Teilchenphysik", where this course was tested successfully on two groups consisting of in total 24 
+German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade.
 
 
 
@@ -200,7 +201,7 @@ This was already demonstrated in the "Schülderakademie Teilchenphysik", where a
 \section{Trajectories, velocities, accelerations and Newtons second law}\label{sec:tva}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-We can say that we understand a physical system, if we can demonstrate that the assumed force leads to the trajectories observed.
+A physical system is understood, if the assumed force leads to the trajectories observed.
 In other words, we need to show that we can calculate the location in space of the object of interest at any point in time, once the initial conditions are fixed properly.
 If we can neglect the finite size of this object (and in particular its orientation in space) the location is parametrized by a single three vector $\vec r(t)$.
 As will become clear below, in order to describe and control the dynamics of a physical object in addition we need to be able to calculate its velocity, $\vec v(t)$, related to the location via
@@ -240,7 +241,7 @@ Note that in general the force could depend also on the time or the velocity.
 We here restrict ourselves to the case relevant for our example, where the force depends on the location only. 
 Therefore, as soon as the force $\vec F(\vec r)$ is known for all $\vec r$ one can in principle calculate the trajectory, e.g., solving Eq.~(\ref{eq:newton2}) for $\vec r(t)$.
 Sometimes this requires some advanced knowledge in math, sometimes no closed form solution exists.
-However, alternatively one can calculate the whole trajectory of some test body that experiences this force by a successive application of the rules given in eqs.~(\ref{eq:vdef}) and (\ref{eq:adef}):
+However, alternatively one can calculate the whole trajectory of some test body that experiences this force by a successive application of the rules given in Eqs.~(\ref{eq:vdef}) and (\ref{eq:adef}):
 \begin{enumerate}
 \item For a given time $t$, where $\vec r(t)$ and $\vec v(t)$ are known, use Eq.~(\ref{eq:newton2}) to calculate $\vec a(t)$.
 \item Use Eq.~(\ref{eq:vdef}) to calculate $\vec r(t+\Delta t)$ and
@@ -281,17 +282,15 @@ r_S=\frac{2G_N  M_\odot}{c^2} = 3 \ \mbox{km} \ ,
 \end{equation}
 where $c=3\times 10^8$ m/s denotes the speed of light.
 Note that $r_S$ is the characteristic length scale of the gravitational field of the sun for --- up to the prefactor --- one can not form another quantity with dimensions of a length from $G_N$, $M_\odot$ and $c$.
-This is what we need $r_S$ for later in the discussion.
 That the Schwarzschild radius is also an important quantity to characterize black holes is not relevant for the discussion at hand.
 With this Newtons second law reads 
 \begin{equation}
-	\ddot{r}      = - \frac{c^2}{2}\left(\frac{r_S}{r^2}\right) \, , \qquad
-	\ddot{\vec r} =   \ddot{r} \, \frac{\vec{r}}{r} \, .
+	\ddot{\vec r}      = - \frac{c^2}{2}\left(\frac{r_S}{r^2}\right)\frac{\vec r}{r} \, .
 \label{eq:newton}
 \end{equation}
-In general an attractive force that vanishes at large distances leads,  depending on the initial conditions, either to bounded orbits or to open orbits --- in the latter case the planet simply disappears from the sun.
-Depending on time available for the course it might be helpful to explain to the students the origin of this, however, since the most transparent reasoning needs an integration as well as the concept of angular momentum not necessarily familiar to the whole class, it appears in general more appropriate to work out together with the students that a moving body can not be kept by a force if its momentum is too large.
-Then they may try to find closed orbits in the simulation, e.g., by varying the start velocity while keeping the start location fixed.
+In general an attractive force that vanishes at large distances leads,  depending on the initial conditions, either to bounded or to open orbits. 
+In the latter case the planet simply disappears from the sun, since a given force can capture only bodies with not too large momenta.
+The students may study those scenarios within their simulations  by varying the start velocity while keeping the start location fixed.
 
 The bounded orbits that emerge from a potential that scales as $1/r$ are elliptic and fixed in space.
 In particular the point of closest approach of the planet to the sun, the perihelion, does not move.
@@ -303,23 +302,39 @@ The observed perihelion motion of Mercury is nowadays determined as $(574.10\pm 
 can be understood by the presence of other planets within the Newtonian theory, since
 their gravitational force also acts on Mercury. However, a
 residual motion of $\delta \Theta_M = (43)''$ in 100 earth years remained unexplained, until Einstein quantified the
-predictions of General Relativity to this particular observable. \todo{@CH:citation here}
+predictions of General Relativity to this particular observable~\cite{Einstein}.
 
-We allow for a movement of the perihelion by modifying the potential of Eq.~(\ref{eq:newton}) with the following ansatz
+To allow for a movement of the perihelion we need to modify the force that appears in Eq.~(\ref{eq:newton}).
+This modification should be such that it depends on $r$ and it vanishes for $r\to \infty$.
+Based on the discussion presented above we may multiply the right hand side with a factor
+$(1+\alpha(r_S/r))$, where $\alpha$ denotes some dimensionless parameter. 
+However, besides $r_S$, which is the characteristic length scale for the gravitational potential
+of the sun, one can define one more parameter, which is characteristic for the dynamics of mercury, namely
 \begin{equation}
-\ddot{\vec r} = - \frac{c^2}{2}\left(\frac{r_S}{r^2}\right)\left(1+\alpha\frac{r_S}{r}\right) \, \frac{\vec{r}}{r} \ ,
+h=\frac{\vec L\,^2}{m^2c^2}= \frac{(\vec r\times \dot{\vec r} \, )^2}{c^2} \ ,
+\end{equation}
+where $\vec L$ denotes the angular momentum, which is a constant of motion for central potentials.
+It is easily verified that $h$ carries dimensions of a length squared.  Therefore we may use  the following ansatz
+for the modified potential
+\begin{equation}
+\ddot{\vec r} = - \frac{c^2}{2}\left(\frac{r_S}{r^2}\right)\left(1+\alpha\frac{r_S}{r}+\beta\frac{h}{r^2}\right) \, \frac{\vec{r}}{r} \ .
 \label{eq:newton_art}
 \end{equation}
-where $\alpha$ is some parameter related to the effects by General Relativity.
-The idea is that the correction must be dimension-less and should scale with some inverse power of $r$, for we still need to demand that the potential vanishes at large distances.
-Since the only parameter of the system with dimension of a length is $r_S$, the correction should scale as $(r_S/r)$.
-Replacing $r$ by a typical distance of Mercury to the sun, $(r_S/r_{MS})\sim 10^{-7}$, suggests that it should be sufficient to include this kind of term to first order only.\footnote{Considering another order would lead qualitatively to the same result, since every change in the potential leads to a perihelion motion. Only the value of the pre-factor would change.}
-For comparison: the typical distance of the Venus, the neighbor of Mercury, to the sun is $(r_S/r_{VS}) \sim 5 \cdot 10^{-8}$.
-Therefore the expected ratio of residual motion, favoring in the orbit period $T$, would result in
-\begin{equation}
-	\delta \Theta_V \approx \frac{1}{T_V} \delta \Theta_M T_M \frac{r_{MS}}{r_{VS}} \approx 9'' \, ,
-\end{equation}
-where $T_V$ ($T_M$) denotes the length of a venus (mercury) year. This precisely describes the experimental value of $9''$.
+For the system at hand $h$ may be estimated from the parameters of mercury at its perihelion ---  $\abs{\vec v_M(0)} = 59$km/s and 
+$ r_{MS}=\abs{\vec r_{MS}(0)} = 46 \cdot 10^6$km~\cite{MercuryFactSheet}, where both $\vec r$ and $\dot{\vec r}$ are perpendicular to each other. 
+We thus find that $(h/ r_{MS}^2) = 4\times10^{-6}$. Furthermore $(r_S/r_{MS})=6\times 10^{-6}$. 
+Therefore one may expect from both correction terms an effect similar in size. Furthermore, any term higher order in either $h$ or $r_S$
+should be suppressed by additional six orders of magnitude and thus can be safely neglected.
+The parameters $\alpha$ and $\beta$ could now either be extracted from a fit to data or be calculated from the underlying
+theory --- here General relativity. However, since we have only a single number to study, the angular motion of the perihelion,
+we can only fix either $\alpha$ or $\beta$. 
+
+%For comparison: the typical distance of the Venus, the neighbor of Mercury, to the sun is $(r_S/r_{VS}) \sim 5 \cdot 10^{-8}$.
+%Therefore the expected ratio of residual motion, favoring in the orbit period $T$, would result in
+%\begin{equation}
+%	\delta \Theta_V \approx \frac{1}{T_V} \delta \Theta_M T_M \frac{r_{MS}}{r_{VS}} \approx 9'' \, ,
+%\end{equation}
+%where $T_V$ ($T_M$) denotes the length of a venus (mercury) year. This precisely describes the experimental value of $9''$.
 
 
 
@@ -765,18 +780,21 @@ Only a smaller part is due to general relativity.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{acknowledgments}
+
+This work is supported in part by NSFC and DFG through funds provided to the
+Sino--German CRC110 ``Symmetries and the Emergence of Structure in QCD''.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section*{References}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \appendix
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Acknowledgments}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo{@all: Acknowledgments}
-Here they come
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{References}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bibliographystyle{unsrt}%{alphadin}
 \bibliography{References}
 
