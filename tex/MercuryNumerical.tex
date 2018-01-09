@@ -407,7 +407,7 @@ vM0 = 0.51   # in units of R0/T0
 c_a = 1.01   # in units of R0/T0**2
 TM  = 88.    # in units of T0
 rS  = 3.0e-7 # in units of R0
-a2  = 8.2e-7 # in units of R0**2 \ ,
+a2  = 8.2e-7 # in units of R0**2
 \end{lstlisting}
 where the last two quantities refer to the Schwarzschildradius of the sun and the parameter $a^2$ defined in Eqs. (\ref{rsdef}) and (\ref{a2def}), respectively.
 So far we only fixed the length of the vectors.
@@ -419,12 +419,12 @@ Because of our choice of initial conditions (we picked the initial vectors in th
 from vpython import vector
 # Initialize distance and velocity vectors
 vec_rM0 = vector(0, rM0, 0)
-vec_vM0 = vector(vM0, 0, 0) \ .
+vec_vM0 = vector(vM0, 0, 0)
 \end{lstlisting}
 To fix the time step $\Delta t$ we use the estimate of Eq.~(\ref{eq:check}) as a guidance to write
 \begin{lstlisting}
 # Definition of the time step
-dt = 2 * vM0 / c_a / 20 \ .
+dt = 2 * vM0 / c_a / 20
 \end{lstlisting}
 Here the factor $1/20$ makes sure that $\Delta t$ is indeed consistent with Eq.~(\ref{eq:check}).
 Now we are in the position to calculate location and velocity of the planet at $t_0+\Delta t$ using the following equations\footnote{%
@@ -670,7 +670,7 @@ For instance figure \ref{fig:AlphaAngle} demonstrates such a plot.
 As an example we  extract the perihelion motion using the parameters provided by General Relativity, namely $\alpha = 0$ and $\beta = 3$.
 Considering one result from the numeric simulation, e.g., $\delta\Theta(\alpha = 0, \beta=10^6) \approx 10.7^{\degree}$, the sought-after angle can be calculated by a linear interpolation as
 \begin{equation}
-	\delta\Theta (\alpha=0, \beta=3) = \frac{10.6^{\degree}}{10^6} \times 3 = 0.116''
+	\delta\Theta (\alpha=0, \beta=3) = \frac{10.7^{\degree}}{10^6} \times 3 = 0.116''
 	\, .
 \end{equation}
 Depending on the knowledge of the students, multiple points and also estimated numerical uncertainties could be used to extract this value by a linear regression.
