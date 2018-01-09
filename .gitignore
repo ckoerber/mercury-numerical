@@ -5,6 +5,7 @@ tex/ioplatexguidelines.tar.gz
 *.tdo
 *.bbl
 *.log
+*.aux
 *.out
 *.gz
 *.blg
