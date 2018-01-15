@@ -273,14 +273,14 @@ For this concrete example the starting point for the force is Newton's law of gr
 \begin{equation}
 \vec F_N(\vec r) = - \frac{G_N m M_\odot}{r^2} \frac{\vec r}{r}\ ,
 \end{equation}
-where $G_N=6.67\times 10^{-11}$ m$^3$kg$^{-1}$s$^{-2}$ is the Newtonian constant of gravitation, $m$ is the mass of Mercury and $M_\odot=2\times 10^{30}$ kg is the mass of the Sun.
+where $G_N=6.67\times 10^{-11}$ m$^3$kg$^{-1}$s$^{-2}$ is the Newtonian constant of gravitation, $m$ is the mass of Mercury and $M_\odot=1.99\times 10^{30}$ kg is the mass of the Sun.
 In addition $r=|\vec r(t)|$ denotes the distance between Sun and Mercury when we assume that the Sun is infinitely heavier than Mercury and located at the center of the coordinate system.
 Although this is not exact, it is a pretty good approximation because $m/M_\odot\sim 10^{-8}$.
 For later convenience we introduce the Schwarzschild radius of the Sun
 \begin{equation}
-r_S=\frac{2G_N  M_\odot}{c^2} = 3 \ \mbox{km} \ , \label{rsdef}
+r_S=\frac{2G_N  M_\odot}{c^2} = 2.95 \ \mbox{km} \ , \label{rsdef}
 \end{equation}
-where $c=3\times 10^8$ m/s denotes the speed of light.
+where $c=3.00\times 10^8$ m/s denotes the speed of light.
 Note that $r_S$ is the characteristic length scale of the gravitational field of the Sun for --- up to the prefactor --- one can not form another quantity with dimensions of a length from $G_N$, $M_\odot$ and $c$.
 The Schwarzschild radius is also an important quantity to characterize black holes; this is however not relevant for the discussion at hand.
 With this, Newton's second law reads
@@ -325,9 +325,9 @@ Combining everything, we use the following ansatz for the modified equation of m
 \label{eq:newton_art}
 \end{equation}
 For the system at hand, $r_a^2$ may be estimated from the parameters of Mercury at its perihelion: The corresponding velocity is
- $\dot{\vec r}(t=0)=\abs{\vec v_M(0)} = 59$~km/s (here we already indicate that we will start the simulation at the perihelion) and the closest distance between Sun and Mercury is
-$ r_{MS}=\abs{\vec r_{MS}(0)} = 46 \cdot 10^6$km~\cite{MercuryFactSheet}. Note that at the perihelion $\vec r$ and $\dot{\vec r}$ are perpendicular to each other.
-We thus find that $(r_a^2/ r_{MS}^2) = 4\cdot10^{-8}$. Furthermore $(r_S/r_{MS})=6\cdot 10^{-8}$.
+ $\dot{\vec r}(t=0)=\abs{\vec v_M(0)} = 59.0$~km/s (here we already indicate that we will start the simulation at the perihelion) and the closest distance between Sun and Mercury is
+$ r_{MS}=\abs{\vec r_{MS}(0)} = 46.0 \cdot 10^6$km~\cite{MercuryFactSheet}. Note that at the perihelion $\vec r$ and $\dot{\vec r}$ are perpendicular to each other.
+We thus find that $(r_a^2/ r_{MS}^2) \sim 4\cdot10^{-8}$. Furthermore $(r_S/r_{MS})\sim6\cdot 10^{-8}$.
 Therefore (for a more detailed discussion about the underlying logic we refer to Sec.~\ref{sec:analysis}) one may expect from both correction terms an effect of similar size. Furthermore, any term of higher order in either $a$ or $r_S$
 should be suppressed by additional seven orders of magnitude and thus can be neglected safely.
 The parameters $\alpha$ and $\beta$ can be extracted from a fit to data --- this will be done below.
@@ -373,12 +373,12 @@ Since the trajectories do not depend on where on the orbit of Mercury the simula
 use the values at the perihelion with $\abs{\vec r_{MS}(0)} = 46 \cdot 10^6\,\mathrm{km}$ and $\abs{\vec v_M(0)} = 59\,\mathrm{km/s}$\cite{MercuryFactSheet} as initial (for $t=0$) parameters.
 The computer does not understand physical units, hence one has to express each variable in an appropriate unit.
 Both for the numerical treatment and the intuitive understanding, it is useful to select parameters in a "natural range", e.g.,
-by expressing distances in $R_0 = 10^{10}\,\mathrm{m}$ and time intervals in days, $T_0 = 1\,\mathrm{d}$, where d refers to earth days. One Mercury year is given by $T_M=88\,T_0$.
+by expressing distances in $R_0 = 10^{10}\,\mathrm{m}$ and time intervals in days, $T_0 = 1\,\mathrm{d}$, where d refers to earth days. One Mercury year is given by $T_M=88.0\,T_0$.
 With this choice, the initial distance of Mercury to the Sun, the size of the initial velocity of Mercury and the acceleration prefactor (see Eq.~(\ref{eq:newton_art})) become
 \begin{eqnarray}
-r_{MS}(0)   &=& 4.6 R_0 \, , \quad
-v_{M}(0)    = 0.51 \frac{R_0}{T_0} \, ,  \\
-a_{MS}(r_{MS}) &=& \frac{c^2}{2}\frac{r_S}{r^2} = 1.01 \frac{R_0}{T_0^2} \frac{1}{{\left(r_{MS}/R_0\right)}^2}\, .
+r_{MS}(0)   &=& 4.60 R_0 \, , \quad
+v_{M}(0)    = 0.510 \frac{R_0}{T_0} \, ,  \\
+a_{MS}(r_{MS}) &=& \frac{c^2}{2}\frac{r_S}{r^2} = 0.990 \frac{R_0}{T_0^2} \frac{1}{{\left(r_{MS}/R_0\right)}^2}\, .
 \end{eqnarray}
 
 %
@@ -395,12 +395,12 @@ a_{MS}(r_{MS}) &=& \frac{c^2}{2}\frac{r_S}{r^2} = 1.01 \frac{R_0}{T_0^2} \frac{1
 In \python{}, this reads
 \begin{lstlisting}
 # Definition of parameters
-rM0 = 4.6    # in units of R0
-vM0 = 0.51   # in units of R0/T0
-c_a = 1.01   # in units of R0**3/T0**2
-TM  = 88.    # in units of T0
-rS  = 3.0e-7 # in units of R0
-ra2 = 8.2e-7 # in units of R0**2
+rM0 = 4.60    # initial radius of Mercury orbit, in units of R0
+vM0 = 5.10e-1 # initial orbital speed of Mercury, in units of R0/T0
+c_a = 9.90e-1 # base acceleration of Mercury, in units of R0**3/T0**2
+TM  = 8.80e+1 # Orbit period of Mercury
+rS  = 2.95e-7 # Schwarzschild radius of Sun,in units of R0
+ra2 = 8.19e-7 # specific angular momentum, in units of R0**2
 \end{lstlisting}
 where $\texttt{c\_a} =a_{MS} r_{MS}^2$, the acceleration without the radius factor.
 The last two quantities refer to the Schwarzschild radius of the Sun and the parameter $r_a^2$ defined in Eqs. (\ref{rsdef}) and (\ref{a2def}), respectively.
@@ -568,7 +568,7 @@ For a nicely visible perihelion motion it is advisable to not use the correct Me
 		\item[(c)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$;
 		\item[(d)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$ but $r_{MS}(0) = 6 R_0$.
 		\end{itemize}
-		Here, the time steps are defined by $\Delta t_0 \equiv 2 v_{M}(0) / c_a$ and the images are screenshots of the simulation (with modified colors).
+		Here, the time steps are defined by $\Delta t_0 \equiv 2 v_{M}(0) /a_M(0)$ and the images are screenshots of the simulation (with modified colors).
 		Note that for different starting values of $r_{MS}(0)$, also the numbers of days for a "Mercury year" changes.
 	}
 \end{figure}
@@ -662,18 +662,22 @@ For instance figure~\ref{fig:AlphaAngle} demonstrates such a plot.
 		\includegraphics[width=\textwidth]{figs/beta-angle.pdf}
 		\caption{\label{fig:beta-alpha}}
 	\end{subfigure}
-	\caption{\label{fig:AlphaAngle} Linear relation between $\alpha$ (a), $\beta$ (b) and the perihelion motion $\delta \Theta$ for $\Delta t=2v_M(0)/c_a/100$ and the other parameter set to zero.}
+	\caption{\label{fig:AlphaAngle} Linear relation between $\alpha$ (a), $\beta$ (b) and the perihelion motion $\delta \Theta$ for $\Delta t=2v_M(0)/a_M(0)/200$ and the other parameter set to zero.}
 \end{figure}
 
 As an example we  extract the perihelion motion using the parameters provided by General Relativity, namely $\alpha = 0$ and $\beta = 3$.
-Considering one result from the numeric simulation, e.g., $\delta\Theta(\alpha = 0, \beta=10^6) \approx 10.7^{\degree}$, the sought-after angle can be calculated by a linear interpolation as
+Considering one result from the numeric simulation, e.g., $\delta\Theta(\alpha = 0, \beta=10^5) = 0.964^{\degree}$, the sought-after angle can be calculated by a linear interpolation as
 \begin{equation}
-	\delta\Theta (\alpha=0, \beta=3) = \frac{10.7^{\degree}}{10^6} \times 3 = 0.116''
+	\delta\Theta (\alpha=0, \beta=3) = \frac{0.964^{\degree}}{10^5} \times 3 = 0.104''
 	\, .
 \end{equation}
 Depending on the knowledge of the students, multiple points and also estimated numerical uncertainties could be used to extract this value by a linear regression.
+Here, one has to find a proper range for the interpolation.
+Small values for $\alpha$ and $\beta$ usually come with relatively larger numerical errors while for larger values one cannot guarantee that the additional terms are sufficiently small.
+For this reason, we suggest to interpolate between zero and $\alpha_{\max}$, $\beta_{\max} \sim 10^5$.
+This will be further explained in the next section.
 Note that, when comparing the results of the simulation with the experimental result, one Earth year corresponds to $T_E/T_M \approx 365d/88d\approx 4.15$ Mercury years.
-Therefore, the perihelion motion per 100 earth years is $0.116''\cdot 415\approx 48.2''$.
+Therefore, the perihelion motion per 100 earth years is $0.104''\cdot 415\approx 43.2''$.
 This is close to the experimental value of $\delta\Theta_{\mathrm{exp}} = 43.0''$.
 
 
@@ -699,7 +703,7 @@ This offset is a numerical error and can be taken as an estimate for the error o
 	\centering
 	\includegraphics[width=.99\textwidth]{figs/angular-variaton.pdf}
 	\caption{\label{fcc3}Motion of perihelion $\delta\Theta$ in degrees depending on the number of turns $N_t$ for different time steps $\Delta t$ (color) and different values for $\beta$ (columns).
-	Here, $\Delta t_0 \equiv 2 v_M(0)/c_a$.
+	Here, $\Delta t_0 \equiv 2 v_M(0)/a_M(0)$.
 	Offsets of $\delta \Theta(\alpha=0, \beta=0)$ from zero can be used as an estimated of the magnitude of the error. Oscillations in $\delta \Theta$ indicate too coarse time steps.
 }
 \end{figure}
@@ -713,13 +717,54 @@ Hence, strong visible oscillations in $\delta\Theta$ indicate a too large time-s
 This problem can be pointed out to the students by asking them to vary the size of the time-steps and observe the effect on the trajectories.
 This should also be done for a wide range of values to show both good and problematic regimes.
 It is advantageous to set both $\alpha$ and $\beta$ to zero for this study, since in this case the trajectories should be closed and deviations from the correct case can be spotted easily.
-Figure~\ref{fig:MercuryOrbit-a0-small-dt-large} shows the Mercury trajectory for $\Delta t=2 v_M(0) / c_a \times 2$.
+Figure~\ref{fig:MercuryOrbit-a0-small-dt-large} shows the Mercury trajectory for $\Delta t=2 v_M(0) /a_M(0) \times 2$.
 One can clearly see the failure of the simulation to reproduce the physical trajectory.
 From examples like this it should be apparent that the time steps influence the accuracy of the simulation.
 The simulation reproduces the actual trajectory only in the limit $\Delta t \rightarrow 0$. Thus, in any numerical simulation
 one always has to identify a proper compromise between numerical accuracy and time spent for the simulation
 (clearly for $\Delta t\to 0$ the computing time goes to infinity).
 
+
+\todo[inline]{Explain fit range. From here until the next section is not complete yet!}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.99\textwidth]{figs/computation-precision.pdf}
+	\caption{\label{fcc4}Difference of numerically extracted perihelion angle relative to value computed from General Relativity for different time steps.  Uncertainty bands correspond to equation \ref{eq:num-uncertainty}.
+}
+\end{figure}
+
+The total numerical uncertainty for the perihelion growth $\Delta \delta \theta (\alpha, \beta)$ at non-zero $\alpha$ and $\beta$ is estimated by the offset of the growth at $\alpha = 0 = \beta$, the oscillation of the growth at $\alpha = 0 = \beta$ as well as the oscillation of the growth at the computed values of $\alpha$ and $\beta$
+\begin{eqnarray}\label{eq:num-uncertainty}
+	\Delta \delta \Theta (\alpha, \beta) &=& \sqrt{
+		\delta \Theta_{std}^2 (0, 0) + \delta \Theta_{avg}^2 (0, 0)+ \delta \Theta_{std}^2 (\alpha, \beta)
+	} \, ,
+	\\
+	\delta \Theta_{avg} (\alpha, \beta)
+	&=& 
+	\frac{1}{N_{\mathrm{turns}}}
+	\sum\limits_{n=1}^{N_{\mathrm{turns}}} \delta \Theta_{n} (\alpha, \beta) \, ,
+	\\
+	\delta \Theta_{std}^2 (\alpha, \beta)
+	&=& 
+	\frac{1}{N_{\mathrm{turns}}}
+	\sum\limits_{n=1}^{N_{\mathrm{turns}}} \left[
+		\delta \Theta_{avg} (\alpha, \beta) - \delta \Theta_{n} (\alpha, \beta)
+	\right]^2 \, .
+\end{eqnarray}
+Thus, the extract numerical value is given by
+\begin{equation}
+	\delta \Theta (\alpha, \beta) = \delta \Theta_{avg} (\alpha, \beta)  \pm \Delta \delta \Theta (\alpha, \beta)
+	\, .
+\end{equation}
+
+The prediction coming from General Relativity for zero $\alpha$ is given by
+\begin{equation}
+	\delta \Theta_{GR} (\alpha=0, \beta) = 
+	\frac{1}{4} \frac{r_S^2}{r_a^2} \times \beta
+	+\frac{3}{32} \frac{ r_S^4}{ r_a^4} \times \beta ^2
+	+O\left(\frac{r_S}{r_a}\right)^6
+	\, .
+\end{equation}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -826,6 +871,7 @@ Only a smaller part is due to General Relativity.
 
 \end{itemize}
 
+\todo[inline]{Summary}
 
 
 
