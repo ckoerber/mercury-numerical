@@ -183,16 +183,17 @@ On the example of the perihelion motion of the planet Mercury the students are s
 \item effective tools to estimate the result a priori as an important cross check;
 \item the visualization of numerical results using \vpython{}.
 \end{itemize}
-The course \todo{what course?} as well as this paper is structured as follows: after an introduction to Newtonian dynamics and the concept of differential equations, their
+We are convinced that in order to excite students for numerical simulations it is compulsory to demonstrate their power on an example that catches their interest.
+This purpose is served perfectly by the case chosen here, since Einsteins equations of General Relativity are fascinating to a very broad public.
+Their detailed study needs a deep knowledge of Differential Geometry. For the study outlined here, however, very little math is necessary, such that high school students familiar to derivatives benefit from it.
+This was already demonstrated in the "Sch\"ulerakademie Teilchenphysik", where this course was tested successfully on two groups consisting in total of 24 German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade in 2015 and 2017.
+
+The course as well as this paper is structured as follows: after an introduction to Newtonian dynamics and the concept of differential equations, their
 discretization is discussed based on Newton's law of gravitation and possible extensions thereof.
 Afterwards the visualization of the resulting trajectories using \vpython{} is introduced and applied to the problem at hand. In addition,
  tools are developed to extract the relevant quantity from the result of the simulation.
 Finally, the principle of dimensional analysis is presented as a tool not only to estimate some effect but also to cross check whether the results of the simulation are sensible.
 
-We are convinced that in order to excite students for numerical simulations it is compulsory to demonstrate their power on an example that catches their interest.
-This purpose is served perfectly by the case chosen here, since Einsteins equations of General Relativity are fascinating to a very broad public.
-Their detailed study needs a deep knowledge of Differential Geometry. For the study outlined here, however, very little math is necessary, such that high school students from about 10$^{\rm th}$ grade up should benefit from it.
-This was already demonstrated in the "Sch\"ulerakademie Teilchenphysik", where this course was tested successfully on two groups consisting in total of 24 German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade in 2015 and 2017\todo{do foreigners know what that means? what are typical ages of students? did grade 13 even exist in 2015?}.
 
 
 
@@ -200,7 +201,7 @@ This was already demonstrated in the "Sch\"ulerakademie Teilchenphysik", where t
 \section{Trajectories, velocities, accelerations and Newton's second law}\label{sec:tva}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-A physical system is said to be understood if the assumed force acting on it leads to the observed trajectories.
+A physical system is said to be understood if the assumed forces acting on it lead to the observed trajectories.
 In other words, we need to show that we can calculate the location in space of the object of interest at any point in time, once the initial conditions are fixed properly.
 If we can neglect the finite size of this object (and in particular its orientation in space), the location is parametrized by a single three vector $\vec r(t)$.
 Additionally, we need to be able to calculate the objects velocity $\vec v(t)$ and acceleration $a(t)$ in order to describe and control its dynamics; this will become clear below. The velocity describes a change of location over time which, for some infinitesimally small $\Delta t$, can be written as
@@ -295,8 +296,8 @@ In particular the point of closest approach of the planet to the Sun, the perihe
 However, when a potential that vanishes for $r\to \infty$ deviates from $1/r$, the perihelion does move.
 This makes the behavior of the perihelion a very sensitive probe of the gravitational potential.
 
-The observed perihelion motion of Mercury is nowadays determined as \todo{reference?}
-\[(574.10\pm 0.65)'' \ \mbox{per 100 earth years}\]
+The observed perihelion motion of Mercury is nowadays determined as
+\[(574.10\pm 0.65)'' \ \mbox{per 100 earth years \cite{RevModPhys.19.361}}\]
 where the symbol $''$ denotes "arc seconds": 1$''={(1/3600)}^o$. The bulk of this number
 can be understood by the presence of other planets within the Newtonian theory, since
 their gravitational force also acts on Mercury. However, a
@@ -310,7 +311,7 @@ To allow for a movement of the perihelion we need to modify the force that led t
 This modification should be such that it depends on $r$ and it vanishes for $r\to \infty$.
 Based on the discussion presented above we may multiply the right hand side of~(\ref{eq:newton}) with a factor
 $(1+\alpha(r_S/r))$, where $\alpha$ denotes some dimensionless parameter.
-This seems like a natural way to parametrize the additional potential because it adds the smallest possible deviation from a $1/r$ potential expressed relative to the characteristic length $r_S$.
+This seems like a natural way to parametrize the additional potential because it adds the smallest possible deviation from an $1/r$ potential expressed relative to the characteristic length $r_S$.
 However, besides $r_S$, which characterizes the gravitational potential of the Sun, there is also a characteristic parameter for the dynamics of Mercury:
 \begin{equation}
 r_a^2 := \frac{\vec L\,^2}{m^2c^2}= \frac{{(\vec r\times \dot{\vec r} \, )}^2}{c^2} \ , \label{a2def}
@@ -358,12 +359,12 @@ values given in Eq.~(\ref{eq:art-prediction}).
 \subsection{Describing the Motion with Python}
 %------------------------------------------
 
-In this section we present the numerical implementation as well as the visualisation of planetary trajectories and in
+In this section we present the numerical implementation as well as the visualization of planetary trajectories and in
 particular the perihelion motion of Mercury.
 We choose \python{}~\cite{Python} as programming language because \python{} is easy to learn, intuitive to understand and an open source language.
 No prior knowledge of \python{} or any other programming language is required, as we explain all necessary steps to create the simulation.
-In~\ref{appendix:python} we give instructions for setting up \python{} on different operating systems.
-We also provide a working example program that can be used as a template \url{this-upload-url}\todo{@arXiv: online link}.
+We provide online instructions for setting up \python{} and \vpython{} on different operating systems \cite{scripts}.
+In \ref{sec:code}, we also provide a working example as well as possible extensions and template files online.
 
 To start the simulation one needs the "initial" distance and velocity [Eq.~(\ref{eq:x_update}) and Eq.~(\ref{eq:v_update})].
 As described above, here one can simplify the problem by placing one object (the "infinitely" heavy Sun) in the center of the coordinate system and keep it fixed.
@@ -592,7 +593,7 @@ The easiest one is to look for the point of minimal distance to the sun --- the 
 This can be done within the $while$-loop.
 To identify a minimal distance to the sun, one has to know the last two positions \code{vec\_rM\_past} and \code{vec\_rM\_before\_last} in addition to the current position.
 If the length of the \texttt{last} vector is smaller than that of the \texttt{before\_last} vector and smaller than the current vector, one has passed the perihelion and its position is given by \code{vec\_r\_last}.
-It is useful to save the position of the perihelion in a list \code{list\_perih} for a certain number of turns (here e.g.\ \code{max\_turns}=10).
+It is useful to save the position of the perihelion in a list \code{list\_perih} for a certain number of turns (here e.g.\ \code{max\_turns = 10}).
 The implementation can be realized as follows\footnote{%
 	Note that one stores \code{vec\_r\_last} by making a copy of \code{M.pos}: \code{vec\_r\_last = vector(M.pos)}.
 	This is essential because otherwise, if one changes \code{M.pos}, one would automatically change \code{vec\_r\_last} as well.
@@ -825,7 +826,8 @@ Only a smaller part is due to General Relativity.
 
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgments}
@@ -844,164 +846,13 @@ Sino--German CRC110 ``Symmetries and the Emergence of Structure in QCD''.
 \bibliographystyle{unsrt}%{alphadin}
 \bibliography{References}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Instructions to install VPython}\label{appendix:python}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In short, to run the above scripts, one needs to install \python{} and \vpython{}.
-We recommend the newest \vpython{} version 7 or higher which best runs with the \python{} versions of 3.5 or higher.
-It is also possible to use \python{} 2.7 or higher, but the 3.x versions have better \vpython{} support.
-
-For the advanced users, one simply has to update \python{} to these versions and install \vpython{} via the package manager of choice, e.g, \texttt{pip} (see also \cite{VPython}).
-
-Below, we provide detailed descriptions how to install these versions of \python{} and \vpython{} for different operating systems.
-Independent of the operating systems, one has to execute the following steps:
-\begin{enumerate}
-	\item install and update \python{} (at best 3.x, x$\geq5$);
-	\item install and update a \python{} package manager;
-	\item install \vpython{} and dependencies.
-\end{enumerate}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Linux based systems (including macOS)}\label{appendix:python-max}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-All Linux based system come with an installation of \python{}.
-Thus, if not already at the newest version, one just has to update existing installations.
-This is best done by using a distribution manager.
-Native to Linux based systems is for example \texttt{dpkg} and \texttt{apt-get}, or \texttt{homebrew} and \texttt{MacPorts} for macOS.
-While \texttt{dpkg} and \texttt{apt-get} usually come with the linux installations, macOS user must install such distribution managers at first.
-For this we refer to \cite{MacPorts} or \cite{Homebrew}.
-
-As the start one should open a terminal/console (bash).
-Depending on the installation, one usually needs superuser rights in order to update \python{}.
-Therefore one has to prepend \code{sudo} to the following commands and confirm them by entering the superuser password.
-The installations using a distribution manager are save and tested by the vast community.
-In the following, the successive order of commands to update \python{} is presented for \texttt{apt-get} (Linux) and \texttt{MacPorts} (macOS), but are most similar for other distribution managers.
-\begin{table}[h!]
-\centering
-\footnotesize
-\begin{tabular}{l || l | l}
-	& \texttt{apt-get} & \texttt{MacPorts} \\\hline
-	1. Update the distribution manager & \code{sudo apt-get update} & \code{sudo port selfupdate} \\
-	2. Install \& update \python{} & \code{sudo apt-get install python3} & \code{sudo port install python36} \\
-	3. Installing \python{} package manager & \code{sudo apt-get install python3-pip} & \code{sudo port install py36-pip}
-\end{tabular}
-\normalsize
-\end{table}
-
-Depending on the previously installed packages, this command might install further dependencies automatically (after confirmation).
-One should test if the installation was successful by typing \code{python3 --version} or \code{python3.6 --version} (depending on the installation name) which prints out the version of the \python{} installation (and should be larger than 3.5).
-Next one must update the package manager to get the newest versions of \python{} packages.
-This is done by running
-\begin{table}[h!]
-\centering
-\footnotesize
-\begin{tabular}{l || l | l}
-	& \texttt{apt-get} & \texttt{MacPorts} \\\hline
-	4. Update \code{pip} & \code{pip3 install --upgrade --user pip wheel} & \code{pip-3.6 install --upgrade --user pip wheel} \\
-\end{tabular}
-\normalsize
-\end{table}\\
-Note that this just upgrades the packages for the current user.
-If one wants the systemwide installation, one again has to prepend \code{sudo} and can ignore the \code{--user} flag (\code{sudo pip3 install --upgrade pip wheel}).
-Furthermore, depending on the installed version of \code{pip}, it could have a different name.
-This is best figured out by typing \code{pip} and pressing \texttt{tab}.
-
-Finally, one can install \vpython{} by running
-\begin{table}[h!]
-\centering
-\footnotesize
-\begin{tabular}{l || l | l}
-	& \texttt{apt-get} & \texttt{MacPorts} \\\hline
-	5. Install \vpython{} & \code{pip3 install --user vpython} & \code{pip-3.6 install --user vpython} \\
-\end{tabular}
-\normalsize
-\end{table}
-
-At this point, everything is installed and one can start the simulation.
-To test the \vpython{} installation one should run \code{python3} or \code{python3.6}, which starts a \python{} console.
-Next, one shall run \code{from vpython import *}, which loads the \vpython{} package and opens the default browser.
-Running \code{box()} should generate a white box in the browser window, which can be rotated using the mouse.
-The program is quit by running \code{quit()} or pressing \texttt{Ctrl-c}.
-
-In general, there are multiple ways to run \python{} scripts.
-For the sake of this paper, we suggest two scenarios.
-\begin{enumerate}
-\item The first scenario to run \python{} scripts is that one writes and saves a \python{} file, e.g., \texttt{test.py}, which can be edited using any text editor of choice.
-	To run the \python{} script one must navigate the terminal to the containing folder using the \code{cd} (and \code{ls}) command.
-	While \code{ls} prints out the folders and files in the current directory, \code{cd} changes the directory.
-	The command \code{cd} either takes relative paths (directories which are in the current directory), e.g., \code{cd folder}, or absolute paths beginning with a \code{/}, e.g., \code{cd /Users/name/Desktop/}.
-	Once one has navigated to folder which contains the \python{} file --- e.g., the file name is listed when typing \code{ls} --- than one can type \code{python3 test.py} or \code{python3.6 test.py} to execute the script.
-	Again, this script can be ended (if it does not end automatically) by pressing \texttt{Ctrl-c}.
-\item The second scenario to run \python{} scripts is given by the interactive \texttt{ipython} or \texttt{jupyter} notebooks.
-	This feature is automatically installed when installing the newest version of \vpython{}.
-	To start an interactive session, one has to run \code{jupyter notebook} (or equivalent, depending on the installation name. Again, this can be figured out by typing \code{jupyter} and pressing \texttt{tab}).
-	This will print a link (containing the name \texttt{localhost}) and open the browser at the link-address.
-	Within this browser window, one can freely navigate to the directory of choice and create interactive \python{} and \vpython{} sessions by clicking on existing files or creating new ones (upper right button \texttt{new}$\rightarrow$\vpython{}).
-\end{enumerate}
-We provide example files for both scenarios.\todo{@arXiv: online link}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Windows}\label{appendix:python-windows}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-As the first step, one must install \python{}, again there are several possibilities but we suggest \texttt{Anaconda} for an intuitive installation.
-Following the link \cite{conda}, one has two possible (free) options, \texttt{Anaconda} and \texttt{Miniconda}.
-Both are equally sufficient.
-One can install further updates after the initial installation.
-In the case of \texttt{Miniconda} \cite{Miniconda} one shall download the newest \python{} 3.x (x $\geq5$) installer for windows and the right system type (32-bit or 64-bit).
-The system type can be found by pressing \texttt{Windows+I}, navigating to \texttt{System}$\rightarrow$\texttt{About} and looking at the \texttt{System type} entry.
-
-Installing one of the two executables creates a new \texttt{Windows} application called \texttt{Anaconda Prompt}.
-Starting this application opens a terminal which will be used to install the required \python{} packages.
-At first, one should test if the \texttt{Anaconda} installation was successful by running the command \code{conda list}.
-This command should print a list of already installed packages.
-Also one should run \code{conda update conda} to make sure one has the most recent installation.
-
-To install \vpython{} one simply has to run \code{conda install -c vpython vpython}.
-The additional flag \code{-c vpython} tells \texttt{Anaconda} the "channel" where to look for the \vpython{} package.
-Running this command prints out a list of dependencies which will be automatically installed in order for \vpython{} to work --- this must be confirmed.
-
-In principle this is already sufficient to run \vpython{} scripts.
-One could furthermore install \texttt{Anaconda}s native navigator \texttt{anaconda-navigator} by running \code{conda install anaconda-navigator}.
-This will install another application, \texttt{Anaconda Navigator}, which can be run from the Desktop and makes it easier to program in \python{}.
-
-Again there are several possibilities to run \python{} files on \texttt{Windows}.
-\begin{itemize}
-	\item One could create a file \texttt{test.py}, edit it with the editor of choice and specify that this file should be opened with \texttt{Python3}.
-		To do so, \texttt{right click} on  the file, select \texttt{open with} and locate the \texttt{Anaconda Python3} installation.
-		Programs can be closed by closing the running window.
-	\item One can run \code{python3} in the \texttt{Anaconda Prompt} application to start an interactive session.
-		Programs can be closed by closing the running window.
-	\item Start the \texttt{Anaconda Navigator} application, open an interactive \texttt{qtconsole} and program within the newly opened terminal.
-		Programs can be closed by closing the running window.
-	\item Start the \texttt{Anaconda Navigator} application and click on the \texttt{jupyter notebook} button.
-		This opens an interactive \python{} session in the default web-browser.
-		Here, one can open existing notebooks or create new files (upper right button \texttt{new}$\rightarrow$\vpython{}).
-\end{itemize}
-
-To start and test the \vpython{} installation one should pick any out of these options and execute the code
-\begin{lstlisting}
-from vpython import *
-box()
-\end{lstlisting}
-Running this code should open the default browser and render a white box on black background.
-Using the mouse (right click and drag), one should be able to rotate the box.
-It was found that the \texttt{Internet Explorer} is not able to properly render the animation.
-Here we suggest to use the \texttt{Firefox} web-browser as the default choice.
-
-Once this test case works, one can start to test the Mercury orbit simulation.
-We provide example files for both \texttt{juypter notebooks} and regular \python{} files.
-
-\todo{@arXiv: online link}
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{The complete code}\label{sec:code}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Below we provide the complete code as developed above.
-\lstinputlisting[language=Python]{mercury_orbit_base.py}
-Further examples and template files can be found online\cite{}.\todo[inline]{@arXiv: online link}
+\lstinputlisting[language=Python,basicstyle=\scriptsize]{mercury_orbit_base.py}
+Further examples and template files can be found online \cite{scripts}.
 
 \end{document}
