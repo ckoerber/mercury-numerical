@@ -2,12 +2,12 @@
 from vpython import *
 
 # Definition of parameters
-rM0 = 4.60    # initial radius of Mercury orbit, in units of R0
-vM0 = 5.10e-1 # initial orbital speed of Mercury, in units of R0/T0
-c_a = 9.90e-1 # base acceleration of Mercury, in units of R0**3/T0**2
-TM  = 8.80e+1    # Orbit period of Mercury
+rM0 = 4.60    # Initial radius of Mercury orbit, in units of R0
+vM0 = 5.10e-1 # Initial orbital speed of Mercury, in units of R0/T0
+c_a = 9.90e-1 # Base acceleration of Mercury, in units of R0**3/T0**2
+TM  = 8.80e+1 # Orbit period of Mercury
 rS  = 2.95e-7 # Schwarzschild radius of Sun,in units of R0
-ra2 = 8.19e-7 # specific angular momentum, in units of R0**2
+ra2 = 8.19e-7 # Specific angular momentum, in units of R0**2
 
 # Initialize distance and velocity vectors
 vec_rM0 = vector(0, rM0, 0)
