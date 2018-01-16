@@ -724,47 +724,64 @@ The simulation reproduces the actual trajectory only in the limit $\Delta t \rig
 one always has to identify a proper compromise between numerical accuracy and time spent for the simulation
 (clearly for $\Delta t\to 0$ the computing time goes to infinity).
 
-
-\todo[inline]{Explain fit range. From here until the next section is not complete yet!}
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=.99\textwidth]{figs/computation-precision.pdf}
-	\caption{\label{fcc4}Difference of numerically extracted perihelion angle relative to value computed from General Relativity for different time steps.  Uncertainty bands correspond to equation \ref{eq:num-uncertainty}.
-}
-\end{figure}
-
-The total numerical uncertainty for the perihelion growth $\Delta \delta \theta (\alpha, \beta)$ at non-zero $\alpha$ and $\beta$ is estimated by the offset of the growth at $\alpha = 0 = \beta$, the oscillation of the growth at $\alpha = 0 = \beta$ as well as the oscillation of the growth at the computed values of $\alpha$ and $\beta$
+As a first estimate, one can approximate the numerical uncertainty of the the perihelion growth $\Delta \delta \Theta (\alpha, \beta)$ at non-zero $\alpha$ and $\beta$ by the offset of the growth at $\alpha = 0 = \beta$, the oscillation of the growth at $\alpha = 0 = \beta$ as well as the oscillation of the growth at the computed values for non-zero $\alpha$ and $\beta$
 \begin{eqnarray}\label{eq:num-uncertainty}
 	\Delta \delta \Theta (\alpha, \beta) &=& \sqrt{
-		\delta \Theta_{std}^2 (0, 0) + \delta \Theta_{avg}^2 (0, 0)+ \delta \Theta_{std}^2 (\alpha, \beta)
+		\delta \Theta_{mean}^2 (0, 0) + 
+		\delta \Theta_{std}^2 (0, 0) + 
+		\delta \Theta_{std}^2 (\alpha, \beta)
 	} \, ,
 	\\
-	\delta \Theta_{avg} (\alpha, \beta)
+	\delta \Theta_{mean} (\alpha, \beta)
 	&=& 
-	\frac{1}{N_{\mathrm{turns}}}
-	\sum\limits_{n=1}^{N_{\mathrm{turns}}} \delta \Theta_{n} (\alpha, \beta) \, ,
+	\frac{1}{N_{t}}
+	\sum\limits_{n=1}^{N_{t}} \delta \Theta_{n} (\alpha, \beta) \, ,
 	\\
 	\delta \Theta_{std}^2 (\alpha, \beta)
 	&=& 
-	\frac{1}{N_{\mathrm{turns}}}
-	\sum\limits_{n=1}^{N_{\mathrm{turns}}} \left[
-		\delta \Theta_{avg} (\alpha, \beta) - \delta \Theta_{n} (\alpha, \beta)
-	\right]^2 \, .
+	\frac{1}{N_{t}}
+	\sum\limits_{n=1}^{N_{t}} \left[
+		\delta \Theta_{mean} (\alpha, \beta) - \delta \Theta_{n} (\alpha, \beta)
+	\right]^2 \, ,
 \end{eqnarray}
+where the standard deviations and mean values are obtained from the data sample of $N_t$ turns (orbits of mercury).
 Thus, the extract numerical value is given by
-\begin{equation}
-	\delta \Theta (\alpha, \beta) = \delta \Theta_{avg} (\alpha, \beta)  \pm \Delta \delta \Theta (\alpha, \beta)
+\begin{equation}\label{eq:num-vals}
+	\delta \Theta (\alpha, \beta) = \delta \Theta_{mean} (\alpha, \beta)  \pm \Delta \delta \Theta (\alpha, \beta)
 	\, .
 \end{equation}
+Note that this has to be repeated for each different time step $\Delta t$.
 
-The prediction coming from General Relativity for zero $\alpha$ is given by
-\begin{equation}
+The absolute value of the numerical error mostly depends on the tilmestep $\Delta t$ and is roughly independent on the values of $\alpha$ and $\beta$.
+Therefore, it is more desirable to pick large values for $\alpha$ and $\beta$, because this increases the absolute value of the precision growth and thus decreases the relative numerical error.
+However, there is a competing effect which places upper bounds on the values of $\alpha$ and $\beta$.
+For instance, the prediction for the precision growth coming from General Relativity for zero $\alpha$ is given by
+\begin{equation}\label{eq:gr-prediction}
 	\delta \Theta_{GR} (\alpha=0, \beta) = 
-	\frac{1}{4} \frac{r_S^2}{r_a^2} \times \beta
-	+\frac{3}{32} \frac{ r_S^4}{ r_a^4} \times \beta ^2
-	+O\left(\frac{r_S}{r_a}\right)^6
+	2 \pi \left[
+	\frac{\beta}{4} \,\frac{r_S^2}{r_a^2}
+	+\mathcal{O}\left(\beta^2\,\frac{r_S^4}{r_a^4}\right)
+	\right]
 	\, .
 \end{equation}
+Thus, once $\beta$ is sufficiently large, quadratic corrections in $\beta$ become relevant and it is not possible to extract the perihelion growth of Mercury by performing a linear interpolation.
+We display these competing effects in Figure \ref{fcc4}.
+The relative difference between numerically extracted values and the General Relativity prediction for $\delta \Theta$ are plotted against $\beta$ for zero $\alpha$.
+While for smaller $\beta$, the relative numerical uncertainty grows, for larger $\beta \gtrsim 10^5$, the numerical values deviate from the linear prediction.
+This is expected, because the non-linear corrections start to enter the percent regime
+\begin{equation}
+	\frac{\beta^2 \, r_S^4 / r_a^4}{\beta \, r_S^2 / r_a^2} \Bigg|_{\beta = 10^5}
+	\sim
+	1 \%
+	\, .
+\end{equation}
+Identifying a parameter space for reliable and precise computations is a general challenge for numerical simulations.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=.99\textwidth]{figs/computation-precision.pdf}
+	\caption{\label{fcc4}Difference of numerically extracted perihelion angle growth relative to value computed from General Relativity [Equation (\ref{eq:gr-prediction})] for different time steps.  The error bands are the envelope for computed data points where the size of the error is determined according to Equation (\ref{eq:num-vals}).
+}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
