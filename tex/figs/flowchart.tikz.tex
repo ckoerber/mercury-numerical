@@ -1,4 +1,5 @@
 \documentclass{article}
+% For example see: https://www.sharelatex.com/blog/2013/08/29/tikz-series-pt3.html
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows}
 %
@@ -15,8 +16,13 @@
   \node (in1) [io, below of=start] {Input};
   \node (pro1) [process, below of=in1] {Process 1};
   \node (dec1) [decision, below of=pro1] {Decision 1};
+  \node (pro2a) [process, below of=dec1, yshift=-0.5cm] {Process 2a};
+  \node (pro2b) [process, right of=dec1, xshift=2cm] {Process 2b};
   \draw [arrow] (start) -- (in1);
   \draw [arrow] (in1) -- (pro1);
   \draw [arrow] (pro1) -- (dec1);
+  \draw [arrow] (dec1) -- node[anchor=east] {yes} (pro2a);
+  \draw [arrow] (dec1) -- node[anchor=south] {no} (pro2b);
+  \draw [arrow] (pro2b) |- (pro1);
 \end{tikzpicture}
 \end{document}
