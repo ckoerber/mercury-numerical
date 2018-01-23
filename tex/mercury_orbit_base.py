@@ -7,7 +7,7 @@ vM0 = 5.10e-1 # Initial orbital speed of Mercury, in units of R0/T0
 c_a = 9.90e-1 # Base acceleration of Mercury, in units of R0**3/T0**2
 TM  = 8.80e+1 # Orbit period of Mercury
 rS  = 2.95e-7 # Schwarzschild radius of Sun,in units of R0
-ra2 = 8.19e-7 # Specific angular momentum, in units of R0**2
+rL2 = 8.19e-7 # Specific angular momentum, in units of R0**2
 
 # Initialize distance and velocity vectors
 vec_rM0 = vector(0, rM0, 0)
@@ -19,7 +19,7 @@ dt = 2 * vM0 / c_a / 20
 # Define the coordinate and velocity update
 def evolve_mercury(vec_rM_old, vec_vM_old, alpha, beta):
     # Compute the strength of the acceleration
-    temp = 1 + alpha * rS / vec_rM_old.mag + beta * ra2 / vec_rM_old.mag**2
+    temp = 1 + alpha * rS / vec_rM_old.mag + beta * rL2 / vec_rM_old.mag**2
     aMS  = c_a * temp / vec_rM_old.mag**2
     # Multiply by the direction
     vec_aMS = - aMS * ( vec_rM_old / vec_rM_old.mag )
