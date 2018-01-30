@@ -425,7 +425,7 @@ from vpython import vector
 # Initialize distance and velocity vectors
 vec_rM0 = vector(0, rM0, 0)
 vec_vM0 = vector(vM0, 0, 0)
-\end{lstlisting}
+\end{lstlisting}\footnote{Note that the statement \code{from vpython import vector} must be replaced by \code{from visual import vector} for \vpython{} versions prior \texttt{7.0}.}
 We use the estimate of Eq.~(\ref{eq:check}) as a guidance to fix the time step $\Delta t$ as
 \begin{lstlisting}
 # Definition of the time step
