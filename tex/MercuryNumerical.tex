@@ -108,7 +108,39 @@
   literate={\ }{{\copyablespace}}1
 }
 
-\usepackage[prependcaption, textsize=tiny]{todonotes}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+%
+\tikzstyle{startstop} = [
+	rectangle,
+	rounded corners,
+	minimum width=3cm,
+	minimum height=1cm,
+	text width=4.5cm,
+	text centered,
+	draw=black,
+	fill=green!30
+]
+
+\tikzstyle{process} = [
+	rectangle,
+	minimum width=3cm,
+	minimum height=1cm,
+	text width=4.5cm,
+	text centered,
+	draw=black,
+	fill=blue!25
+]
+\tikzstyle{decision} = [
+	diamond,
+	minimum width=4.5cm,
+	minimum height=1cm,
+	text width=1.7cm,
+	text centered,
+	draw=black,
+	fill=red!30
+]
+\tikzstyle{arrow} = [thick,->,>=stealth]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Commands
@@ -312,7 +344,7 @@ residual motion of
 \end{equation}
 remained unexplained, until Einstein quantified the predictions of General Relativity to this particular observable \cite{Einstein}
 \begin{equation}
-\delta \Theta_{GR} = (43.03\pm 0.03)'' \ \mbox{per 100 earth years \cite{RevModPhys.19.361}} \label{delT} \, .
+\delta \Theta_{GR} = (43.03\pm 0.03)'' \ \mbox{per 100 earth years \cite{RevModPhys.19.361}} \label{delTGR} \, .
 \end{equation}
 
 To allow for a movement of the perihelion we need to modify the force that led to Eq.~(\ref{eq:newton}).
@@ -425,7 +457,7 @@ from vpython import vector
 # Initialize distance and velocity vectors
 vec_rM0 = vector(0, rM0, 0)
 vec_vM0 = vector(vM0, 0, 0)
-\end{lstlisting}\footnote{Note that the statement \code{from vpython import vector} must be replaced by \code{from visual import vector} for \vpython{} versions prior \texttt{7.0}.}
+\end{lstlisting}\footnote{Note that the code is designed for \vpython{} versions \texttt{7} and later. For \vpython{} versions prior \texttt{7}, e.g., the statement from \code{vpython import vector}  must be replaced by \code{from visual import vector}.}
 We use the estimate of Eq.~(\ref{eq:check}) as a guidance to fix the time step $\Delta t$ as
 \begin{lstlisting}
 # Definition of the time step
@@ -982,8 +1014,45 @@ Sino--German CRC110 ``Symmetries and the Emergence of Structure in QCD''.
 \clearpage
 \section{The code covered by the basic course (visualization of the trajectories)}\label{sec:code}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Below we provide the complete code for part 1 as developed above.
-\lstinputlisting[language=Python,basicstyle=\linespread{1}\scriptsize\ttfamily]{mercury_orbit_base.py}
+Below we provide the complete code as well as a flowchart for part 1 as developed above.
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[node distance=1.8cm, every node/.style={scale=0.8}]
+  \node (start)  [startstop] {Start};
+  \node (proc1)  [process, below of=start] {Definition of\\ physical parameters};
+  \draw [arrow]  (start) -- (proc1);
+  \node (proc2)  [process, below of=proc1] {Initialize distance and velocity vectors};
+  \draw [arrow]  (proc1) -- (proc2);
+  \node (proc4)  [process, below of=proc2] {Activate drawing of trajectory};
+  \draw [arrow]  (proc2) -- (proc4);
+  \node (proc5)  [process, below of=proc4] {Definition of time step \texttt{dt}};
+  \draw [arrow]  (proc4) -- (proc5);
+  \node (proc6)  [process, below of=proc5] {Set \texttt{t=0}};
+  \draw [arrow]  (proc5) -- (proc6);
+  \node (proc6b) [process, below of=proc6] {Set \texttt{alpha} and \texttt{beta}};
+  \draw [arrow]  (proc6) -- (proc6b);
+  \node (dec1)   [decision, below of=proc6b, yshift=-0.7cm] {\texttt{t < Tmax}};
+  \draw [arrow]  (proc6b) -- (dec1);
+  \node (proc7)  [process, below of=dec1, yshift=-1.2cm] {Update Mercury trajectory};
+  \draw [arrow]  (dec1) -- node[anchor=west] {YES} (proc7) ;
+  \node (proc8)  [process, below of=proc7] {Calculate \texttt{vec\_aMS(t)}};
+  \draw [arrow]  (proc7) -- (proc8);
+  \node (proc9)  [process, below of=proc8] {Calculate \texttt{vec\_vM(t+dt)}};
+  \draw [arrow]  (proc8) -- (proc9);
+  \node (proc10) [process, below of=proc9] {Calculate \texttt{vec\_rM(t+dt)}};
+  \draw [arrow]  (proc9) -- (proc10);
+  \node (stop)   [startstop, right of=proc7, xshift=3.5cm] {Stop};
+  \node (proc11) [process, left of=proc7, xshift=-3.5cm] {\texttt{t=t+dt}};
+  \draw [arrow]  (dec1) -| node[anchor=north, xshift=-1.2cm] {NO} (stop);
+  \draw [arrow]  (proc10) -| (proc11);
+  \draw [arrow]  (proc11) |- (dec1);
+\end{tikzpicture}
+\caption{\label{fig:flow}Flowchart demonstrating the logical ordering of the example code.}
+\end{figure}
+
+\begin{figure}[htb]
+\lstinputlisting[language=Python,basicstyle=\linespread{1}\footnotesize\ttfamily]{mercury_orbit_base.py}
+\end{figure}
 Further examples and template files can be found online \cite{scripts}.
 
 \end{document}

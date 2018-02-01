@@ -1,7 +1,7 @@
 # Import all objects from the vpython module
 from vpython import *
 
-# Definition of parameters
+# Definition of physical parameters
 rM0 = 4.60    # Initial radius of Mercury orbit, in units of R0
 vM0 = 5.10e-1 # Initial orbital speed of Mercury, in units of R0/T0
 c_a = 9.90e-1 # Base acceleration of Mercury, in units of R0**3/T0**2
@@ -9,9 +9,15 @@ TM  = 8.80e+1 # Orbit period of Mercury
 rS  = 2.95e-7 # Schwarzschild radius of Sun,in units of R0
 rL2 = 8.19e-7 # Specific angular momentum, in units of R0**2
 
-# Initialize distance and velocity vectors
-vec_rM0 = vector(0, rM0, 0)
-vec_vM0 = vector(vM0, 0, 0)
+# Define the initial coordinates; M = mercury, S = Sun
+M = sphere(pos=vector(0, rM0, 0), radius=0.5,  color=color.red   )
+S = sphere(pos=vector(0, 0, 0),   radius=1.5,  color=color.yellow)
+# And the initial velocities
+M.velocity = vector(vM0, 0, 0)
+S.velocity = vector(0, 0, 0)
+
+# Add a visible trajectory to mercury
+M.trajectory = curve(color=color.white)
 
 # Definition of the time step
 dt = 2 * vM0 / c_a / 20
@@ -28,15 +34,6 @@ def evolve_mercury(vec_rM_old, vec_vM_old, alpha, beta):
     # Update position vector
     vec_rM_new = vec_rM_old + vec_vM_new * dt
     return vec_rM_new, vec_vM_new
-
-# Define the initial coordinates; M = mercury, S = Sun
-M = sphere(pos=vec_rM0,       radius=0.5,  color=color.red   )
-S = sphere(pos=vector(0,0,0), radius=1.5,  color=color.yellow)
-# And the initial velocities
-M.velocity = vec_vM0
-S.velocity = vector(0,0,0)
-# Add a visible trajectory to mercury
-M.trajectory = curve(color=color.white)
 
 t     = 0.0
 alpha = 0.0
