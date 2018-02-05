@@ -162,14 +162,14 @@
 	C.~K\"orber$^{1}$,
 	I.~Hammer$^{1}$,
 	J.-L.~Wynen$^{1}$,
-	J.~Heuer$^{2}$,
+	J.~Heuer$^{2}$\footnote{Present Address: Institut f\"ur Neurowissenschaften und Medizin (INM-4), Forschungszentrum J\"ulich, D-52425 J\"ulich, Germany},
 	C.~M\"uller$^{3}$ and
 	C.~Hanhart$^{1}$
 }
 \address{
 	$^1$ \textit{Institut f\"ur Kernphysik (IKP-3) and Institute for Advanced Simulations (IAS-4), Forschungszentrum J\"ulich, D-52425 J\"ulich, Germany}\\
-	$^2$ \textit{Institut f\"ur Neurowissenschaften und Medizin (INM-4), Forschungszentrum J\"ulich, D-52425 J\"ulich, Germany}\\
-	$^3$ \textit{JuLab, Forschungszentrum J\"ulich, D-52425 J\"ulich, Germany}
+	$^2$ \textit{Hochschule Hamm-Lippstadt, Marker Allee 76-78, 59063 Hamm, Germany}\\
+	$^3$ \textit{Sch\"ulerlabor JuLab, Forschungszentrum J\"ulich, D-52425 J\"ulich, Germany}
 }
 \ead{c.koerber@fz-juelich.de, c.hanhart@fz-juelich.de}
 \vspace{10pt}
@@ -359,6 +359,12 @@ r_L^2 := \frac{\vec L\,^2}{m^2c^2}= \frac{{(\vec r\times \dot{\vec r} \, )}^2}{c
 where $\vec L$ denotes the angular momentum, which is a constant of motion for central potentials.
 It is easily verified that $r_L^2$ carries dimensions of length squared.
 We therefore have to add one more term to the potential; in analogy to the one discussed above, we use $\beta \, \frac{r_L^2}{r^2}$.
+Here one might wonder why this additional term is chosen proportional to $(r_L/r)^2$ and not to $(r_L/r)$. The reason for this choice
+is indeed not obvious: In general the correction terms added must be scalar quantities --- accordingly vectors can enter only
+as scalar products. Moreover, one is not allowed to use square-roots of those scalar products for these impose
+wrong mathematical properties to the equations of motion (for the case at hand, e.g., the derivative with
+respect to the velocity would not be defined at $\dot{\vec r}=0$) --- the only vector that is allowed to appear as its length in linear order
+is the radius, since this length is related to geometrical properties of the system.  
 Combining everything, we use the following ansatz for the modified equation of motion:
 \begin{equation}
 \ddot{\vec r} = - \frac{c^2}{2}\frac{r_S}{r^2}\left(1+\alpha\frac{r_S}{r}+\beta\frac{r_L^2}{r^2}\right) \, \frac{\vec{r}}{r} \ .
@@ -381,6 +387,8 @@ General Relativity gives~\cite{Einstein}
 \end{equation}
 Thus we may also use the simulation explained below to calculate the perihelion motion of Mercury from the input
 values given in Eq.~(\ref{eq:art-prediction}).
+Modifications to the Newtonian equation of gravity introduced to account for the perihelion motion of Mercury
+are discussed in great detail in a very pedagogical way also in Ref.~\cite{Wells:2011st}.
 
 
 % For comparison: the typical distance of the Venus, the neighbor of Mercury, to the sun is $(r_S/r_{VS}) \sim 5 \cdot 10^{-8}$.
@@ -847,7 +855,8 @@ Identifying a parameter space for reliable and precise computations is a general
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Dimensional analysis is not only a tool that allows one to cross check, if the results of simulations are of the right order of magnitude, it is also very helpful to identify unusual dynamics in some systems.
-Especially the latter aspect should become clear from the discussion in this section.
+Especially the latter aspect should become clear from the discussion in this section. The modifications to the Newtonian equation of gravity introduced to account for the perihelion motion of Mercury
+are discussed also in Ref.~\cite{Wells:2011st}. To get a deeper understanding of the concepts introduced in this section reading this article is highly recommended.
 
 The idea of dimensional analysis is that in a system that can be controlled by expanding the relevant quantities (like the force) in some small parameter(s), the coefficients in the expansion should turn out to be of order one (that means anything between about 0.1 and 10 is fine --- but 0.01 or 100 is irritating); parameters in line with this are called "natural".
 Applied to the problem at hand given by Eq.~(\ref{eq:newton}) this statement implies that from naturalness one would predict the parameters $\alpha$ and $\beta$ to be
@@ -860,7 +869,7 @@ naturalness allows us to estimate the expected angular shift per orbit for, e.g.
 \end{equation}
 or for $\alpha=0$ and $\beta=1$
 \begin{equation}
-\delta \Theta \simeq 2\pi\left(\frac{a^2}{\bar r^2_{MS}}\right) = (\pi \times 5 \cdot 10^{-8}) \ \mbox{rad} = (1 \cdot 10^{-5})^o = (4\cdot 10^{-2}) ^{''} \ ,
+\delta \Theta \simeq 2\pi\left(\frac{r_L^2}{\bar r^2_{MS}}\right) = (\pi \times 5 \cdot 10^{-8}) \ \mbox{rad} = (1 \cdot 10^{-5})^o = (4\cdot 10^{-2}) ^{''} \ ,
 \end{equation}
 which leads to a shift of about $30^{''}$ and $15^{''}$, respectively, in 100 earth years. These are to be compared to the empirical value of $43^{''}$.
 Thus the amount of perihelion motion of Mercury is indeed in line with expectations, \textit{if} --- and this is an important "if" --- the 
