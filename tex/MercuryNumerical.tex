@@ -220,7 +220,7 @@ On the example of the perihelion motion of the planet Mercury the students are s
 We are convinced that in order to excite students for numerical simulations it is compulsory to demonstrate their power on an example that catches their interest.
 This purpose is served perfectly by the case chosen here, since Einsteins equations of General Relativity are fascinating to a very broad public.
 Their detailed study needs a deep understanding of Differential Geometry. For the course presented here, however, very little math is necessary, such that high school students vaguely familiar to vector calculus and derivatives will benefit from it.
-This was already demonstrated in the "Sch\"ulerakademie Teilchenphysik", where this course was tested successfully on two groups consisting in total of 24 German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade in 2015 and 2017. As an example on how the course can be implemented in practice we describe our own
+This was already demonstrated in the "Sch\"ulerakademie Teilchenphysik", where this course was tested successfully on two groups consisting in total of 24 German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade in 2015 and 2017. As an example on how the course can be implemented in practice, we describe our own
 experiences with it in the second to last section. 
 
 The course as well as this paper is structured as follows: after an introduction to Newtonian dynamics and the concept of differential equations, their
@@ -616,6 +616,10 @@ For an even more enhanced perihelion motion it is advisable to not use the corre
 \begin{figure}[htb]
 	\centering
 	\begin{subfigure}[c]{0.22\textwidth}
+		\includegraphics[width=\textwidth]{figs/a0T5dt20.png}
+		\caption{\label{fig:MercuryOrbit-a6-small}}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.22\textwidth}
 		\includegraphics[width=\textwidth]{figs/a6T5dt20.png}
 		\caption{\label{fig:MercuryOrbit-a6-small}}
 	\end{subfigure}
@@ -628,8 +632,9 @@ For an even more enhanced perihelion motion it is advisable to not use the corre
 	\caption[]{\label{fig:MercuryOrbit}
 		Different Mercury orbits for $\beta=0$ and
 		\begin{itemize}
-		\item[(a)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$;
-		\item[(b)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$ but $r_{MS}(0) = 6 R_0$.
+		\item[(a)] $\alpha=0 $ and $\Delta t = \Delta t_0 / 20$;
+		\item[(b)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$;
+		\item[(c)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$ but $r_{MS}(0) = 6 R_0$.
 		\end{itemize}
 		Here, the time steps are defined by $\Delta t_0 \equiv 2 v_{M}(0) /a_M(0)$ and the images are screenshots of the simulation (with modified colors).
 		Note that for different starting values of $r_{MS}(0)$, also the numbers of days for a "Mercury year" changes.
@@ -995,44 +1000,33 @@ Only a smaller part is due to General Relativity.
 
 \section{Own experiences with the implementation of the course}
 
-The idea that a numerical study of the perihelion motion of Mercury is an interesting subject for high
-school students was taken from a project work of one of the authors (JH) presented at the 
-M\"adchen-Gymnasium J\"ulich (a German high school) in 11$^{\rm th}$ grade in 2014. Based on this study
-the course was developed as outlined in Sec.~\ref{sec:Numerical Implementation} to be used in 
-the Sch\"ulerakademie Teilchenphysik" in 2015, which aims at  high school students from 10$^{\rm th}$ to 
-13$^{\rm th}$ grade. This academy is financed by the German Research Society (DFG) as the outreach
-branch
-of a large research grant focussing on basic research in particle and nuclear physics.
-One of the authors (CH) is acting as a Principal Investigator for the outreach
-activities within this scheme. It runs biannually
-at the Science Center Overbach in J\"ulich
-for four days and has about 25 participants coming from various parts of Germany. 
-The academy comprises lectures, a tour to the particle accelerator
-COSY as well as the high performance computing facility at the Research Center J\"ulich as well
-as one full day of practical work. The course presented here
- is offered as one option out of three on this day and was prepared
-by a lecture to the whole group explaining the basics of numerical simulations. 
-Given the setting the participating students
-are highly motivated and eager to understand. Typically about one half of the participants chose to
-work on the numerical project --- out of those about half had programmed a computer before while
-the other half did not yet have any programming experience. Most of the participants had already
-learned about derivatives in school. Given the very positive to enthusiastic 
-feed backs we received from the participants we decided to make the course in the form presented
-to a permanent part of the academy. It was used in the 2017 with the same success.
+The idea that the numerical study of the perihelion motion of Mercury is an interesting subject for high school students was taken from a project work of one of the authors (JH).
+The project was eventually presented at the M\"adchen-Gymnasium J\"ulich (a German high school) in 11$^{\rm th}$ grade in 2014.
+Based on this study, the course was developed as outlined in Sec.~\ref{sec:Numerical Implementation} and used in the Sch\"ulerakademie Teilchenphysik in 2015, which aims at high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade.
+This academy is financed by the German Research Society (DFG) as the outreach branch of a research grant focussing on basic research in particle and nuclear physics.
+One of the authors (CH) is acting as a Principal Investigator for the outreach activities within this scheme.
+The Sch\"ulerakademie Teilchenphysik runs biannually at the Science Center Overbach in J\"ulich for four days and has about 25 participants coming from various parts of Germany.
+The academy comprises lectures, a tour to the particle accelerator COSY as well as the high performance computing facility at the Research Center J\"ulich as well as one full day of practical work.
+Given the setting the participating students are highly motivated and eager to understand.
 
-The students worked in pairs. Each group had an own laptop provided by us, where the necessary
-software was preinstalled. Four of the authors (IH, CK, CM, JLW) acted as supervisors for
-the students. 
-The material covered in this one day is in most cases what is presented in Sec.~\ref{sec:Numerical Implementation}.
-Only very few participants managed to start thinking about how to actually extract quantitatively the
-perihelion motion --- not to speak of uncertainty estimates.
-Once the basic problem was tackled some students deviated from the suggested path and for
-instance studied the problem with one additional planet which was fine for us as well. This is
-a very interesting problem by itself for there are parameter ranges where the classical three-body
-system develops chaotic features.
- The reason why we included the
-additional material in the paper is that we wanted to provide teachers with sufficient material to
-probably even fill a working group outside the general curriculum running for a longer period.
+The course presented in this paper is offered as one out of three hands-on project options and was prepared by a lecture to the whole group explaining the basics of numerical simulations.
+Typically about one half of the participants chose to work on the numerical project --- out of those about one half had previous programming experience.
+Most of the participants had already learned about derivatives and vector calculus in school.
+Given the positive to enthusiastic feedback we have received from the participants on the numerical course, we decided to make the course a permanent part of the academy.
+It was used in the 2017 with the same success.
+
+The numerical course was allocated for one work day (seven hours) and the students worked in pairs.
+Each group worked on a laptop provided by us, where the necessary software was preinstalled.
+Four of the authors (IH, CK, CM, JLW) acted as supervisors for the students. 
+The course was initiated with a brief summary of previously presented methods, motivations and objectives of the simulation.
+In the first two hours the students were introduced to \python{} and \vpython{}.
+In the following part the students worked with an initial code template and were motivated to come up with own solutions to fulfill the objectives.
+A large part of the material covered during this day is presented in Sec.~\ref{sec:Numerical Implementation}.
+While a majority of the participants where able to visually simulate the motion of mercury including forces from GR, only a few participants started to implement the quantitative extraction of the perihelion motion --- not to speak of uncertainty estimates.
+Once the basic problem was tackled some students deviated from the suggested path and for instance studied the problem with one additional planet or different starting parameters.
+This is a very interesting problem by itself for there are parameter ranges where the classical three-body system develops chaotic features.
+We encouraged such explorations as well.
+The reason why we included the additional material in the paper is that we wanted to provide teachers with sufficient material to probably even fill a working group outside the general curriculum running for a longer period.
 
 
 \section{Summary}

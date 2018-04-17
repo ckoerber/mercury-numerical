@@ -9,3 +9,6 @@ clean:
 arxiv:
 	make -C tex/ arxiv
 	mv tex/arxiv.zip .
+
+response:
+	make -C ped-response
