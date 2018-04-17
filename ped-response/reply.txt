@@ -1,0 +1,19 @@
+We thank the referee for the positive and constructive report.
+As detailed below we followed the suggestions made by the referee and hope that the improved version is now regarded appropriate for publication in Physics Education.
+
+>Section 2 is largely unnecessary as it covers the basics of Newton's Laws and the Euler step method, which will be familiar to everyone.
+>This section could be shortened to the necessary equations and an introduction to the notation, together with a comment on time steps as this is important later.
+
+We shortened the section somewhat, however, kept most of the equations. In particular, although straightforward, we regard it as useful for the logic of the presentation (and probably also for teaching the course) to introduce the derivatives via Eqs (1) and (2) and not directly via Eqs (3) and (4).
+
+>figure 2 shows that the trajectory varying even when alpha and beta are zero.
+>It is worth explaining at this point (rather than later) that this is due to the finite time step.
+>Also it is worth noting if the trajectory change from one orbit to the next leads to a perihelion shift (also picked up later in more detail)
+
+We moved half of Fig. 2 forward into Sec. 2. We thank the referee for this suggestion for it allows us to illustrate the statements immediately and quantitatively, which improves the presentation significantly.
+
+>Finally, the only reason this paper is suitable for Phys Ed rather than, say a journal aimed at undergraduates, is that the authors claim it has been used successfully on students of high school age.
+>However, there is no supporting evidence of this, no indication of success criteria and no explanation of what was done.
+>In order to fit better with the idea of an education research journal at this level, perhaps the authors could include some feedback or anecdotal evidence even if they have no formal study of the efficacy of the trial?
+
+We added the new Sec. 8 (Own experiences with the implementation of the course), where we now not only explain in which context we used (and will be using) the course, but also provide some information about the participants.

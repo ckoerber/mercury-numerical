@@ -220,7 +220,8 @@ On the example of the perihelion motion of the planet Mercury the students are s
 We are convinced that in order to excite students for numerical simulations it is compulsory to demonstrate their power on an example that catches their interest.
 This purpose is served perfectly by the case chosen here, since Einsteins equations of General Relativity are fascinating to a very broad public.
 Their detailed study needs a deep understanding of Differential Geometry. For the course presented here, however, very little math is necessary, such that high school students vaguely familiar to vector calculus and derivatives will benefit from it.
-This was already demonstrated in the "Sch\"ulerakademie Teilchenphysik", where this course was tested successfully on two groups consisting in total of 24 German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade in 2015 and 2017.
+This was already demonstrated in the "Sch\"ulerakademie Teilchenphysik", where this course was tested successfully on two groups consisting in total of 24 German high school students from 10$^{\rm th}$ to 13$^{\rm th}$ grade in 2015 and 2017. As an example on how the course can be implemented in practice we describe our own
+experiences with it in the second to last section. 
 
 The course as well as this paper is structured as follows: after an introduction to Newtonian dynamics and the concept of differential equations, their
 discretization is discussed based on Newton's law of gravitation and possible extensions thereof.
@@ -237,7 +238,7 @@ However, we include this discussion as well both for completeness and as an addi
 \section{Trajectories, velocities, accelerations and Newton's second law}\label{sec:tva}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-A physical system is said to be understood, if the assumed forces acting on it lead to the observed trajectories.
+A  classical physics system is said to be understood, if the assumed forces acting on it lead to the observed trajectories.
 In other words, we need to show that we can calculate the location in space of the object of interest at any future point in time, once the initial conditions are fixed properly.
 If we can neglect the finite size of this object (and in particular its orientation in space), the location is parametrized by a single three vector $\vec r(t)$.
 Additionally, we need to be able to calculate the objects velocity $\vec v(t)$ and acceleration $\vec a(t)$ in order to describe and control its dynamics; this will become clear below. The velocity describes a change of location over time which, for some infinitesimally small $\Delta t$, can be written as
@@ -256,15 +257,11 @@ Thus we may define the time derivative via
 where $\Delta \vec r(t)=\vec r(t+\Delta t)-\vec r(t)$ and we introduced a common short hand notation for time derivatives in the last expression.
 Analogously we get
 \begin{eqnarray}
-\vec a(t) &=& \lim_{\Delta t\to 0} \frac{\Delta \vec v(t)}{\Delta t} =: \frac{d\vec v(t)}{dt}  = \dot{\vec v}(t) \ , \\
- &=& \frac{d^2\vec r(t)}{dt^2}  = \ddot{\vec r}(t) \ ,
+\vec a(t) &=& \lim_{\Delta t\to 0} \frac{\Delta \vec v(t)}{\Delta t} =: \frac{d\vec v(t)}{dt}  = \dot{\vec v}(t)  = \ddot{\vec r}(t) \ ,
 \end{eqnarray}
-where we introduced the second derivative in the second line.
+where we introduced the second derivative in the last step.
 
-It was Newton who observed that, if a body is at rest, it will remain at rest, and if it is in motion it will remain in motion at a constant velocity in a straight line, 
-unless it is acted upon by some force --- this is known as Newton's first law.
-Formulated differently: a force $\vec F$ expresses itself by changing the motion of some object.
-This is quantified in Newton's second law
+The dynamics is controlled by Newton's second law
 \begin{equation}
 \vec F(\vec r, t) = \frac{d}{dt}(m \vec v) \ .
 \end{equation}
@@ -285,10 +282,31 @@ However, alternatively one can calculate the whole trajectory of some test body 
 \item Use Eq.~(\ref{eq:adef}) to calculate $\vec v(t+\Delta t)$.
 \item Go back to (i) with $t\to t+\Delta t$.
 \end{enumerate}
-Clearly to initiate the procedure at some time $t_0$ both $\vec r(t_0)$ as well as $\vec v(t_0)$ must be known --- the  trajectories depend on these initial conditions~\footnote{%
+Clearly to initiate the procedure at some time $t_0$ both $\vec r(t_0)$ as well as $\vec v(t_0)$ must be fixed --- the  trajectories depend on these initial conditions~\footnote{%
 	In general, a differential equation of $n^{\rm th}$ degree (where the highest derivative is order $n$) needs $n$ initial conditions specified.
 	For $n=2$ those are often chosen as location and velocity at some starting time, but one may as well pick two locations at different times.%
 }.
+\begin{figure}[htb]
+	\centering
+	\begin{subfigure}[c]{0.22\textwidth}
+		\includegraphics[width=\textwidth]{figs/a0T5dt20.png}
+		\caption{\label{fig:MercuryOrbit-a0-small}}
+	\end{subfigure}
+	~
+	\begin{subfigure}[c]{0.22\textwidth}
+		\includegraphics[width=\textwidth]{figs/num-err.png}
+		\caption{\label{fig:MercuryOrbit-a0-small-dt-large}}
+	\end{subfigure}
+	\captionsetup{singlelinecheck=off}
+	\caption[]{\label{fig:MercuryOrbit1}
+		Different Mercury orbits for the purely Newtonian gravity and
+		 $\Delta t = \Delta t_0  / 20$ for (a) and $\Delta t = \Delta t_0  \times 2$ for (b), 
+		 where the black line represents the orbit of (a) and the red line is the orbit for the larger time steps;
+		Here, the reference time step is given by $\Delta t_0$ defined via Eq.~(\ref{eq:check}) as explained
+		in the text.
+		The images are screenshots of the simulation that is described below (with modified colors).
+	}
+\end{figure}
 
 This procedure can only work if $\Delta t$ is sufficiently small.
 One way to estimate whether $\Delta t$ is small enough is to verify whether the relation
@@ -296,7 +314,14 @@ One way to estimate whether $\Delta t$ is small enough is to verify whether the 
 |\vec v(t)| \gg \frac12|\vec a(t)|\Delta t = \frac{1}{2m} |\vec F(\vec r(t)) |\Delta t\
 \label{eq:check}
 \end{equation}
-holds. This follows from Eq.~(\ref{eq:vdef}) where the first term that we neglected reads $(1/2)a(t){(\Delta t)}^2$.
+holds. This follows from Eq.~(\ref{eq:vdef}) where the first term that was neglected reads $(1/2)a(t){(\Delta t)}^2$.
+The impact of the size of $\Delta t$ on the simulation is illustrated in Fig.~\ref{fig:MercuryOrbit1} where
+the force employed in Newtonian gravity as detailed in the next section. While for the
+calculations for the left panel $\Delta t$
+is chosen significantly below $\Delta t_0=2m |\vec v(0)| /   |\vec F(\vec r(0)) |$ ($cf.$ Eq.~(\ref{eq:check})), for the
+right panel it was chosen twice as large. Accordingly only the trajectory in the left channel shows the characteristic
+feature of a $1/r^2$--force of an ellipse fixed in space --- the trajectory in the right channel does not reproduce itself in successive revolutions.  
+
 Eq.~({\ref{eq:check}}) also shows that small (large) time steps are necessary (sufficient), if the force is strong (weak), since the time steps need to be small enough that all changes induced by the force get resolved.
 Clearly, a relation as Eq.~({\ref{eq:check}}) can only provide guidance and can not replace a careful numerical check of the solutions: A valid result has to be insensitive to the concrete value chosen for $\Delta t$ --- in particular replacing $\Delta t$ by $\Delta t/2$ should not change the result significantly.
 This issue will be discussed in more detail below.
@@ -591,16 +616,6 @@ For an even more enhanced perihelion motion it is advisable to not use the corre
 \begin{figure}[htb]
 	\centering
 	\begin{subfigure}[c]{0.22\textwidth}
-		\includegraphics[width=\textwidth]{figs/a0T5dt20.png}
-		\caption{\label{fig:MercuryOrbit-a0-small}}
-	\end{subfigure}
-	~
-	\begin{subfigure}[c]{0.22\textwidth}
-		\includegraphics[width=\textwidth]{figs/num-err.png}
-		\caption{\label{fig:MercuryOrbit-a0-small-dt-large}}
-	\end{subfigure}
-	~
-	\begin{subfigure}[c]{0.22\textwidth}
 		\includegraphics[width=\textwidth]{figs/a6T5dt20.png}
 		\caption{\label{fig:MercuryOrbit-a6-small}}
 	\end{subfigure}
@@ -613,10 +628,8 @@ For an even more enhanced perihelion motion it is advisable to not use the corre
 	\caption[]{\label{fig:MercuryOrbit}
 		Different Mercury orbits for $\beta=0$ and
 		\begin{itemize}
-		\item[(a)] $\alpha=0$ and $\Delta t = \Delta t_0  / 20$;
-		\item[(b)] $\alpha=0$ and $\Delta t = \Delta t_0  \times 2$, where the black line represents the orbit of (a) and the red line is the orbit for the larger time steps;
-		\item[(c)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$;
-		\item[(d)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$ but $r_{MS}(0) = 6 R_0$.
+		\item[(a)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$;
+		\item[(b)] $\alpha=10^{6}$ and $\Delta t = \Delta t_0 / 20$ but $r_{MS}(0) = 6 R_0$.
 		\end{itemize}
 		Here, the time steps are defined by $\Delta t_0 \equiv 2 v_{M}(0) /a_M(0)$ and the images are screenshots of the simulation (with modified colors).
 		Note that for different starting values of $r_{MS}(0)$, also the numbers of days for a "Mercury year" changes.
@@ -979,6 +992,48 @@ Only a smaller part is due to General Relativity.
 \end{itemize}
 
 \end{itemize}
+
+\section{Own experiences with the implementation of the course}
+
+The idea that a numerical study of the perihelion motion of Mercury is an interesting subject for high
+school students was taken from a project work of one of the authors (JH) presented at the 
+M\"adchen-Gymnasium J\"ulich (a German high school) in 11$^{\rm th}$ grade in 2014. Based on this study
+the course was developed as outlined in Sec.~\ref{sec:Numerical Implementation} to be used in 
+the Sch\"ulerakademie Teilchenphysik" in 2015, which aims at  high school students from 10$^{\rm th}$ to 
+13$^{\rm th}$ grade. This academy is financed by the German Research Society (DFG) as the outreach
+branch
+of a large research grant focussing on basic research in particle and nuclear physics.
+One of the authors (CH) is acting as a Principal Investigator for the outreach
+activities within this scheme. It runs biannually
+at the Science Center Overbach in J\"ulich
+for four days and has about 25 participants coming from various parts of Germany. 
+The academy comprises lectures, a tour to the particle accelerator
+COSY as well as the high performance computing facility at the Research Center J\"ulich as well
+as one full day of practical work. The course presented here
+ is offered as one option out of three on this day and was prepared
+by a lecture to the whole group explaining the basics of numerical simulations. 
+Given the setting the participating students
+are highly motivated and eager to understand. Typically about one half of the participants chose to
+work on the numerical project --- out of those about half had programmed a computer before while
+the other half did not yet have any programming experience. Most of the participants had already
+learned about derivatives in school. Given the very positive to enthusiastic 
+feed backs we received from the participants we decided to make the course in the form presented
+to a permanent part of the academy. It was used in the 2017 with the same success.
+
+The students worked in pairs. Each group had an own laptop provided by us, where the necessary
+software was preinstalled. Four of the authors (IH, CK, CM, JLW) acted as supervisors for
+the students. 
+The material covered in this one day is in most cases what is presented in Sec.~\ref{sec:Numerical Implementation}.
+Only very few participants managed to start thinking about how to actually extract quantitatively the
+perihelion motion --- not to speak of uncertainty estimates.
+Once the basic problem was tackled some students deviated from the suggested path and for
+instance studied the problem with one additional planet which was fine for us as well. This is
+a very interesting problem by itself for there are parameter ranges where the classical three-body
+system develops chaotic features.
+ The reason why we included the
+additional material in the paper is that we wanted to provide teachers with sufficient material to
+probably even fill a working group outside the general curriculum running for a longer period.
+
 
 \section{Summary}
 
