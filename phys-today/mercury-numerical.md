@@ -1,7 +1,12 @@
-# Numerical Simulation of the Perihelion Motion of Mercury
+# Numerical Simulations and General Relativity for High-School Students -- A Course designed for just one day
 
-
-Visualizing and studying the perihelion motion of mercury due to general relativity using VPython - an introductory course on numerical simulations in physics for high school students.
+When I was in high-school, my biggest intrest were phenomena beyond the scope of what I currently knew.
+Unfortunately, at this point, I did not yet have the theoretical toolset to dig deep.
+But even though I was not able to compute things myself, I could grasp some insights of nature through visualisations.
+With the growing availability of computational resources and accessibility to coding experience, it is a straight forward task to let students run their own simulations.
+In this article we talk about our experience of teaching the basics of numerical simulations in a playfull way to high-school students.
+The working case is the classical planetary motion of mercury and the modifications to it's orbit coming from general relativity.
+This example is particular motivating in the era where we have developed a new, additional sense for astronomical observations through gravitational waves.
 
 This course was originally developed for a student academy on particle physics, the "Schülerakademie Teilchenphysik" which aims at high school students from 10th to 13th grade. 
 It usually has about 25 participants, which come from all over Germany, and takes place biannually at the Science Center Overbach in Jülich. 
