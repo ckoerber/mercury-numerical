@@ -1,39 +1,35 @@
-# Numerical Simulations and General Relativity for High-School Students -- A Course designed for just one day
+# Numerical Simulations and General Relativity for High-School Students
+## How you can introduce High-School Students to the basic concepts of numerical simulations and run their first computations including General Relativity -- in just one day
 
 When I was in high-school, my biggest intrest were phenomena beyond the scope of what I currently knew.
 Unfortunately, at this point, I did not yet have the theoretical toolset to dig deep.
 But even though I was not able to compute things myself, I could grasp some insights of nature through visualisations.
 With the growing availability of computational resources and accessibility to coding experience, it is a straight forward task to let students run their own simulations.
 In this article we talk about our experience of teaching the basics of numerical simulations in a playfull way to high-school students.
-The working case is the classical planetary motion of mercury and the modifications to it's orbit coming from general relativity.
+The working case is the classical planetary motion of mercury and the modifications to it's orbit coming from general relativity, which has long been a source of fascination not only for trained physicists, but also for the general public.
 This example is particular motivating in the era where we have developed a new, additional sense for astronomical observations through gravitational waves.
 
-This course was originally developed for a student academy on particle physics, the "Schülerakademie Teilchenphysik" which aims at high school students from 10th to 13th grade. 
-It usually has about 25 participants, which come from all over Germany, and takes place biannually at the Science Center Overbach in Jülich. 
-During the four days of academy the students take part in different activities: 
+This article is accompanied by a publication in which we describe the content of a one-day course.
+The first idea for this course originates from a school project work in 2014 of one of the publications author, J. Heuer, when she was in 11th grade.
+Only one year later it was adapted and introduced as a course in the "Schülerakademie Teilchenphysik 2015" ("Student Academy for Particle Physics") which aims at high-school students from 10th to 13th grade.
+It usually has about 25 participants, which come from all over Germany (during their vacations), and takes place biannually at the Science Center Overbach in Jülich.
+During the four days of academy the students take part in different activities:
 * lectures on various topics in particle physics,
-* a tour of the particle accelerator COSY and a visit to the high performance computing facility at the Research Center Jülich.
-In addition one whole day is dedicated to practical work and three choices are offered to the students.
-Since 2015 one of them is this course on the topic of numerical simulations in physics.
-This is actually a huge field of research in physics, since simulations are often the best method available for obtaining quantitative results.
-Take for example the research center Jülich, where the authors work.
-A particular focus of active research is Lattice Quantum Chromodynamics, which allows for ab initio simulations of the strong force of the Standard Model of elementary particle physics.
-Today a major part of the supercomputing resources in the world is used in physical simulations.
+* a tour of the particle accelerator COSY and 
+* a visit to the high-performance computing facility at the Research Center Jülich.
+At the end of the course, the last day is dedicated to hands-on work where studentes have three different choices: one choice being about coding numerical simulations for a physics system.
 
-In school all students learn physics and many also enjoy classes on programming.
-However the two are seldom combined.
-Albeit we see a big opportunity in this approach, as the students can experience and experiment with physics, that can otherwise only be studied theoretically, while at the same time picking up valuable skills in programming and gaining a deeper understanding of modern science.
+IMAGE COURSE
 
-Our goal is to give the students an introduction to this huge field of research in a way, that captivates the students interest by choosing a fascinating topic.
-We feel that studying one of the most famous effects of general relativity, the perihelion motion of mercury, is ideally suited to this purpose.
-General relativity has long been a source of fascination not only for trained physicists, but also for the general public.
-While we cannot experience it directly in our everyday life, one often reads in popular science journals or articles on the internet about it's intriguing effects.
-In recent time the most sensational topic in this respect certainly was the discovery of the gravitational waves.
-Unfortunately understanding the exact math behind general relativity requires the knowledge of differential geometry and therefore is accessible only to advanced university students.
-This is actually one reason we feel our course had such a good resonance and should be made available to a larger audience, since through a combination of the use of effective theory methods and numerical simulation even high school students are in the position to derive meaningful quantitative results from general relativity, namely the perihelion motion of mercury, which can then be compared to actual measurements.
+The reason why it was desired to offer a course on numerical simulation is the relevance of simulations in active research.
+Simulations are often the best method available for obtaining quantitative results in not only physics.
+From NEURONS IN BIOLOGY OVER ATOMS IN CHEMISTRY THROUGH the descriptions of Quarks and Gluons through Lattice Quantum Chromodynamics.
+However, in most school curricula, even though students learn about physics and can enjoy classes on programming, both topics are seldom combined.
+Albeit we see a big opportunity in this approach:
+students can experience and experiment with physics systems that otherwise can only be studied theoretically, while, at the same time, they can pick up valuable skills in programming.
 
-The first idea for this course originates in a project work of one of the authors of our paper, J. Heuer, that she did in 2014, when she was in 11th grade.
-Only one year later it was adapted and introduced as a course in the "Schülerakademie Teilchenphysik 2015".
+#### IM HERE
+
 Here the students worked in pairs charing one laptop with the necessary software, VPython, preinstalled.
 We, the authors, acted as supervisors for the students and the feedback we got was enthusiastic.
 Thus this course became a permanent part of the academy.
