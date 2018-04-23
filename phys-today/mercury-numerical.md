@@ -1,18 +1,18 @@
 # Numerical Simulations and General Relativity for High-School Students
 ## How you can introduce High-School Students to the basic concepts of numerical simulations and run their first computations including General Relativity -- in just one day
 
-When I was in high-school, my biggest intrest were phenomena beyond the scope of what I currently knew.
+When I was in high-school, my biggest interest were phenomena beyond the scope of what I currently knew.
 Unfortunately, at this point, I did not yet have the theoretical toolset to dig deep.
-But even though I was not able to compute things myself, I could grasp some insights of nature through visualisations.
+But even though I was not able to compute things myself, I could grasp some insights of nature through visualizations.
 With the growing availability of computational resources and accessibility to coding experience, it is a straight forward task to let students run their own simulations.
-In this article we talk about our experience of teaching the basics of a numerical simulations in a playfull way to high-school students.
-The working case is the planetary motion of mercury and the modifications to it's orbit coming from general relativity.
+In this article we talk about our experience of teaching the basics of a numerical simulations in a playful way to high-school students.
+The working case is the planetary motion of Mercury and the modifications to it's orbit coming from general relativity.
 This example is particular motivating in the era where we have developed a new, additional sense for astronomical observations through gravitational waves, which has long been a source of fascination not only for trained physicists, but also for the general public.
 
 This article is accompanied by a publication in which we describe the content of a one-day course.
 The first idea for this course originates from a school project work in 2014 of one of the publications author, J. Heuer, when she was in 11th grade.
 Which was eventually adapted and introduced as a course in the "Schülerakademie Teilchenphysik 2015" ("Student Academy for Particle Physics") which aims at high-school students from 10th to 13th grade.
-It usually has about 25 participants, which come from all over Germany (during their vacations), and takes place biannually at the Science Center Overbach in Jülich.
+It usually has about 25 participants, which come from all over Germany (during their vacations), and takes place biennially at the Science Center Overbach in Jülich.
 During the four days of academy the students take part in different activities:
 * lectures on various topics in particle physics,
 * a tour of the particle accelerator COSY and 
@@ -31,7 +31,7 @@ Albeit we see a big opportunity in this approach:
 students can experience and experiment with physics systems that otherwise can only be studied theoretically, while, at the same time, they can pick up valuable skills in programming.
 
 The basic outline of the course is at follows:
-First, the students programm and visualize the orbit of mercury around the sun as it arises from classical newtonian mechanics.
+First, the students programm and visualize the orbit of Mercury around the sun as it arises from classical newtonian mechanics.
 Here they learn a basic concept of simulations: discretisation.
 The orbit is derived by taking small but finite time steps and at each step calculating the position, velocity and acceleration from the one before using Newtons second law.
 The students arrive at the typical elliptic curves, which are fixed in space.
@@ -45,7 +45,7 @@ These closed curves are actually a consequence of the 1/r potential we have in n
 At this, point, we ask the students to play around with the discretization of time to see it's effect on the orbit and realize the importance of controlling numerical approximations.
 
 To allow for movement of the perihelion the students need to modify the potential by including terms proportional to 1/r^2 and 1/r^3.
-Because the actual perihelion motion due to general relativity is less than 42.3'' = 0.011° in a century (which is less than 10% of the total perihelion motion of mercury due to other planets in our solar system), we encourage students to play with the strength of these forces in order to visually observe changes to the orbit.
+Because the actual perihelion motion due to general relativity is less than 42.3'' = 0.011° in a century (which is less than 10% of the total perihelion motion of Mercury due to other planets in our solar system), we encourage students to play with the strength of these forces in order to visually observe changes to the orbit.
 How would our observations change, if nature was slightly different?
 
 
