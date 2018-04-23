@@ -2,7 +2,7 @@
 ## How you can introduce High-School Students to the basic concepts of numerical simulations and run their first computations including General Relativity -- in just one day
 
 When I was in high-school, my biggest interest were phenomena beyond the scope of what I currently knew.
-Unfortunately, at this point, I did not yet have the theoretical toolset to dig deep.
+Unfortunately, at this point, I did not yet have the theoretical toolbox to dig deep.
 But even though I was not able to compute things myself, I could grasp some insights of nature through visualizations.
 With the growing availability of computational resources and accessibility to coding experience, it is a straight forward task to let students run their own simulations.
 In this article we talk about our experience of teaching the basics of a numerical simulations in a playful way to high-school students.
@@ -17,7 +17,7 @@ During the four days of academy the students take part in different activities:
 * lectures on various topics in particle physics,
 * a tour of the particle accelerator COSY and 
 * a visit to the high-performance computing facility at the Research Center Jülich.
-At the end of the course, the last day is dedicated to hands-on work where studentes have three different choices: one choice being about coding numerical simulations for a physics system.
+At the end of the course, the last day is dedicated to hands-on work where students have three different choices: one choice being about coding numerical simulations for a physics system.
 
 
 Figure 1: Image of course
@@ -31,17 +31,17 @@ Albeit we see a big opportunity in this approach:
 students can experience and experiment with physics systems that otherwise can only be studied theoretically, while, at the same time, they can pick up valuable skills in programming.
 
 The basic outline of the course is at follows:
-First, the students programm and visualize the orbit of Mercury around the sun as it arises from classical newtonian mechanics.
-Here they learn a basic concept of simulations: discretisation.
+First, the students program and visualize the orbit of Mercury around the sun as it arises from classical Newtonian mechanics.
+Here they learn a basic concept of simulations: discretization.
 The orbit is derived by taking small but finite time steps and at each step calculating the position, velocity and acceleration from the one before using Newtons second law.
 The students arrive at the typical elliptic curves, which are fixed in space.
 
 
-Figure 2: Mercury orbit around the sun from newtonian gravity (GIF).
+Figure 2: Mercury orbit around the sun from Newtonian gravity (GIF).
 
 
 In particular the point of closest approach to the sun, the perihelion, does not move.
-These closed curves are actually a consequence of the 1/r potential we have in newtonian gravity.
+These closed curves are actually a consequence of the 1/r potential we have in Newtonian gravity.
 At this, point, we ask the students to play around with the discretization of time to see it's effect on the orbit and realize the importance of controlling numerical approximations.
 
 To allow for movement of the perihelion the students need to modify the potential by including terms proportional to 1/r^2 and 1/r^3.
@@ -49,7 +49,7 @@ Because the actual perihelion motion due to general relativity is less than 42.3
 How would our observations change, if nature was slightly different?
 
 
-Figure 3: Mercury orbit around the sun from newtonian gravity + general Relativity(GIF).
+Figure 3: Mercury orbit around the sun from Newtonian gravity + general Relativity(GIF).
 
 
 In the start of the course, we briefly introduce the students to the problem, motivate why it is interesting, summarize the to be used methods and formulate the goals.
@@ -65,7 +65,7 @@ Figure 4: "Ball in the Box" simulation and the fully working corresponding progr
 The students, working in pairs of two, are encouraged to develop own ideas and experiment while we answer questions and guide the students through problems.
 We supervise the activity of the students in groups of 1-3 and especially focus on students less familiar with the topic.
 Usually, within the first hours, the students adjust to the setting, start to ask extended questions and play around with parameters to investigate their effect.
-While all groups were able to visualise the perihelion motion, not all students where also able to extract the numerical value for the perihelion motion in case of enhanced forces from general relativity.
+While all groups were able to visualize the perihelion motion, not all students where also able to extract the numerical value for the perihelion motion in case of enhanced forces from general relativity.
 The final step is the comparison of the calculated value to the experimental one.
 In order to do so, some students interpolated their results to the size where the strength of forces coming from General Relativity matches the values dictated by nature.
 One point, that we could not sufficiently cover in the summer school, is the quantitative discussion of the (numerical) errors.
