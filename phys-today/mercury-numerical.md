@@ -78,3 +78,5 @@ The course at the science academy lasted for only one day which was a tight sche
 In our paper we provide additional material on analyzing numerical errors and extrapolating the perihelion motion to physical values.
 This should allow for a longer more in-depth project for interested student.
 We will continue to offer the course at the academy in the future and hope that others will have the same success and fun that we had.
+
+We would like to thank J. Heuer, C. Müller and C. Hanhart for introducing us to this course, for providing the required framework at the "Schülerakademie Teilchenphysik" and for the help in writing this article.
