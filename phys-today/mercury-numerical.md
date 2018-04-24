@@ -13,7 +13,6 @@ In 2014 on the authors of our publication, J. Heuer, did a school project for wh
 The next year, we adapted her project to create a course for the "Schülerakademie Teilchenphysik" ("Student Academy for Particle Physics") at the Science Center Overbach in Jülich, Germany.
 The week long academy takes place every two years and aims at high-school students from grade 10 to 13 (age 16 to 19) from all over Germany.
 It offers several activities such as
-
 * lectures on various topics in particle physics,
 * a tour of the particle accelerator COSY and
 * a visit to the high-performance computing facility at the Research Center Jülich.
@@ -21,7 +20,7 @@ It offers several activities such as
 At the end of the course, the last day is dedicated to hands-on work where students have three different choices.
 One of those was our numerical simulations project.
 
-
+![Image of course](course.jpg)
 Figure 1: Image of course
 
 
@@ -32,8 +31,8 @@ The only way we can solve an equation of motion numerically is by picking a star
 The result are the typical elliptic curves fixed in space.
 Figure 2 shows an example.
 
-
-Figure 2: Mercury orbit around the Sun from Newtonian gravity (GIF).
+![Mercury orbit around the Sun from Newtonian gravity](orbit-wo-GR.gif)
+Figure 2: Mercury orbit around the Sun from Newtonian gravity.
 
 
 We did not stop there but only used this simulation as a first step.
@@ -54,7 +53,8 @@ The actual perihelion motion due to GR is less than 42.3″ = 0.011° in a centu
 However the students could produce animations like in figure 3 by experimenting with unphysically large strengths of these additional terms.
 
 
-Figure 3: Mercury orbit around the Sun from Newtonian gravity + GR(GIF).
+![Mercury orbit around the Sun from Newtonian gravity](orbit-w-GR.gif)
+Figure 3: Mercury orbit around the Sun from Newtonian gravity.
 
 
 We chose [Python](https://www.python.org/) as a programming language and [VPython](http://vpython.org/) for graphical output.
@@ -73,7 +73,7 @@ During breaks the students were excited to show their results to students from o
 Even after the course we had some interesting discussions on the theories of relativity with the students pushing us the limits of our own knowledge.
 Due to this and the positive feedback we received, we decided to offer a second, refined installation of the course in 2017 with similar results.
 
-Now we would like to make the course publicly available in our paper [cite!].
+Now we would like to make the course publicly available in [our paper](https://arxiv.org/abs/1803.01678).
 The course at the science academy lasted for only one day which was a tight schedule.
 In our paper we provide additional material on analyzing numerical errors and extrapolating the perihelion motion to physical values.
 This should allow for a longer more in-depth project for interested student.
