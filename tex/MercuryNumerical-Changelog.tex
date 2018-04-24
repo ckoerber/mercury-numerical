@@ -300,7 +300,7 @@ This is quantified in Newton's }\DIFdelend second law
 \vec F(\vec r, t) = \frac{d}{dt}(m \vec v) \ .
 \end{equation}
 
-
+\setcounter{equation}{5}
 \subsection*{Page 3, line 28 and below}
 Clearly to initiate the procedure at some time $t_0$ both $\vec r(t_0)$ as well as $\vec v(t_0)$ must be \DIFdelbegin \DIFdel{known }\DIFdelend \DIFaddbegin \DIFadd{fixed }\DIFaddend --- the  trajectories depend on these initial conditions~\footnote{%
 	In general, a differential equation of $n^{\rm th}$ degree (where the highest derivative is order $n$) needs $n$ initial conditions specified.
@@ -327,6 +327,22 @@ Clearly to initiate the procedure at some time $t_0$ both $\vec r(t_0)$ as well 
 	}}
 \end{figure}
 \DIFaddend 
+
+\setcounter{equation}{6 t}
+This procedure can only work if $\Delta t$ is sufficiently small.
+One way to estimate whether $\Delta t$ is small enough is to verify whether the relation
+\begin{equation}
+|\vec v(t)| \gg \frac12|\vec a(t)|\Delta t = \frac{1}{2m} |\vec F(\vec r(t)) |\Delta t\
+\label{eq:check}
+\end{equation}
+holds. This follows from Eq.~(1) where the first term that \DIFdelbegin \DIFdel{we }\DIFdelend \DIFaddbegin \DIFadd{was }\DIFaddend neglected reads $(1/2)a(t){(\Delta t)}^2$.
+\DIFaddbegin \DIFadd{The impact of the size of $\Delta t$ on the simulation is illustrated in Fig.~\ref{fig:MercuryOrbit1} where
+only Newtonian gravity was used. While for the
+calculations for the left panel $\Delta t$
+is chosen significantly below $\Delta t_0=2m |\vec v(0)| /   |\vec F(\vec r(0)) |$ ($cf.$ }\DIFaddend Eq.~(\DIFaddbegin \DIFadd{\ref{eq:check})), for the
+right panel it was chosen twice as large. Accordingly, only the trajectory in the left panel shows the characteristic
+feature of a $1/r^2$--force of an ellipse fixed in space. The trajectory in the right panel does not reproduce itself in successive revolutions.
+}
 
 
 \subsection*{Page 19, before section previous 8. Summary}
