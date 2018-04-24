@@ -1,6 +1,6 @@
 # Physics Simulations for High-School Students
 
-## How you can teach high-school students to program their first physics simulations demonstrating effects of General Relativity -- in just one day
+## Students program their first physics simulations demonstrating effects of General Relativity -- in just one day
 
 When I was in high-school, my biggest interest were phenomena beyond the scope of what I currently knew.
 Unfortunately at this point I did not yet have the theoretical toolbox to dig deep.
