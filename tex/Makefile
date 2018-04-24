@@ -17,7 +17,7 @@ REV      = $(shell git log -n 1 --pretty=format:"%H")
 	${LTX} $<
 
 arxiv: ${BASE}.bbl cleanTex
-	zip -r arxiv . -x Makefile References.bib *.git* *.DS_Store
+	zip -r arxiv . -x Makefile References.bib *.git* *.DS_Store *Changelog.*
 
 .PHONY: diff
 diff:
