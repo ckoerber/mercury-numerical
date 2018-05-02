@@ -28,7 +28,7 @@ The main task of our course was to simulate the motion of Mercury around the Sun
 We began by using classical Newtonian mechanics considering only the two-body system.
 Here we taught the students about discretization as a basic concept of simulations.
 The students solved an equation of motion numerically by picking a starting position and velocity and evolving them in time with a finite number of steps employing a given force - in this first step this means the law of Newtonian gravity.
-This results either in parabolic "open" curves or elliptic closed curves fixed in space: In particular, the perihelion, the point of closest approach of the planet to the sun, does not move.
+This results either in parabolic open curves or elliptic closed curves fixed in space: In particular, the perihelion, the point of closest approach of the planet to the sun, does not move.
 Figure 2 shows an example of the latter trajectories.
 
 ![Mercury orbit around the Sun from Newtonian gravity](orbit-wo-GR.gif)
@@ -60,7 +60,7 @@ We also spent some time explaining the basics of differential and vector calculu
 This allowed all students to produce simulations even though they had different backgrounds and previous knowledge.
 
 During the main part of the course, we gave only basic guidance, helped out where needed and encouraged the participants to pursue their own ideas.
-We started out by providing a basic code template. 
+We started out by providing a basic code template.
 For the most part, the students could explore the problem on their own in groups of two which lead to many different solutions and extensions of the project.
 Some students focused on the GR part, while some played with the parameters of the system (masses, size of the time step, etc.) and explored the boundaries of the solution in terms of stability.
 Others added an additional planet, sometimes even with tilted orbital planes, and observed the chaotic nature of the three body problem.
