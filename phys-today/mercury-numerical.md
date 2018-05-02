@@ -3,7 +3,7 @@
 ## Students program their first physics simulations demonstrating effects of General Relativity -- in just one day
 
 When we were budding scientists in our formative years, our biggest interests usually were phenomena beyond the scope of what was taught in highschool.
-Unfortunately we did not yet have the theoretical toolbox to dig deeper into understanding such phenomena.
+Unfortunately we did not yet have the theoretical toolbox to dig deeper.
 But even though we were not able to assess such phenomena ourselves, we could grasp some insights into their nature through visualizations.
 Today, numerical simulations have become a part of our every day work as physicists, and indeed, are often the best method to solving complicated problems that deal with fundamental building blocks of nature.
 When we look back at our highschool time, we realize that having a physics education coupled with numerical methods programming at such an early stage would have been extremely beneficial for us.
@@ -36,7 +36,7 @@ Figure 2: Mercury orbit around the Sun from Newtonian gravity.
 
 This is a consequence of the Newtonian 1/r² gravitational force we have used so far (r is the distance between Sun and Mercury).
 In reality, however, the perihelion moves around the Sun over time, which was known for a long time and largely attributed to the influence of the other planets.
-Astronomers calculated this influence over several years in painstaking manual labor (this was long before the rise of computers) and were able to describe more than 90% of the observed movement.
+Astronomers calculated this influence over several years in painstaking manual labor and were able to describe more than 90% of the observed movement (this was long before the rise of computers).
 The rest was taken as evidence for an as yet undiscovered planet.
 It was not until much later when Einstein published his theory of General Relativity (GR) that the remaining perihelion motion was really understood.
 In fact this was one of the big successes of the new theory helping it gain popularity.
@@ -66,9 +66,9 @@ Some students focused on the GR part, while some played with the parameters of t
 Others added an additional planet, sometimes even with tilted orbital planes, and observed the chaotic nature of the three body problem.
 Still others improved the graphical output by for instance marking the position of the perihelion - an idea we eventually picked up for later courses.
 
-During breaks the students were excited to show their results to students from the other two projects and explained their efforts, motivations and results.
+During breaks the students were excited to show their results to the participants of the other two projects and explained their efforts, motivations and results.
 Even after the course we had some interesting discussions on the theories of relativity with the students pushing us towards (and sometimes beyond) the limits of our own knowledge.
-Due to this and the positive feedback we received, we decided to offer a second, refined installation of the course in 2017 with similar results.
+Due to this interest and the positive feedback we received, we decided to offer a second, refined installation of the course in 2017 with similar results.
 
 We recently made the course publicly available in [our paper](https://arxiv.org/abs/1803.01678).
 The course at the science academy lasted for only one day which was a tight schedule.
