@@ -2,13 +2,14 @@
 
 ## Students program their first physics simulations demonstrating effects of General Relativity -- in just one day
 
-When I was budding scientist in my formative years, my biggest interests usually were phenomena beyond the scope of what was taught in highschool.
-Unfortunately I did not yet have the theoretical toolbox to dig deeper into understanding such phenomena.
-But even though I was not able to compute things myself, I could grasp some insights into the nature behind these phenomena through numerical visualizations.
-Today numerical simulations have become a part of my every day work as a physicist, and indeed, 
-are often the best method to solving complicated problems that deal with emergent phenomena from underlying principles.  When I look back at my highschool time, I realize that having a physics education coupled with numerical methods programming at such an early stage would have been extremely beneficial for me and for the advancement of my career.  Sadly, such a coupling of fields is rarely done even in today's highschools.  
+When we were budding scientists in our formative years, our biggest interests usually were phenomena beyond the scope of what was taught in highschool.
+Unfortunately we did not yet have the theoretical toolbox to dig deeper into understanding such phenomena.
+But even though we were not able to assess such phenomena ourselves, we could grasp some insights into their nature through visualizations.
+Today, numerical simulations have become a part of our every day work as physicists, and indeed, are often the best method to solving complicated problems that deal with fundamental building blocks of nature.
+When we look back at our highschool time, we realize that having a physics education coupled with numerical methods programming at such an early stage would have been extremely beneficial for us.
+Sadly, such a coupling of fields is rarely done even in today's highschools.
 
-In 2014 one of our authors, J. Heuer, did a school project where she simulated the motion of planets in the solar system that included post-Newtonian effects.
+In 2014 one of our collaborators, J. Heuer, did a school project where she simulated the motion of planets in the solar system that included post-Newtonian effects.
 The next year, we adapted her project to create a course for the ["Schülerakademie Teilchenphysik"](https://crc110.hiskp.uni-bonn.de/index.php?id=327) ("Student Academy for Particle Physics") held at the Science Center Overbach in Jülich, Germany.
 This week-long academy takes place every two years and is tailored towards high-school students from grades 10 to 13 (age 16 to 19) from all over Germany.
 It offers several activities such as
@@ -27,7 +28,7 @@ The main task of our course was to simulate the motion of Mercury around the Sun
 We began by using classical Newtonian mechanics considering only the two-body system.
 Here we taught the students about discretization as a basic concept of simulations.
 The students solved an equation of motion numerically by picking a starting position and velocity and evolving them in time with a finite number of steps employing a given force - in this first step this means the law of Newtonian gravity.
-This results either in parabolic "open" curves or elliptic closed curves fixed in space. The perihelion, for example, is the point of closest approach of the planet to the sun and its location does not move.
+This results either in parabolic "open" curves or elliptic closed curves fixed in space: In particular, the perihelion, the point of closest approach of the planet to the sun, does not move.
 Figure 2 shows an example of the latter trajectories.
 
 ![Mercury orbit around the Sun from Newtonian gravity](orbit-wo-GR.gif)
@@ -39,8 +40,7 @@ Astronomers calculated this influence over several years in painstaking manual l
 The rest was taken as evidence for an as yet undiscovered planet.
 It was not until much later when Einstein published his theory of General Relativity (GR) that the remaining perihelion motion was really understood.
 In fact this was one of the big successes of the new theory helping it gain popularity.
-Even today GR has remained not only at the forefront of students' fascination, but of research in general, as is evident 
- by LIGOs phenomenal discovery of gravitational waves (and its subsequent Nobel prize).
+Even today GR has remained not only at the forefront of students' fascination, but of research in general, as is evident by LIGOs phenomenal discovery of gravitational waves (and its subsequent Nobel prize).
 
 Our goal was to show the students how to simulate this influence of GR.
 At first this seems like an impossible task given that GR is mathematically very complicated.
