@@ -50,12 +50,12 @@ The actual perihelion motion due to GR is less than 42.3″ = 0.011° in a centu
 However the students could produce animations like in figure 3 by experimenting with unphysically large strengths of these additional terms.
 
 
-![Mercury orbit around the from Newtonian gravity including GR additions](orbit-w-GR.gif)
-Figure 3: Mercury orbit around the from Newtonian gravity including GR additions.
+![Mercury orbit around the Sun from Newtonian gravity including GR additions](orbit-w-GR.gif)
+Figure 3: Mercury orbit around the Sun from Newtonian gravity including GR additions.
 
 
 We chose [Python](https://www.python.org/) as a programming language and [VPython](http://vpython.org/) for graphical output.
-Both are easy to learn even without programming experience and we started the course with a quick introduction to them.
+Both are easy to learn even without programming experience and we started the course by briefly introducing them.
 We also spent some time explaining the basics of differential and vector calculus.
 This allowed all students to produce simulations even though they had different backgrounds and previous knowledge.
 
