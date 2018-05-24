@@ -14,10 +14,12 @@ On the last day of the course, students choose to participate in one of three ha
 ![Image of course](course.jpg)
 Figure 1: Image of course
 
+The students themselves plot the objects using the library VPython, write a function for the position and velocity update and write the loop for the animation.
+
 The main task of our course is to simulate the motion of Mercury around the Sun.
 We start with the two-body system of planet and star governed by classical Newtonian mechanics only.
 Here we teach the students about discretization as a basic concept of simulations.
-The students solve an equation of motion numerically by picking a starting position and velocity and then, employing Newtonian gravity as the force, evolving the position and velocity in time with a finite number of steps.
+The students solve an equation of motion numerically by picking a starting position and velocity and then, employing Newtonian gravity as the force, evolving the position and velocity of Mercury in time with a finite number of steps.
 The result is a planet that moves in either a parabolic open curve or an elliptic closed curve fixed in space.
 In both cases, the perihelion, the point of closest approach of the planet to the Sun, does not move.
 Figure 2 shows an example of an elliptical orbit.
@@ -27,7 +29,7 @@ Figure 2: Mercury orbit around the Sun from Newtonian gravity.
 
 The fixed perihelion is a consequence of the use of the simple Newtonian 1/r2 gravitational force (with r as the distance between the Sun and Mercury).
 In reality, the perihelion of Mercury’s orbit moves around the Sun over time, which before Albert Einstein came along was attributed largely to the influence of the other planets.
-Long before the rise of computers, astronomers calculated the planetary influences through painstaking calculations and were able to describe more than 90% of the observed movement.
+Already in 1859, long before the rise of computers, astronomers calculated the planetary influences through painstaking calculations and were able to describe more than 90% of the observed movement.
 The rest was taken as evidence for an as yet undiscovered planet.
 It was not until much later, when Einstein published his theory of general relativity (GR), that the remaining perihelion motion was really understood.
 
@@ -45,10 +47,12 @@ Figure 3: Mercury orbit around the Sun from Newtonian gravity including GR addit
 Our program employs [Python](https://www.python.org/) as a programming language and [VPython](http://vpython.org/) for graphical output.
 Both are easy to learn, even for those without programming experience.
 We start the course by briefly introducing the coding language and explaining the basics of differential and vector calculus.
+This helps the students understanding the position and velocity update procedure.
 By the end of that tutorial, all the students, regardless of previous knowledge, should be able to produce the simulations.
 
-During the main part of the course, we give only basic guidance, we help out only when needed, and we encourage the participants to pursue their own ideas.
-We start out by providing a basic code template.
+In the main part of the course, we give only basic guidance, we help out only when needed, and we encourage the participants to pursue their own ideas.
+We start out by providing a basic [code template](https://github.com/ckoerber/perihelion-mercury/blob/master/py-scripts/template.py), which defines numerical parameters, sets up the visual display and highlights the basic structure of the final program (see also https://github.com/ckoerber/perihelion-mercury/blob/master/py-scripts/template.py).
+Using this template, the students initialize the visualization objects, code a function for the position and velocity update and write the loop containing the orbit evolution.
 At the 2015 student academy, the students explored the problem in groups of two.
 Some students focused on the GR part, while some played with the parameters of the system (masses, size of the time step, etc.) and explored the boundaries of the solution in terms of stability.
 Others tossed in an additional planet, sometimes with a tilted orbital plane, and observed the chaotic nature of the three-body problem.
@@ -60,8 +64,11 @@ Due to the interest and positive feedback, in 2017 we offered a second, refined 
 
 We recently made the course publicly available in [our paper](https://arxiv.org/abs/1803.01678).
 The course at the science academy lasted for one day.
-In our paper we provide additional material on analyzing numerical errors and extrapolating the perihelion motion to physical values.
+In our paper we provide additional material on analyzing numerical errors and extracting the perihelion motion for natural GR forces.
 This should allow for a longer more in-depth project for interested students.
 We will continue to offer the course at the academy in the future and hope that others will have the same success and fun that we had.
+
+Christopher Körber is a postdoctoral student at Forschungszentrum Jülich working with Thomas Luu.
+He earned a doctoral degree in nuclear physics from the University of Bonn in 2018.
 
 We would like to thank Joseline Heuer, Christian Müller, and Christoph Hanhart for introducing us to this course, for providing the required framework at the "Schülerakademie Teilchenphysik," and for the help in writing this article.
