@@ -57,10 +57,10 @@ def angle_between(v1, v2):
 
 
 # run parameters
-alpha = 0    #1.e6
+alpha = 1.e6
 vec_r_last = vec_rM0
 turns = 0
-max_turns = 3
+max_turns = 5
 list_perih = list()
 sum_angle = 0.
 
@@ -80,7 +80,7 @@ while turns < max_turns:
     turns = turns + 1
     list_perih.append(vec_r_last)
     if turns > 1:
-      #sphere(color=color.green, radius=0.2, pos=vec_r_last)
+      sphere(color=color.green, radius=0.2, pos=vec_r_last)
       sum_angle = sum_angle + angle_between(list_perih[-2], list_perih[-1])
 
   if nt % 10 == 1:
