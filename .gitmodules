@@ -1,3 +1,6 @@
 [submodule "scripts/publish"]
 	path = scripts/publish
 	url = https://github.com/ckoerber/perihelion-mercury.git
+[submodule "scripts/perihelion-precession"]
+	path = scripts/perihelion-precession
+	url = https://github.com/jl-wynen/perihelion-precession.git
